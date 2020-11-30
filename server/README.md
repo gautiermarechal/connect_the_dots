@@ -13,6 +13,18 @@
 | Update user by id | `/users/:id`    | PUT    |
 | Delete user by id | `/users/:id`    | DELETE |
 
+#### User data structure
+
+````json
+{
+    "_id": "b74aae4e-062d-4310-a724-cdf7076da199",
+    "username": "johnsmith",
+    "email": "johnsmith@hello.com",
+    "password": "cjksdnjcswdnos",
+    "connections": [],
+    "connections_bookmarked": []
+}```
+
 ### Connections
 
 | Method                   | Endpoint           | HTTP   |
@@ -24,3 +36,4 @@
 | Delete connections by id | `/connections/:id` | DELETE |
 
 ### Books
+````

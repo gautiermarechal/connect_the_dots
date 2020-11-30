@@ -1,7 +1,17 @@
 const router = require("express").Router();
 //Users Imports
-const { getAllUsers } = require("./helpers/users");
+const { getAllUsers, createUser } = require("./handlers/users");
+//Connections Imports
 
-router.get("/users", (req, res) => getAllUsers(req, res));
+//USERS ROUTES-------------------------------------------
+//Get all users
+router.get("/users", getAllUsers);
+
+//Create a user
+router.post("/users", createUser);
+//-------------------------------------------------------
+
+//CONNECTIONS ROUTES-------------------------------------
+//-------------------------------------------------------
 
 module.exports = router;
