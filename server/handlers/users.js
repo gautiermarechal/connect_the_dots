@@ -3,7 +3,7 @@ const { resolve } = require("path");
 const path = require("path");
 require("dotenv").config({ path: resolve(__dirname, "../../.env") });
 const { MongoClient } = require("mongodb");
-const { isNull, correctUser } = require("../helpers");
+const { isNull, correctUser, validUpdate, idFound } = require("../helpers");
 const { MONGO_URI, DB } = process.env;
 const options = {
   useNewUrlParser: true,
@@ -29,6 +29,35 @@ const getAllUsers = async (req, res) => {
     } else {
       res.status(200).json({ status: 200, data: result });
     }
+  } catch (error) {
+    res.status(500).json({ status: 500, error: error.message });
+  }
+};
+
+//Get user by id
+const getUserById = async (req, res) => {
+  try {
+    //DB config----------------------
+    const client = MongoClient(MONGO_URI, options);
+
+    await client.connect();
+
+    const db = client.db(DB);
+    console.log("DB connected");
+    //-------------------------------
+    const userId = req.params.id;
+
+    db.collection("users").findOne({ _id: userId }, (err, result) => {
+      if (err) {
+        throw new Error(err.message);
+      } else {
+        if (isNull(result)) {
+          res.status(404).json({ status: 404, error: "User not found" });
+        } else {
+          res.status(200).json({ status: 200, data: result });
+        }
+      }
+    });
   } catch (error) {
     res.status(500).json({ status: 500, error: error.message });
   }
@@ -60,7 +89,76 @@ const createUser = async (req, res) => {
   }
 };
 
+//Update user
+const updateUser = async (req, res) => {
+  try {
+    //DB config----------------------
+    const client = MongoClient(MONGO_URI, options);
+
+    await client.connect();
+
+    const db = client.db(DB);
+    console.log("DB connected");
+    //-------------------------------
+    const fieldsToChange = req.body;
+    const userId = req.params.id;
+    // let found = true;
+    // idFound(userId).then((response) => {
+    //   console.log(response);
+    //   if (response === null) {
+    //     res.status(404).json({ status: 404, error: "User not found" });
+    //     found = false;
+    //     return;
+    //   } else {
+    //     found = true;
+    //   }
+    // });
+
+    // if (!found) {
+    //   return;
+    // }
+
+    if (validUpdate(fieldsToChange)) {
+      db.collection("users").updateOne(
+        { _id: userId },
+        { $set: { ...fieldsToChange } }
+      );
+
+      res.status(200).json({ status: 200, data: "User updated!" });
+    } else {
+      res.status(400).json({ status: 400, error: "Bad body request!" });
+    }
+  } catch (error) {
+    res.status(500).json({ status: 500, error: error.message });
+  }
+};
+
+//Delete user
+const deleteUser = async (req, res) => {
+  try {
+    //DB config----------------------
+    const client = MongoClient(MONGO_URI, options);
+
+    await client.connect();
+
+    const db = client.db(DB);
+    console.log("DB connected");
+    //-------------------------------
+
+    const userId = req.params.id;
+
+    db.collection("users").deleteOne({ _id: userId });
+
+    res.status(200).json({ status: 200, data: "User deleted!" });
+  } catch (error) {
+    res.status(500).json({ status: 500, error: error.message });
+  }
+};
+
 module.exports = {
   getAllUsers,
   createUser,
+  getUserById,
+  updateUser,
+  deleteUser,
 };
