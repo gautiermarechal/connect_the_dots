@@ -58,9 +58,55 @@ const idFound = async (id) => {
   return await db.collection("users").findOne({ _id: id });
 };
 
+const correctConnection = (connection) => {
+  if (
+    Object.keys(connection).includes("_id") &&
+    Object.keys(connection).includes("created_at") &&
+    Object.keys(connection).includes("created_at") &&
+    Object.keys(connection).includes("likes") &&
+    Object.keys(connection).includes("bookmarks") &&
+    Object.keys(connection).includes("bannerSrc") &&
+    Object.keys(connection).includes("books") &&
+    Object.keys(connection).includes("categories") &&
+    Object.keys(connection).includes("content") &&
+    Object.keys(connection).includes("media") &&
+    Object.keys(connection).includes("comments") &&
+    Object.keys(connection.author).includes("_id") &&
+    Object.keys(connection.author).includes("name") &&
+    Object.keys(connection.author).includes("username")
+  ) {
+    return true;
+  }
+  return false;
+};
+
+const validUpdateConnection = (connection) => {
+  if (
+    Object.keys(connection).includes("_id") ||
+    Object.keys(connection).includes("created_at") ||
+    Object.keys(connection).includes("created_at") ||
+    Object.keys(connection).includes("likes") ||
+    Object.keys(connection).includes("bookmarks") ||
+    Object.keys(connection).includes("bannerSrc") ||
+    Object.keys(connection).includes("books") ||
+    Object.keys(connection).includes("categories") ||
+    Object.keys(connection).includes("content") ||
+    Object.keys(connection).includes("media") ||
+    Object.keys(connection).includes("comments") ||
+    Object.keys(connection.author).includes("_id") ||
+    Object.keys(connection.author).includes("name") ||
+    Object.keys(connection.author).includes("username")
+  ) {
+    return true;
+  }
+  return false;
+};
+
 module.exports = {
   isNull,
   correctUser,
   validUpdate,
   idFound,
+  correctConnection,
+  validUpdateConnection,
 };
