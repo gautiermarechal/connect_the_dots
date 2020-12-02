@@ -4,6 +4,7 @@ const {
   getAllUsers,
   createUser,
   getUserById,
+  getUserByEmail,
   updateUser,
   deleteUser,
 } = require("./handlers/users");
@@ -22,6 +23,9 @@ router.get("/users", getAllUsers);
 
 //Get user by Id
 router.get("/users/:id", getUserById);
+
+//Get user by email
+router.get("/users/email/:email", getUserByEmail);
 
 //Create a user
 router.post("/users", createUser);

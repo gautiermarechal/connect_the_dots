@@ -2,13 +2,17 @@ import React from "react";
 import styled from "styled-components";
 import Connection from "../../Connection";
 
-const FeedSnippet = () => {
+const FeedSnippet = ({ type }) => {
   return (
     <>
       <MainContainer>
-        <Connection />
-        <Connection />
-        <Connection />
+        {type === "recent" && <Title>Recent Connections</Title>}
+        {type === "popular" && <Title>Popular Connections</Title>}
+        <FeedContainer>
+          <Connection />
+          <Connection />
+          <Connection />
+        </FeedContainer>
       </MainContainer>
     </>
   );
@@ -16,11 +20,22 @@ const FeedSnippet = () => {
 
 const MainContainer = styled.div`
   display: flex;
-  justify-content: space-evenly;
-  align-items: center;
+  flex-direction: column;
+  padding-top: 50px;
+  padding-bottom: 50px;
   padding-left: 100px;
   padding-right: 100px;
-  height: 500px;
+  height: auto;
+`;
+
+const FeedContainer = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+`;
+
+const Title = styled.h2`
+  margin-bottom: 25px;
 `;
 
 export default FeedSnippet;

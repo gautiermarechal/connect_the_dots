@@ -8,12 +8,12 @@ const CategoriesBar = () => {
       <MainContainer>
         <FirstRow>
           {CATEGORIES.slice(0, 6).map((category) => {
-            return <CategoryButton>{category}</CategoryButton>;
+            return <CategoryButton key={category}>{category}</CategoryButton>;
           })}
         </FirstRow>
         <SecondRow>
           {CATEGORIES.slice(6).map((category) => {
-            return <CategoryButton>{category}</CategoryButton>;
+            return <CategoryButton key={category}>{category}</CategoryButton>;
           })}
         </SecondRow>
       </MainContainer>

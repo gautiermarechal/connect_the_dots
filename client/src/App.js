@@ -9,6 +9,10 @@ import {
 import NavigationBar from "./components/NavigationBar/index";
 import CategoriesBar from "./components/CategoriesBar/index";
 import HomePage from "./components/HomePage/index";
+import Footer from "./components/Footer";
+import Login from "./components/Login";
+import SignUp from "./components/SignUp";
+import SignUpSuccess from "./components/SignUpSuccess";
 
 function App() {
   return (
@@ -20,7 +24,17 @@ function App() {
           <Route exact path="/">
             <HomePage />
           </Route>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/signup">
+            <SignUp />
+          </Route>
+          <Route path="/signup-success">
+            <SignUpSuccess />
+          </Route>
         </Switch>
+        <Footer />
       </Router>
       <GlobalStyles />
     </>

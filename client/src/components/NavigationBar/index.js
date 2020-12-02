@@ -1,15 +1,23 @@
 import React from "react";
 import styled from "styled-components";
 import SearchBar from "../SearchBar/index";
+import { Link } from "react-router-dom";
 
 const NavigationBar = () => {
   return (
     <>
       <MainContainer>
-        <MainTitle>Connect the dots.</MainTitle>
+        <Link to="/">
+          <MainTitle>Connect the dots.</MainTitle>
+        </Link>
         <SearchBar />
         <NavItem>Categories</NavItem>
-        <NavItem>Login</NavItem>
+        <Link to="/login">
+          <NavItem>Login</NavItem>
+        </Link>
+        <Link to="/signup">
+          <NavItem>Sign Up</NavItem>
+        </Link>
       </MainContainer>
     </>
   );

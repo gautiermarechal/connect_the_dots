@@ -18,6 +18,7 @@
 ```json
 {
   "_id": "b74aae4e-062d-4310-a724-cdf7076da199",
+  "userTag": "John Smith",
   "username": "johnsmith",
   "email": "johnsmith@hello.com",
   "password": "cjksdnjcswdnos",

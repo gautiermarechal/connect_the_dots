@@ -63,6 +63,35 @@ const getUserById = async (req, res) => {
   }
 };
 
+//Get user by email
+const getUserByEmail = async (req, res) => {
+  try {
+    //DB config----------------------
+    const client = MongoClient(MONGO_URI, options);
+
+    await client.connect();
+
+    const db = client.db(DB);
+    console.log("DB connected");
+    //-------------------------------
+    const userEmail = req.params.email;
+
+    db.collection("users").findOne({ email: userEmail }, (err, result) => {
+      if (err) {
+        throw new Error(err.message);
+      } else {
+        if (isNull(result)) {
+          res.status(404).json({ status: 404, error: "User not found" });
+        } else {
+          res.status(200).json({ status: 200, data: result });
+        }
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ status: 500, error: error.message });
+  }
+};
+
 //Create a user
 const createUser = async (req, res) => {
   try {
@@ -161,4 +190,5 @@ module.exports = {
   getUserById,
   updateUser,
   deleteUser,
+  getUserByEmail,
 };

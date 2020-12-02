@@ -18,7 +18,8 @@ const HomePage = () => {
           <Line />
           <BookIcon />
         </InfoContainer>
-        <FeedSnippet />
+        <FeedSnippet type="recent" />
+        <FeedSnippet type="popular" />
       </MainContainer>
     </>
   );

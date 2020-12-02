@@ -68,7 +68,7 @@ const GlobalStyles = createGlobalStyle`
     }
 
     a {
-        color: none;
+        color: black;
         text-decoration: none;
     }
 `;
