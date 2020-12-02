@@ -7,6 +7,8 @@ const FeedSnippet = () => {
     <>
       <MainContainer>
         <Connection />
+        <Connection />
+        <Connection />
       </MainContainer>
     </>
   );
@@ -14,6 +16,11 @@ const FeedSnippet = () => {
 
 const MainContainer = styled.div`
   display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding-left: 100px;
+  padding-right: 100px;
+  height: 500px;
 `;
 
 export default FeedSnippet;
