@@ -16,6 +16,8 @@ const {
   updateConnection,
   deleteConnection,
 } = require("./handlers/connections");
+//Google Imports
+const { getBookBySearch } = require("./handlers/google");
 
 //USERS ROUTES-------------------------------------------
 //Get all users
@@ -53,5 +55,9 @@ router.patch("/connections/:id", updateConnection);
 //Delete connection
 router.delete("/connections/:id", deleteConnection);
 //-------------------------------------------------------
+
+//GOOGLE API AUTH ROUTES---------------------------------
+//Get access token
+router.get("/books", getBookBySearch);
 
 module.exports = router;

@@ -1,5 +1,6 @@
 const intialState = {
   status: "idle",
+  id: "",
   name: "",
   username: "",
   email: "",

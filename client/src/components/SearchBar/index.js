@@ -1,10 +1,37 @@
 import React from "react";
 import styled from "styled-components";
+import { useDispatch } from "react-redux";
+import {
+  requestBooks,
+  receiveBooks,
+  errorBooks,
+} from "../../redux/actions/BooksActions";
 
 const SearchBar = () => {
+  const dispatch = useDispatch();
+
+  const handleSearchBook = (query) => {
+    dispatch(requestBooks());
+    fetch(`http://localhost:4000/books?query=${query}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        dispatch(receiveBooks(json));
+      })
+      .catch((err) => {
+        dispatch(errorBooks());
+      });
+  };
+
   return (
     <>
-      <BarContainer placeholder="Search for a connection, book, category..." />
+      <BarContainer
+        placeholder="Search for a connection, book, category..."
+        onChange={(e) => handleSearchBook(e.target.value)}
+      />
     </>
   );
 };

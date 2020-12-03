@@ -13,8 +13,12 @@ import Footer from "./components/Footer";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import SignUpSuccess from "./components/SignUpSuccess";
+import useFetchCurrentUser from "./customHooks/UseFetchCurrentUser";
+import AccountPage from "./components/AccountPage";
+import BookmarkedConnectionsPage from "./components/BookmarkedConnectionsPage";
 
 function App() {
+  useFetchCurrentUser();
   return (
     <>
       <Router>
@@ -32,6 +36,12 @@ function App() {
           </Route>
           <Route path="/signup-success">
             <SignUpSuccess />
+          </Route>
+          <Route path="/account/:id">
+            <AccountPage />
+          </Route>
+          <Route path="/connections-bookmarked/:id">
+            <BookmarkedConnectionsPage />
           </Route>
         </Switch>
         <Footer />

@@ -21,6 +21,7 @@ const Login = () => {
   const [errors, setErrors] = useState([]);
   const [displayError, setDisplayError] = useState(false);
 
+  //Display errors or not when the errors array is empty or not
   useEffect(() => {
     if (errors.length > 0) {
       setDisplayError(true);
@@ -30,8 +31,11 @@ const Login = () => {
   }, [errors]);
 
   const handleSubmit = () => {
+    //Check if user fields are empty
     if (isValidEmpty(email, password)) {
       setEmpty(false);
+      const index = errors.indexOf("Please fill in all required fields");
+      errors.splice(index, 1);
     } else {
       setEmpty(true);
       if (!errors.includes("Please fill in all required fields")) {
@@ -40,34 +44,46 @@ const Login = () => {
     }
     //Check user exist
     if (emailIsValid && !empty) {
-      userMatches(email, password).then((result) => {
-        if (result) {
-          setUserFound(true);
-          setCanSubmit(true);
-        } else {
-          setUserFound(false);
-          if (
-            !errors.includes(
+      userMatches(email, password)
+        .then((result) => {
+          if (result) {
+            setUserFound(true);
+            setCanSubmit(true);
+            const index = errors.indexOf(
               "Could not find an account matching with these credentials"
-            )
-          ) {
-            setErrors([
-              ...errors,
-              "Could not find an account matching with these credentials",
-            ]);
+            );
+            errors.splice(index, 1);
+            return true;
+          } else {
+            setUserFound(false);
+            if (
+              !errors.includes(
+                "Could not find an account matching with these credentials"
+              )
+            ) {
+              setErrors([
+                ...errors,
+                "Could not find an account matching with these credentials",
+              ]);
+            }
+            return false;
           }
-        }
-      });
-    }
-
-    if (canSubmit) {
-      history.push("/user-feed");
+        })
+        .then((valid) => {
+          console.log(valid);
+          //SUCCESS
+          if (valid) {
+            localStorage.setItem("user-email", email);
+            history.push("/user-feed");
+            window.location.reload();
+          }
+        });
     }
   };
 
-  const onChangeEmail = () => {
+  const onChangeEmail = (valueInput) => {
     //Check email
-    if (isValidEmail(email)) {
+    if (isValidEmail(valueInput)) {
       setEmailIsValid(true);
       const index = errors.indexOf("Email is not valid");
       errors.splice(index, 1);
@@ -104,7 +120,7 @@ const Login = () => {
               id="email-input"
               onChange={(e) => {
                 setEmail(e.target.value);
-                onChangeEmail();
+                onChangeEmail(e.target.value);
               }}
             />
             <Label htmlFor="password-input">Password</Label>

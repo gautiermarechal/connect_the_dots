@@ -4,9 +4,9 @@ import ConnectionsReducer from "../reducers/ConnectionsReducer";
 import BooksReducer from "../reducers/BooksReducer";
 
 const reducer = combineReducers({
-  CurrentUserReducer,
-  ConnectionsReducer,
-  BooksReducer,
+  currentUser: CurrentUserReducer,
+  connections: ConnectionsReducer,
+  books: BooksReducer,
 });
 
 export default reducer;
