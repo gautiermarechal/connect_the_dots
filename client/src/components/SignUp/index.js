@@ -90,6 +90,7 @@ const SignUp = () => {
         ...user,
         connections: [],
         connections_bookmarked: [],
+        books_bookmarked: [],
       });
       history.push("signup-success");
     }

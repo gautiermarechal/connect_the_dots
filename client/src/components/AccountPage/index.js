@@ -1,8 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { COLORS } from "../../constants";
+import { useHistory } from "react-router-dom";
 
 const AccountPage = () => {
+  const history = useHistory();
   return (
     <>
       <MainContainer>
@@ -30,6 +32,7 @@ const AccountPage = () => {
           </InfoContainer>
           <LogoutButton
             onClick={() => {
+              history.push("/");
               localStorage.removeItem("user-email");
               window.location.reload();
             }}

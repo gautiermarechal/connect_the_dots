@@ -34,6 +34,7 @@ const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 300px;
+  margin: 20px;
 `;
 
 const Banner = styled.img`

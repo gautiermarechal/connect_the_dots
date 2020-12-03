@@ -23,7 +23,8 @@
   "email": "johnsmith@hello.com",
   "password": "cjksdnjcswdnos",
   "connections": [],
-  "connections_bookmarked": []
+  "connections_bookmarked": [],
+  "books_bookmarked": []
 }
 ```
 

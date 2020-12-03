@@ -5,8 +5,6 @@ const getBookBySearch = (req, res) => {
 
   const query = req.query.query;
 
-  console.log(query);
-
   fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&key=${API_KEY}`)
     .then((res) => res.json())
     .then((result) => {
