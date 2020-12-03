@@ -16,6 +16,7 @@ import SignUpSuccess from "./components/SignUpSuccess";
 import useFetchCurrentUser from "./customHooks/UseFetchCurrentUser";
 import AccountPage from "./components/AccountPage";
 import BookmarkedConnectionsPage from "./components/BookmarkedConnectionsPage";
+import BookPage from "./components/BookPage";
 
 function App() {
   useFetchCurrentUser();
@@ -42,6 +43,9 @@ function App() {
           </Route>
           <Route path="/connections-bookmarked/:id">
             <BookmarkedConnectionsPage />
+          </Route>
+          <Route path="/book/:id">
+            <BookPage />
           </Route>
         </Switch>
         <Footer />
