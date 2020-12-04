@@ -1,5 +1,6 @@
 const initialState = {
   status: "idle",
+  step: 0,
   post_connection: {
     _id: "",
     created_at: "",
@@ -37,6 +38,8 @@ const PostConnectionReducer = (state = initialState, action) => {
           books: [...state.post_connection.books, action.data],
         },
       };
+    case "TOGGLE_STEP_POST_CONNECTION":
+      return { ...state, step: state.step + action.data };
     default:
       return state;
   }

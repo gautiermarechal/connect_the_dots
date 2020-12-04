@@ -19,3 +19,8 @@ export const addBookPostConnection = (data) => ({
   type: "ADD_BOOK_POST_CONNECTION",
   data: data,
 });
+
+export const toggleStepPostConnection = (data) => ({
+  type: "TOGGLE_STEP_POST_CONNECTION",
+  data: data,
+});
