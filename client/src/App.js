@@ -17,14 +17,24 @@ import useFetchCurrentUser from "./customHooks/UseFetchCurrentUser";
 import AccountPage from "./components/AccountPage";
 import BookmarkedConnectionsPage from "./components/BookmarkedConnectionsPage";
 import BookPage from "./components/BookPage";
+import PostConnection from "./components/PostConnection";
+import LightNavigationBar from "./components/LightNavigationBar";
+import { useSelector } from "react-redux";
 
 function App() {
   useFetchCurrentUser();
+  const postConnectionState = useSelector((state) => state.postConnection);
   return (
     <>
       <Router>
-        <NavigationBar />
-        <CategoriesBar />
+        {postConnectionState.status === "started" ? (
+          <LightNavigationBar />
+        ) : (
+          <>
+            <NavigationBar />
+            <CategoriesBar />
+          </>
+        )}
         <Switch>
           <Route exact path="/">
             <HomePage />
@@ -46,6 +56,9 @@ function App() {
           </Route>
           <Route path="/book/:id">
             <BookPage />
+          </Route>
+          <Route path="/connect">
+            <PostConnection />
           </Route>
         </Switch>
         <Footer />

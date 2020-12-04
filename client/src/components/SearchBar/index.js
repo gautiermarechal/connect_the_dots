@@ -1,17 +1,21 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import {
   requestBooks,
   receiveBooks,
   errorBooks,
+  clearBooks,
 } from "../../redux/actions/BooksActions";
 import { COLORS } from "../../constants";
 import { Link } from "react-router-dom";
+import { addBookPostConnection } from "../../redux/actions/PostConnectionActions";
 
 const SearchBar = () => {
   const dispatch = useDispatch();
   const booksFound = useSelector((state) => state.books);
+  const postConnection = useSelector((state) => state.postConnection);
+  const searchBarRef = useRef(null);
 
   const handleSearchBook = (query) => {
     dispatch(requestBooks());
@@ -27,6 +31,11 @@ const SearchBar = () => {
       .catch((err) => {
         dispatch(errorBooks());
       });
+  };
+
+  const handleClear = () => {
+    searchBarRef.current.value = "";
+    dispatch(clearBooks());
   };
 
   const ResultContainer = styled.div`
@@ -50,6 +59,7 @@ const SearchBar = () => {
         <BarContainer
           placeholder="Search for a connection, book, category..."
           onChange={(e) => handleSearchBook(e.target.value)}
+          ref={searchBarRef}
         />
         <ResultContainer>
           <ListOfResults>
@@ -62,8 +72,14 @@ const SearchBar = () => {
 
                 return (
                   <>
-                    <Link to={`/book/${id}`}>
-                      <Book>
+                    {/* If the user is posting render this:  */}
+                    {postConnection.status === "started" ? (
+                      <Book
+                        onClick={() => {
+                          dispatch(addBookPostConnection(book));
+                          handleClear();
+                        }}
+                      >
                         <BookTitle>{title}</BookTitle>
                         <BookSubTitle>{subtitle}</BookSubTitle>
                         {authors && (
@@ -74,7 +90,21 @@ const SearchBar = () => {
                           </AuthorsContainer>
                         )}
                       </Book>
-                    </Link>
+                    ) : (
+                      <Link to={`/book/${id}`}>
+                        <Book>
+                          <BookTitle>{title}</BookTitle>
+                          <BookSubTitle>{subtitle}</BookSubTitle>
+                          {authors && (
+                            <AuthorsContainer>
+                              {authors.map((author) => (
+                                <Author>{author}</Author>
+                              ))}
+                            </AuthorsContainer>
+                          )}
+                        </Book>
+                      </Link>
+                    )}
                     <Line />
                   </>
                 );

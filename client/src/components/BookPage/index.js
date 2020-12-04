@@ -24,14 +24,18 @@ const BookPage = () => {
               <BookTitle>{singleBook.volumeInfo.title}</BookTitle>
               <BookSubTitle>{singleBook.volumeInfo.subtitle}</BookSubTitle>
               <Authors>
-                {singleBook.volumeInfo.authors.map((author) => (
-                  <p>{author}</p>
-                ))}
+                {singleBook.volumeInfo.authors
+                  ? singleBook.volumeInfo.authors.map((author) => (
+                      <p>{author}</p>
+                    ))
+                  : null}
               </Authors>
               <BookCategories>
-                {singleBook.volumeInfo.categories.map((category) => (
-                  <CategoryButton>{category}</CategoryButton>
-                ))}
+                {singleBook.volumeInfo.categories
+                  ? singleBook.volumeInfo.categories.map((category) => (
+                      <CategoryButton>{category}</CategoryButton>
+                    ))
+                  : null}
               </BookCategories>
               <Description>{singleBook.volumeInfo.description}</Description>
             </BookInfo>

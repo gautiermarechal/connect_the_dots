@@ -11,6 +11,9 @@ const BooksReducer = (state = initialState, action) => {
       return { ...state, status: "received", books: action.data };
     case "ERROR_BOOKS":
       return { ...state, status: "error" };
+    case "CLEAR_BOOKS":
+      return { ...state, status: "idle", books: [] };
+
     default:
       return state;
   }

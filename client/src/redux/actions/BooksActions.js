@@ -10,3 +10,7 @@ export const receiveBooks = (data) => ({
 export const errorBooks = () => ({
   type: "ERROR_BOOKS",
 });
+
+export const clearBooks = () => ({
+  type: "CLEAR_BOOKS",
+});

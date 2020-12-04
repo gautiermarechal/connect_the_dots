@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { FaUserCircle } from "react-icons/fa";
 import { AiFillHome } from "react-icons/ai";
 import { BsFillBookmarkFill } from "react-icons/bs";
+import { COLORS } from "../../constants";
 
 const NavigationBar = () => {
   const currentUser = useSelector((state) => state.currentUser);
@@ -34,6 +35,11 @@ const NavigationBar = () => {
                 <BsFillBookmarkFill />
               </NavItem>
             </Link>
+            <Link to="/connect">
+              <NavItem>
+                <ConnectButton>Connect</ConnectButton>
+              </NavItem>
+            </Link>
           </>
         ) : (
           <>
@@ -42,6 +48,11 @@ const NavigationBar = () => {
             </Link>
             <Link to="/signup">
               <NavItem>Sign Up</NavItem>
+            </Link>
+            <Link to="/login">
+              <NavItem>
+                <ConnectButton>Connect</ConnectButton>
+              </NavItem>
             </Link>
           </>
         )}
@@ -67,8 +78,21 @@ const NavItem = styled.h3`
   cursor: pointer;
 `;
 
-const LogOut = styled.h5`
+const ConnectButton = styled.div`
+  background-color: ${COLORS.green};
+  border-style: none;
+  border-radius: 3px;
+  color: white;
+  padding: 5px;
+  width: 110px;
+  margin: 2px;
+  height: 30px;
   cursor: pointer;
+  text-align: center;
+  display: flex;
+    justify-content: center;
+    align-items: center;
+}
 `;
 
 export default NavigationBar;
