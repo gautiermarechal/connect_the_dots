@@ -24,3 +24,18 @@ export const toggleStepPostConnection = (data) => ({
   type: "TOGGLE_STEP_POST_CONNECTION",
   data: data,
 });
+
+export const setTypePostConnection = (data) => ({
+  type: "SET_TYPE_POST_CONNECTION",
+  data: data,
+});
+
+export const getContentPostConnection = (data) => ({
+  type: "GET_CONTENT_POST_CONNECTION",
+  data: data,
+});
+
+export const changeAllPostConnection = (data) => ({
+  type: "CHANGE_ALL_POST_CONNECTION",
+  data: data,
+});

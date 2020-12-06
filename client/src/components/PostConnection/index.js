@@ -34,12 +34,6 @@ const PostConnection = () => {
     align-items: center;
   `;
 
-  const WriteConnectionSection = styled.div`
-    display: ${stepState === 2 ? "flex" : "none"};
-    flex-direction: column;
-    align-items: center;
-  `;
-
   const PreviousButtonContainer = styled.div`
     display: ${stepState === 0 ? "none" : "flex"};
     width: 100%;
@@ -55,7 +49,15 @@ const PostConnection = () => {
           <Title>Choose 2 or more books:</Title>
           <SearchBar />
           <BooksChosenListComponent postConnection={postConnection} />
-          <ButtonNext onClick={() => dispatch(toggleStepPostConnection(1))}>
+          <ButtonNext
+            onClick={() => {
+              dispatch(toggleStepPostConnection(1));
+              localStorage.setItem(
+                "post-connection",
+                JSON.stringify(postConnection)
+              );
+            }}
+          >
             Next
           </ButtonNext>
         </ChooseBooksSection>
@@ -63,9 +65,6 @@ const PostConnection = () => {
           <Title>Choose to follow a structure, or be totally free:</Title>
           <ChooseConnectOption />
         </ChooseOptionSection>
-        <WriteConnectionSection>
-          <WriteConnection />
-        </WriteConnectionSection>
       </MainContainer>
     </>
   );

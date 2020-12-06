@@ -1,34 +1,56 @@
-import React from "react";
-import { useDispatch } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { COLORS } from "../../constants";
-import { toggleStepPostConnection } from "../../redux/actions/PostConnectionActions";
+import {
+  setTypePostConnection,
+  toggleStepPostConnection,
+} from "../../redux/actions/PostConnectionActions";
 
 const ChooseConnectOption = () => {
   const dispatch = useDispatch();
+  const currentType = useSelector((state) => state.postConnection.type);
+  const history = useHistory();
+  const postConnection = useSelector((state) => state.postConnection);
+
   return (
     <>
       <Wrapper>
         <MainContainer>
           <ChoiceContainer>
-            <ChoiceButton
-              type="radio"
-              id="structure"
-              value="structure"
-              name="choice"
+            <VisibleCheck
+              onClick={() => {
+                if (currentType === "free") {
+                  dispatch(setTypePostConnection("structure"));
+                }
+              }}
+              filled={currentType === "structure" ? true : false}
             />
-            <ChoiceLabel htmlFor="structure">
-              <h2>Follow our structure</h2>
-            </ChoiceLabel>
+            <ChoiceLabel>Follow our structure</ChoiceLabel>
           </ChoiceContainer>
           <ChoiceContainer>
-            <ChoiceButton type="radio" id="free" name="choice" />
-            <ChoiceLabel htmlFor="free" value="free">
-              <h2>Be free</h2>
-            </ChoiceLabel>
+            <VisibleCheck
+              onClick={() => {
+                if (currentType === "structure") {
+                  dispatch(setTypePostConnection("free"));
+                }
+              }}
+              filled={currentType === "free" ? true : false}
+            />
+            <ChoiceLabel>Be free</ChoiceLabel>
           </ChoiceContainer>
         </MainContainer>
-        <ButtonNext onClick={() => dispatch(toggleStepPostConnection(1))}>
+        <ButtonNext
+          onClick={() => {
+            history.push(`/connect/${currentType}`);
+            dispatch(toggleStepPostConnection(1));
+            localStorage.setItem(
+              "post-connection",
+              JSON.stringify(postConnection)
+            );
+          }}
+        >
           Next
         </ButtonNext>
       </Wrapper>
@@ -58,6 +80,17 @@ const ChoiceContainer = styled.div`
 `;
 
 const ChoiceButton = styled.input``;
+
+const VisibleCheck = styled.button`
+  width: 20px;
+  height: 20px;
+  border-radius: 50px;
+  margin-bottom: 10px;
+  border-style: solid;
+  border-width: 1px;
+  background-color: ${(props) => (props.filled ? COLORS.green : "white")};
+  border-color: ${COLORS.green};
+`;
 
 const ChoiceLabel = styled.label``;
 

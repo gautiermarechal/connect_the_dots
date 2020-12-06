@@ -20,6 +20,7 @@ import BookPage from "./components/BookPage";
 import PostConnection from "./components/PostConnection";
 import LightNavigationBar from "./components/LightNavigationBar";
 import { useSelector } from "react-redux";
+import FreeConnection from "./components/FreeConnection";
 
 function App() {
   useFetchCurrentUser();
@@ -57,8 +58,11 @@ function App() {
           <Route path="/book/:id">
             <BookPage />
           </Route>
-          <Route path="/connect">
+          <Route exact path="/connect">
             <PostConnection />
+          </Route>
+          <Route path="/connect/free">
+            <FreeConnection />
           </Route>
         </Switch>
         <Footer />
