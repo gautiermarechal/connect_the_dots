@@ -1,14 +1,20 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { pausePostConnection } from "../../redux/actions/PostConnectionActions";
+import {
+  createPostConnection,
+  pausePostConnection,
+} from "../../redux/actions/PostConnectionActions";
 import { FaUserCircle } from "react-icons/fa";
 import { COLORS } from "../../constants";
+import createConnection from "../../handlers/CreateConnection";
 
 const LightNavigationBar = () => {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.currentUser);
+  const postConnection = useSelector((state) => state.postConnection);
+  const history = useHistory();
   return (
     <>
       <MainContainer>
@@ -26,11 +32,17 @@ const LightNavigationBar = () => {
               <FaUserCircle />
             </NavItem>
           </Link>
-          <Link to="/publish">
-            <NavItem>
-              <PublishButton>Publish</PublishButton>
-            </NavItem>
-          </Link>
+          <NavItem>
+            <PublishButton
+              onClick={() => {
+                createConnection(postConnection.post_connection);
+
+                history.push("/publish");
+              }}
+            >
+              Publish
+            </PublishButton>
+          </NavItem>
         </RightSection>
       </MainContainer>
     </>

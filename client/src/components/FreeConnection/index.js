@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import {
   changeAllPostConnection,
+  createPostConnection,
   getContentPostConnection,
 } from "../../redux/actions/PostConnectionActions";
 import PreviousButtonPush from "../FreeConnection/PreviousButtonPush";
@@ -11,11 +12,25 @@ import TextEditor from "../TextEditor";
 
 const FreeConnection = () => {
   const postConnection = JSON.parse(localStorage.getItem("post-connection"));
+  const currentUser = useSelector((state) => state.currentUser);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(changeAllPostConnection(postConnection));
-  }, []);
+    if (currentUser.id === "") {
+      return;
+    }
+
+    dispatch(
+      createPostConnection({
+        postConnection: postConnection,
+        author: {
+          _id: currentUser.id,
+          name: currentUser.name,
+          username: currentUser.username,
+        },
+      })
+    );
+  }, [currentUser]);
 
   return (
     <>
@@ -61,7 +76,7 @@ const MainContainer = styled.div`
 const BooksToConnectContainer = styled.div`
   display: flex;
   overflow: scroll;
-  width: 50vw;
+  width: 80vw;
   margin-bottom: 20px;
 `;
 
@@ -69,7 +84,7 @@ const Book = styled.div`
   display: flex;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   border-radius: 7px;
-  height: 100px;
+  height: 140px;
   margin: 20px;
 `;
 
@@ -97,20 +112,10 @@ const Title = styled.h1`
   margin-bottom: 20px;
 `;
 
-const Line = styled.hr`
-  width: 100%;
-  border: 0;
-  height: 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-`;
-
 const TextEditorContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
 `;
-
-const TemporaryInput = styled.input``;
 
 export default FreeConnection;

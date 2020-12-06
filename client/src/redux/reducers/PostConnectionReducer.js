@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 const initialState = {
   status: "idle",
   step: 0,
@@ -50,6 +51,18 @@ const PostConnectionReducer = (state = initialState, action) => {
       };
     case "CHANGE_ALL_POST_CONNECTION":
       return { ...state, ...action.data };
+    case "CREATE_POST_CONNECTION":
+      return {
+        ...state,
+        ...action.data.postConnection,
+        post_connection: {
+          ...state.post_connection,
+          ...action.data.postConnection.post_connection,
+          _id: uuidv4(),
+          created_at: Date.now(),
+          author: action.data.author,
+        },
+      };
     default:
       return state;
   }

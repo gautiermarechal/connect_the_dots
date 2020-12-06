@@ -39,3 +39,8 @@ export const changeAllPostConnection = (data) => ({
   type: "CHANGE_ALL_POST_CONNECTION",
   data: data,
 });
+
+export const createPostConnection = (data) => ({
+  type: "CREATE_POST_CONNECTION",
+  data: data,
+});

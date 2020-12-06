@@ -62,7 +62,6 @@ const correctConnection = (connection) => {
   if (
     Object.keys(connection).includes("_id") &&
     Object.keys(connection).includes("created_at") &&
-    Object.keys(connection).includes("created_at") &&
     Object.keys(connection).includes("likes") &&
     Object.keys(connection).includes("bookmarks") &&
     Object.keys(connection).includes("bannerSrc") &&

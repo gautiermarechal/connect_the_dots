@@ -13,7 +13,19 @@ const TextEditor = () => {
     dispatch(getContentPostConnection(data));
   };
 
-  return <ReactQuill theme="snow" value={state} onChange={handleChange} />;
+  return (
+    <ReactQuill
+      theme="snow"
+      value={state}
+      onChange={handleChange}
+      style={{
+        minHeight: " 400px",
+        height: "80vh",
+        width: "80vw",
+        marginBottom: "100px",
+      }}
+    />
+  );
 };
 
 export default TextEditor;
