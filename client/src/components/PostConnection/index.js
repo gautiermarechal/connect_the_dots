@@ -10,7 +10,6 @@ import { COLORS } from "../../constants";
 
 import BooksChosenListComponent from "../BooksChosenList/index";
 import ChooseConnectOption from "../ChooseConnectOption";
-import WriteConnection from "../WriteConnection";
 import PreviousButton from "../PostConnection/PreviousButton";
 
 const PostConnection = () => {

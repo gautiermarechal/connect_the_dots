@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import {
+  addTitlePostConnection,
   changeAllPostConnection,
   createPostConnection,
   getContentPostConnection,
@@ -37,6 +38,10 @@ const FreeConnection = () => {
       <MainContainer>
         <PreviousButtonPush />
         <Title>Write your connection</Title>
+        <TitleLabel>Title: </TitleLabel>
+        <TitleInput
+          onChange={(e) => dispatch(addTitlePostConnection(e.target.value))}
+        />
         <BooksToConnectContainer>
           {postConnection.post_connection.books.map((book) => {
             return (
@@ -117,5 +122,8 @@ const TextEditorContainer = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+const TitleLabel = styled.h3``;
+const TitleInput = styled.input``;
 
 export default FreeConnection;

@@ -9,7 +9,10 @@ import {
 } from "../../redux/actions/BooksActions";
 import { COLORS } from "../../constants";
 import { Link } from "react-router-dom";
-import { addBookPostConnection } from "../../redux/actions/PostConnectionActions";
+import {
+  addBookPostConnection,
+  addCategoryPostConnection,
+} from "../../redux/actions/PostConnectionActions";
 
 const SearchBar = () => {
   const dispatch = useDispatch();
@@ -69,6 +72,7 @@ const SearchBar = () => {
                 const title = book.volumeInfo.title;
                 const subtitle = book.volumeInfo.subtitle;
                 const authors = book.volumeInfo.authors;
+                const categories = book.volumeInfo.categories;
 
                 return (
                   <>
@@ -77,6 +81,9 @@ const SearchBar = () => {
                       <Book
                         onClick={() => {
                           dispatch(addBookPostConnection(book));
+                          categories.forEach((category) => {
+                            dispatch(addCategoryPostConnection(category));
+                          });
                           handleClear();
                         }}
                       >

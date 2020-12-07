@@ -1,24 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import {
+  errorConnections,
+  receiveConnections,
+  requestConnections,
+} from "../../redux/actions/ConnectionsActions";
 import Connection from "../Connection/index";
+import PublishedModal from "../PublishedModal";
 
 const Feed = ({ type }) => {
+  const currentUser = useSelector((state) => state.currentUser);
+  const feedConnections = useSelector((state) => state.connections);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (type === "Home") {
+      if (!currentUser) {
+        return;
+      }
+      dispatch(requestConnections());
+      fetch(`http://localhost:4000/connections/feed/${currentUser.id}`)
+        .then((res) => res.json())
+        .then((json) => {
+          dispatch(receiveConnections(json.data));
+        })
+        .catch(() => dispatch(errorConnections()));
+    }
+  }, [currentUser]);
+
   return (
     <>
       <Wrapper>
         <Title>{type}</Title>
         <Line />
         <MainContainer>
-          <Connection />
-          <Connection />
-          <Connection />
-          <Connection />
-          <Connection />
-          <Connection />
-          <Connection />
-          <Connection />
-          <Connection />
+          {feedConnections.connections
+            ? feedConnections.connections.map((connection) => (
+                <Connection data={connection} />
+              ))
+            : null}
         </MainContainer>
+        <PublishedModal />
       </Wrapper>
     </>
   );

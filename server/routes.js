@@ -15,6 +15,7 @@ const {
   getConnectionById,
   updateConnection,
   deleteConnection,
+  getConnectionsUserFeed,
 } = require("./handlers/connections");
 //Google Imports
 const { getBookBySearch, getBookById } = require("./handlers/google");
@@ -54,6 +55,9 @@ router.patch("/connections/:id", updateConnection);
 
 //Delete connection
 router.delete("/connections/:id", deleteConnection);
+
+//Get connections for user feed
+router.get("/connections/feed/:id", getConnectionsUserFeed);
 //-------------------------------------------------------
 
 //GOOGLE API AUTH ROUTES---------------------------------

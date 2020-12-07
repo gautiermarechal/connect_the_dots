@@ -142,10 +142,73 @@ const deleteConnection = async (req, res) => {
   }
 };
 
+//Get connections for user feed
+const getConnectionsUserFeed = async (req, res) => {
+  try {
+    //DB config
+    const client = MongoClient(MONGO_URI, options);
+
+    await client.connect();
+
+    const db = client.db(DB);
+    console.log("DB connected");
+    //-------------------------------
+    //Get user who requested the feed
+    const userId = req.params.id;
+    db.collection("users").findOne({ _id: userId }, async (err, user) => {
+      try {
+        //Final result array
+        const resultArray = [];
+        //Get all connections from authors bookmarked
+        const authorsBookmarked = user.authors_bookmarked;
+        authorsBookmarked.forEach(async (author) => {
+          const resultConnections = await db
+            .collection("connections")
+            .find({ "author._id": author._id })
+            .toArray();
+          resultArray.push(...resultConnections);
+        });
+        //Get all connections from books bookmarked
+        const booksBookmarked = user.books_bookmarked;
+        booksBookmarked.forEach(async (book) => {
+          const resultConnections = await db
+            .collection("connections")
+            .find({ "books.id": book.id })
+            .toArray();
+          resultArray.push(...resultConnections);
+        });
+        //Get all connections from categories bookmarked
+        const categoriesBookmarked = user.categories_bookmarked;
+        categoriesBookmarked.forEach(async (category) => {
+          const resultConnections = await db
+            .collection("connections")
+            .find({ categories: category })
+            .toArray();
+          resultArray.push(...resultConnections);
+
+          //Remove all duplicates
+          const uniqueConnections = Array.from(
+            new Set(resultArray.map((connection) => connection._id))
+          ).map((_id) => {
+            return resultArray.find((connection) => connection._id === _id);
+          });
+
+          res.status(200).json({ status: 200, data: uniqueConnections });
+        });
+      } catch (error) {
+        throw new Error(error);
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ status: 500, error: error.message });
+  }
+};
+
 module.exports = {
   getAllConnections,
   createConnection,
   getConnectionById,
   updateConnection,
   deleteConnection,
+  getConnectionsUserFeed,
 };

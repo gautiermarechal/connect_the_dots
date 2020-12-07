@@ -44,3 +44,13 @@ export const createPostConnection = (data) => ({
   type: "CREATE_POST_CONNECTION",
   data: data,
 });
+
+export const addCategoryPostConnection = (data) => ({
+  type: "ADD_CATEGORY_POST_CONNECTION",
+  data: data,
+});
+
+export const addTitlePostConnection = (data) => ({
+  type: "ADD_TITLE_POST_CONNECTION",
+  data: data,
+});

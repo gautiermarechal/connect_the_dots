@@ -38,7 +38,9 @@ const validUpdate = (update) => {
     Object.keys(update).includes("email") ||
     Object.keys(update).includes("password") ||
     Object.keys(update).includes("connections") ||
-    Object.keys(update).includes("connections_bookmarked")
+    Object.keys(update).includes("connections_bookmarked") ||
+    Object.keys(update).includes("categories_bookmarked") ||
+    Object.keys(update).includes("authors_bookmarked")
   ) {
     return true;
   }

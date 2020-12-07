@@ -21,6 +21,7 @@ const useFetchCurrentUser = () => {
           dispatch(
             receiveCurrentUser({
               id: json.data._id,
+              name: json.data.name,
               username: json.data.username,
               email: json.data.email,
               connections: json.data.connections,

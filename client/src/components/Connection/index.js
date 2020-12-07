@@ -2,30 +2,58 @@ import React from "react";
 import styled from "styled-components";
 import FakeBanner from "../../assets/fake_banner.jpg";
 import { COLORS } from "../../constants";
+import moment from "moment";
 
-const Connection = () => {
+const Connection = ({ data }) => {
+  console.log(data);
   return (
     <>
-      <MainContainer>
-        <Banner src={FakeBanner} />
-        <Title>Lorem Ipsum Connection Between Book A and Book C</Title>
-        <Author>
-          <NameContainer>
-            <Avatar />
-            <AuthorName>John Smith</AuthorName>
-          </NameContainer>
-          <AuthorUserName>@jsmith</AuthorUserName>
-        </Author>
-        <Line />
-        <BooksConnected>
-          <BookTitle>Book A</BookTitle>
-          <BookTitle>Book B</BookTitle>
-        </BooksConnected>
-        <CategoryLabelsContainer>
-          <CategoryLabel>Psychology</CategoryLabel>
-          <CategoryLabel>Mathematics</CategoryLabel>
-        </CategoryLabelsContainer>
-      </MainContainer>
+      {data ? (
+        <MainContainer>
+          <Banner src={FakeBanner} />
+          <Title>{data.title}</Title>
+          <Author>
+            <NameContainer>
+              <Avatar />
+              <AuthorName>{data.author.name}</AuthorName>
+            </NameContainer>
+            <DateContainer>
+              <AuthorUserName>@{data.author.username}</AuthorUserName>
+              <Date>{moment.unix(data.created_at).format("MM/DD/YYYY")}</Date>
+            </DateContainer>
+          </Author>
+          <Line />
+          <BooksConnected>
+            {data.books.map((book) => {
+              return <BookTitle>{book.volumeInfo.title}</BookTitle>;
+            })}
+          </BooksConnected>
+          <CategoryLabelsContainer>
+            {data.categories.map((category) => {
+              return <CategoryLabel>{category}</CategoryLabel>;
+            })}
+          </CategoryLabelsContainer>
+        </MainContainer>
+      ) : (
+        <MainContainer>
+          <Banner src={FakeBanner} />
+          <Title>Fake Title</Title>
+          <Author>
+            <NameContainer>
+              <Avatar />
+              <AuthorName>Fake Name</AuthorName>
+            </NameContainer>
+            <AuthorUserName>Fake Username</AuthorUserName>
+          </Author>
+          <Line />
+          <BooksConnected>Fake Title</BooksConnected>
+          <BooksConnected>Fake Title</BooksConnected>
+          <CategoryLabelsContainer>
+            <CategoryLabel>Category</CategoryLabel>
+            <CategoryLabel>Category</CategoryLabel>
+          </CategoryLabelsContainer>
+        </MainContainer>
+      )}
     </>
   );
 };
@@ -107,5 +135,13 @@ const CategoryLabel = styled.button`
   height: 30px;
   cursor: pointer;
 `;
+
+const DateContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+`;
+
+const Date = styled.h5``;
 
 export default Connection;

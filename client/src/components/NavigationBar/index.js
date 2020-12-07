@@ -25,7 +25,7 @@ const NavigationBar = () => {
                 <FaUserCircle />
               </NavItem>
             </Link>
-            <Link to={`/home-feed/${currentUser.id}`}>
+            <Link to={`/feed/${currentUser.id}`}>
               <NavItem>
                 <AiFillHome />
               </NavItem>

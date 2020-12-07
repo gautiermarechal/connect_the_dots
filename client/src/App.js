@@ -21,6 +21,7 @@ import PostConnection from "./components/PostConnection";
 import LightNavigationBar from "./components/LightNavigationBar";
 import { useSelector } from "react-redux";
 import FreeConnection from "./components/FreeConnection";
+import Feed from "./components/Feed";
 
 function App() {
   useFetchCurrentUser();
@@ -63,6 +64,9 @@ function App() {
           </Route>
           <Route path="/connect/free">
             <FreeConnection />
+          </Route>
+          <Route path="/feed">
+            <Feed type="Home" />
           </Route>
         </Switch>
         <Footer />

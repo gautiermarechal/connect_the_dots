@@ -131,21 +131,6 @@ const updateUser = async (req, res) => {
     //-------------------------------
     const fieldsToChange = req.body;
     const userId = req.params.id;
-    // let found = true;
-    // idFound(userId).then((response) => {
-    //   console.log(response);
-    //   if (response === null) {
-    //     res.status(404).json({ status: 404, error: "User not found" });
-    //     found = false;
-    //     return;
-    //   } else {
-    //     found = true;
-    //   }
-    // });
-
-    // if (!found) {
-    //   return;
-    // }
 
     if (validUpdate(fieldsToChange)) {
       db.collection("users").updateOne(

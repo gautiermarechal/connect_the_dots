@@ -1,3 +1,4 @@
+import moment from "moment";
 import { v4 as uuidv4 } from "uuid";
 const initialState = {
   status: "idle",
@@ -59,10 +60,27 @@ const PostConnectionReducer = (state = initialState, action) => {
           ...state.post_connection,
           ...action.data.postConnection.post_connection,
           _id: uuidv4(),
-          created_at: Date.now(),
+          created_at: moment().unix(),
           author: action.data.author,
         },
       };
+    case "ADD_CATEGORY_POST_CONNECTION":
+      return {
+        ...state,
+        post_connection: {
+          ...state.post_connection,
+          categories: [...state.post_connection.categories, action.data],
+        },
+      };
+    case "ADD_TITLE_POST_CONNECTION":
+      return {
+        ...state,
+        post_connection: {
+          ...state.post_connection,
+          title: action.data,
+        },
+      };
+
     default:
       return state;
   }

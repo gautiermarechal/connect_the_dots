@@ -24,7 +24,9 @@
   "password": "cjksdnjcswdnos",
   "connections": [],
   "connections_bookmarked": [],
-  "books_bookmarked": []
+  "books_bookmarked": [],
+  "categories_bookmarked": [],
+  "authors_bookmarked": []
 }
 ```
 

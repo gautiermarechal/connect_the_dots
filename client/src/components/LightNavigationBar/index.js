@@ -2,10 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  createPostConnection,
-  pausePostConnection,
-} from "../../redux/actions/PostConnectionActions";
+import { pausePostConnection } from "../../redux/actions/PostConnectionActions";
 import { FaUserCircle } from "react-icons/fa";
 import { COLORS } from "../../constants";
 import createConnection from "../../handlers/CreateConnection";
@@ -37,7 +34,8 @@ const LightNavigationBar = () => {
               onClick={() => {
                 createConnection(postConnection.post_connection);
 
-                history.push("/publish");
+                history.push("/feed");
+                window.location.reload();
               }}
             >
               Publish
