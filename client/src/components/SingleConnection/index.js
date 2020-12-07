@@ -1,21 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import useFetchSingleConnection from "../../customHooks/UseFetchSingleConnection";
-import { AiOutlinePlusCircle } from "react-icons/ai";
-import { BsBookmark } from "react-icons/bs";
+import { AiOutlinePlusCircle, AiOutlineCheck } from "react-icons/ai";
+import { BsBookmark, BsFillBookmarkFill } from "react-icons/bs";
 import moment from "moment";
 import parser from "html-react-parser";
 import updateUser from "../../handlers/UpdateUser";
 
 const SingleConnection = () => {
-  const id = useParams().id;
-  useFetchSingleConnection(id);
+  const [authorBookmarked, setAuthorBookmarked] = useState(false);
+  const [connectionBookmarked, setConnectionBookmarked] = useState(false);
   const connection = useSelector(
     (state) => state.singleConnection.single_connection
   );
   const currentUser = useSelector((state) => state.currentUser);
+  const id = useParams().id;
+
+  useEffect(() => {
+    if (!connection) {
+      return;
+    }
+
+    currentUser.authors_bookmarked.forEach((author) => {
+      if (author._id === author._id) {
+        setAuthorBookmarked(true);
+      }
+    });
+
+    currentUser.connections_bookmarked.forEach((connectionParams) => {
+      if (connectionParams._id === connection._id) {
+        setConnectionBookmarked(true);
+      }
+    });
+  }, [connection, currentUser]);
+
+  useFetchSingleConnection(id);
 
   return (
     <>
@@ -46,22 +67,44 @@ const SingleConnection = () => {
                 <AuthorUsername>@{connection.author.username}</AuthorUsername>
               </AuthorNamesContainer>
               <AuthorBookmarkButton
-                onClick={() =>
-                  updateUser(
-                    currentUser.id,
-                    "authors_bookmarked",
-                    connection.author
-                  )
-                }
+                onClick={() => {
+                  if (!authorBookmarked) {
+                    updateUser(
+                      currentUser.id,
+                      "authors_bookmarked",
+                      connection.author
+                    );
+                  }
+                }}
               >
-                <BookmarkAuthorIcon />
+                {authorBookmarked ? (
+                  <AuthorAlreadyBookmarkedIcon />
+                ) : (
+                  <BookmarkAuthorIcon />
+                )}
               </AuthorBookmarkButton>
             </AuthorContainer>
             <BottomHeaderContainer>
               <Date>
                 {moment.unix(connection.created_at).format("MMM D, YYYY")}
               </Date>
-              <BookmarkConnectionIcone />
+              <AuthorBookmarkButton
+                onClick={() => {
+                  if (!connectionBookmarked) {
+                    updateUser(
+                      currentUser.id,
+                      "connections_bookmarked",
+                      connection
+                    );
+                  }
+                }}
+              >
+                {connectionBookmarked ? (
+                  <BookmarkConnectionIconeFilled />
+                ) : (
+                  <BookmarkConnectionIcone />
+                )}
+              </AuthorBookmarkButton>
             </BottomHeaderContainer>
           </HeaderContainer>
           <ThumbnailContainer>
@@ -163,6 +206,11 @@ const BookmarkAuthorIcon = styled(AiOutlinePlusCircle)`
   width: 30px;
 `;
 
+const AuthorAlreadyBookmarkedIcon = styled(AiOutlineCheck)`
+  height: 30px;
+  width: 30px;
+`;
+
 const BottomHeaderContainer = styled.div`
   display: flex;
   width: 100%;
@@ -171,6 +219,11 @@ const BottomHeaderContainer = styled.div`
 `;
 
 const BookmarkConnectionIcone = styled(BsBookmark)`
+  height: 30px;
+  width: 30px;
+`;
+
+const BookmarkConnectionIconeFilled = styled(BsFillBookmarkFill)`
   height: 30px;
   width: 30px;
 `;

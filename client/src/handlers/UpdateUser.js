@@ -4,7 +4,7 @@ const updateUser = (id, fieldToModify, payload) => {
     headers: {
       "Content-Type": "application/json",
     },
-    body: { [fieldToModify]: payload },
+    body: JSON.stringify({ [fieldToModify]: payload }),
   });
 };
 

@@ -26,6 +26,7 @@ const useFetchCurrentUser = () => {
               email: json.data.email,
               connections: json.data.connections,
               connections_bookmarked: json.data.connections_bookmarked,
+              authors_bookmarked: json.data.authors_bookmarked,
             })
           );
         })

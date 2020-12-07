@@ -133,10 +133,21 @@ const updateUser = async (req, res) => {
     const userId = req.params.id;
 
     if (validUpdate(fieldsToChange)) {
-      db.collection("users").updateOne(
-        { _id: userId },
-        { $set: { ...fieldsToChange } }
-      );
+      if (
+        Object.keys(fieldsToChange).includes("authors_bookmarked") ||
+        Object.keys(fieldsToChange).includes("connections_bookmarked") ||
+        Object.keys(fieldsToChange).includes("categories_bookmarked")
+      ) {
+        db.collection("users").updateOne(
+          { _id: userId },
+          { $push: { ...fieldsToChange } }
+        );
+      } else {
+        db.collection("users").updateOne(
+          { _id: userId },
+          { $set: { ...fieldsToChange } }
+        );
+      }
 
       res.status(200).json({ status: 200, data: "User updated!" });
     } else {

@@ -6,6 +6,7 @@ const intialState = {
   email: "",
   connections: [],
   connections_bookmarked: [],
+  authors_bookmarked: [],
 };
 
 const CurrentUserReducer = (state = intialState, action) => {
