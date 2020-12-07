@@ -80,7 +80,14 @@ const PostConnectionReducer = (state = initialState, action) => {
           title: action.data,
         },
       };
-
+    case "ADD_BANNER_POST_CONNECTION":
+      return {
+        ...state,
+        post_connection: {
+          ...state.post_connection,
+          bannerSrc: action.data,
+        },
+      };
     default:
       return state;
   }

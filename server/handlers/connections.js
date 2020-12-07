@@ -204,6 +204,15 @@ const getConnectionsUserFeed = async (req, res) => {
   }
 };
 
+//Upload banner image connection
+const uploadBannerImage = (req, res) => {
+  try {
+    res.status(200).json({ status: 200, data: req.file });
+  } catch (error) {
+    res.status(500).json({ status: 500, error: error.message });
+  }
+};
+
 module.exports = {
   getAllConnections,
   createConnection,
@@ -211,4 +220,5 @@ module.exports = {
   updateConnection,
   deleteConnection,
   getConnectionsUserFeed,
+  uploadBannerImage,
 };

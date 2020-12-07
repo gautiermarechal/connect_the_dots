@@ -3,15 +3,28 @@ import styled from "styled-components";
 import FakeBanner from "../../assets/fake_banner.jpg";
 import { COLORS } from "../../constants";
 import moment from "moment";
+import { useHistory } from "react-router-dom";
 
 const Connection = ({ data }) => {
   console.log(data);
+  const history = useHistory();
   return (
     <>
       {data ? (
         <MainContainer>
-          <Banner src={FakeBanner} />
-          <Title>{data.title}</Title>
+          <Banner
+            src={`http://localhost:4000/${data.bannerSrc}`}
+            onClick={() => {
+              history.push(`/connection/${data._id}`);
+            }}
+          />
+          <Title
+            onClick={() => {
+              history.push(`/connection/${data._id}`);
+            }}
+          >
+            {data.title}
+          </Title>
           <Author>
             <NameContainer>
               <Avatar />
@@ -68,11 +81,16 @@ const MainContainer = styled.div`
 const Banner = styled.img`
   height: 100px;
   width: 100%;
+  cursor: pointer;
 `;
 
 const Title = styled.h3`
   margin-top: 20px;
   margin-bottom: 10px;
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
 `;
 
 const Author = styled.div`

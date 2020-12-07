@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import {
+  addBannerPostConnection,
   addTitlePostConnection,
   changeAllPostConnection,
   createPostConnection,
@@ -41,6 +42,25 @@ const FreeConnection = () => {
         <TitleLabel>Title: </TitleLabel>
         <TitleInput
           onChange={(e) => dispatch(addTitlePostConnection(e.target.value))}
+        />
+        <TitleLabel>Thumbnail Image</TitleLabel>
+        <TitleInput
+          onChange={(e) => {
+            const formData = new FormData();
+            formData.append("banner", e.target.files[0]);
+            console.log(e.target.files[0]);
+            fetch("http://localhost:4000/connections/upload", {
+              method: "POST",
+              body: formData,
+            })
+              .then((res) => res.json())
+              .then((json) => {
+                dispatch(addBannerPostConnection(json.data.path));
+              });
+          }}
+          type="file"
+          accept="image/*"
+          name="banner"
         />
         <BooksToConnectContainer>
           {postConnection.post_connection.books.map((book) => {

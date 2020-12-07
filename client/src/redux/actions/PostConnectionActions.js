@@ -54,3 +54,8 @@ export const addTitlePostConnection = (data) => ({
   type: "ADD_TITLE_POST_CONNECTION",
   data: data,
 });
+
+export const addBannerPostConnection = (data) => ({
+  type: "ADD_BANNER_POST_CONNECTION",
+  data: data,
+});
