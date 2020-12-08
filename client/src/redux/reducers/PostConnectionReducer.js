@@ -62,6 +62,9 @@ const PostConnectionReducer = (state = initialState, action) => {
           _id: uuidv4(),
           created_at: moment().unix(),
           author: action.data.author,
+          content: action.data.content
+            ? [...action.data.content]
+            : state.post_connection.content,
         },
       };
     case "ADD_CATEGORY_POST_CONNECTION":
@@ -86,6 +89,32 @@ const PostConnectionReducer = (state = initialState, action) => {
         post_connection: {
           ...state.post_connection,
           bannerSrc: action.data,
+        },
+      };
+    case "INITIALIZE_CONTENT_STRUCTURE_POST_CONNECTION":
+      return {
+        ...state,
+        post_connection: {
+          ...state.post_connection,
+          content: action.data.content,
+        },
+      };
+    case "ADD_CONCEPT_TO_BOOK":
+      return {
+        ...state,
+        post_connection: {
+          ...state.post_connection,
+          content: state.post_connection.content.map((obj, i) =>
+            i === action.data.indexBook
+              ? {
+                  ...obj,
+                  concepts: [
+                    ...obj.concepts,
+                    { _id: i, [action.data.fieldToChange]: action.data.value },
+                  ],
+                }
+              : obj
+          ),
         },
       };
     default:

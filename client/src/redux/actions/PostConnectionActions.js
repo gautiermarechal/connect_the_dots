@@ -59,3 +59,13 @@ export const addBannerPostConnection = (data) => ({
   type: "ADD_BANNER_POST_CONNECTION",
   data: data,
 });
+
+export const initialiseContentStructurePostConnection = (data) => ({
+  type: "INITIALIZE_CONTENT_STRUCTURE_POST_CONNECTION",
+  data: data,
+});
+
+export const addConceptToBook = (data) => ({
+  type: "ADD_CONCEPT_TO_BOOK",
+  data: data,
+});
