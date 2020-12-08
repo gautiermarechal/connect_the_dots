@@ -8,6 +8,7 @@ import PostConnectionReducer from "./PostConnectionReducer";
 import CategoriesReducer from "./CategoriesReducer";
 import SingleCategoryReducer from "./SingleCategoryReducer";
 import SingleCategoryConnectionsReducer from "./SingleCategoryConnectionsReducer";
+import SingleUserReducer from "./SingleUserReducer";
 
 const reducer = combineReducers({
   currentUser: CurrentUserReducer,
@@ -19,6 +20,7 @@ const reducer = combineReducers({
   categories: CategoriesReducer,
   singleCategory: SingleCategoryReducer,
   singleCategoryConnections: SingleCategoryConnectionsReducer,
+  singleUser: SingleUserReducer,
 });
 
 export default reducer;

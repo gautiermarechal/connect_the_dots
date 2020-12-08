@@ -81,9 +81,12 @@ const SearchBar = () => {
                       <Book
                         onClick={() => {
                           dispatch(addBookPostConnection(book));
-                          categories.forEach((category) => {
-                            dispatch(addCategoryPostConnection(category));
-                          });
+                          if (categories) {
+                            categories.forEach((category) => {
+                              dispatch(addCategoryPostConnection(category));
+                            });
+                          }
+
                           handleClear();
                         }}
                       >

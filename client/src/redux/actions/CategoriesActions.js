@@ -10,3 +10,8 @@ export const receiveCategories = (data) => ({
 export const errorCategories = () => ({
   type: "ERROR_CATEGORIES",
 });
+
+export const toggleCategoriesBar = (data) => ({
+  type: "TOGGLE_CATEGORIES_BAR",
+  data: data,
+});

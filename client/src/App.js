@@ -26,6 +26,7 @@ import SingleConnection from "./components/SingleConnection";
 import Categories from "./components/Categories";
 import useFetchCategories from "./customHooks/UseFetchCategories";
 import SingleCategory from "./components/SingleCategory";
+import UserProfilePage from "./components/UserProfilePage";
 
 function App() {
   useFetchCurrentUser();
@@ -81,6 +82,9 @@ function App() {
           </Route>
           <Route path="/categories/:id">
             <SingleCategory />
+          </Route>
+          <Route path="/user/:id">
+            <UserProfilePage />
           </Route>
         </Switch>
         <Footer />

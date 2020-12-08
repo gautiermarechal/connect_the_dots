@@ -6,6 +6,8 @@ import { pausePostConnection } from "../../redux/actions/PostConnectionActions";
 import { FaUserCircle } from "react-icons/fa";
 import { COLORS } from "../../constants";
 import createConnection from "../../handlers/CreateConnection";
+import addUnknownCategory from "../../handlers/AddUnknownCategory";
+import addConnectionToCurrentUser from "../../handlers/AddConnectionToCurrentUser";
 
 const LightNavigationBar = () => {
   const dispatch = useDispatch();
@@ -33,9 +35,16 @@ const LightNavigationBar = () => {
             <PublishButton
               onClick={() => {
                 createConnection(postConnection.post_connection);
-
+                addConnectionToCurrentUser(
+                  postConnection.post_connection.author._id,
+                  postConnection.post_connection
+                );
+                [...new Set(postConnection.post_connection.categories)].forEach(
+                  (category) => {
+                    addUnknownCategory(category);
+                  }
+                );
                 history.push("/feed");
-                window.location.reload();
               }}
             >
               Publish

@@ -2,14 +2,19 @@ import React from "react";
 import styled from "styled-components";
 import SearchBar from "../SearchBar/index";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FaUserCircle } from "react-icons/fa";
 import { AiFillHome } from "react-icons/ai";
 import { BsFillBookmarkFill } from "react-icons/bs";
 import { COLORS } from "../../constants";
+import { toggleCategoriesBar } from "../../redux/actions/CategoriesActions";
 
 const NavigationBar = () => {
+  const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.currentUser);
+  const categoriesBarOpened = useSelector(
+    (state) => state.categories.categories_bar_opened
+  );
   return (
     <>
       <MainContainer>
@@ -17,7 +22,15 @@ const NavigationBar = () => {
           <MainTitle>Connect the dots.</MainTitle>
         </Link>
         <SearchBar />
-        <Link to="/categories">
+        <Link
+          onClick={() => {
+            if (categoriesBarOpened) {
+              dispatch(toggleCategoriesBar(false));
+            } else {
+              dispatch(toggleCategoriesBar(true));
+            }
+          }}
+        >
           <NavItem>Categories</NavItem>
         </Link>
         {currentUser.status === "received" ? (

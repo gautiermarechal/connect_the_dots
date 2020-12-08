@@ -16,7 +16,7 @@ const useFetchSingleCategory = (id) => {
         dispatch(receiveSingleCategory(json.data));
       })
       .catch(() => {
-        dispatch(errorSingleCategory);
+        dispatch(errorSingleCategory());
       });
   }, []);
 };

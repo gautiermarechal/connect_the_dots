@@ -31,7 +31,11 @@ const Connection = ({ data }) => {
               <AuthorName>{data.author.name}</AuthorName>
             </NameContainer>
             <DateContainer>
-              <AuthorUserName>@{data.author.username}</AuthorUserName>
+              <AuthorUserName
+                onClick={() => history.push(`/user/${data.author._id}`)}
+              >
+                @{data.author.username}
+              </AuthorUserName>
               <Date>{moment.unix(data.created_at).format("MM/DD/YYYY")}</Date>
             </DateContainer>
           </Author>

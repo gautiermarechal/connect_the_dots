@@ -7,6 +7,7 @@ import {
   requestConnections,
 } from "../../redux/actions/ConnectionsActions";
 import { receiveSingleCategoryConnections } from "../../redux/actions/SingleCategoryConnectionsActions";
+import { receiveSingleUser } from "../../redux/actions/SingleUserActions";
 import Connection from "../Connection/index";
 import PublishedModal from "../PublishedModal";
 
@@ -16,6 +17,7 @@ const Feed = ({ type }) => {
   const singleCategoryConnections = useSelector(
     (state) => state.singleCategoryConnections
   );
+  const singleUser = useSelector((state) => state.singleUser.single_user);
   const dispatch = useDispatch();
   useEffect(() => {
     if (type === "Home") {
@@ -38,12 +40,23 @@ const Feed = ({ type }) => {
 
       dispatch(receiveConnections(singleCategoryConnections.connections));
     }
-  }, [currentUser, singleCategoryConnections]);
+
+    if (type === "SingleUser") {
+      dispatch(requestConnections());
+      if (!singleUser.connections) {
+        return;
+      }
+
+      dispatch(receiveConnections(singleUser.connections));
+    }
+  }, [currentUser, singleCategoryConnections, singleUser]);
 
   return (
     <>
       <Wrapper>
-        {type !== "SingleCategory" ? <Title>{type}</Title> : null}
+        {type !== "SingleCategory" && type !== "SingleUser" ? (
+          <Title>{type}</Title>
+        ) : null}
         <Line />
         <MainContainer>
           {feedConnections.connections
