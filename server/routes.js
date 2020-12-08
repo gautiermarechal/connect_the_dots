@@ -20,9 +20,17 @@ const {
   deleteConnection,
   getConnectionsUserFeed,
   uploadBannerImage,
+  getConnectionByCategory,
 } = require("./handlers/connections");
 //Google Imports
 const { getBookBySearch, getBookById } = require("./handlers/google");
+//Categories Imports
+const {
+  getAllCategories,
+  getCategoryById,
+  createCategory,
+  deleteCategory,
+} = require("./handlers/categories");
 
 //Multer config------------------------------------------
 const storage = multer.diskStorage({
@@ -62,6 +70,9 @@ router.delete("/users/:id", deleteUser);
 //Get all connections
 router.get("/connections", getAllConnections);
 
+//Get connections by category
+router.get("/connections/category/:id", getConnectionByCategory);
+
 //Get connection by id
 router.get("/connections/:id", getConnectionById);
 
@@ -84,5 +95,18 @@ router.get("/connections/feed/:id", getConnectionsUserFeed);
 //GOOGLE API AUTH ROUTES---------------------------------
 //Get book by search terms
 router.get("/books", getBookBySearch);
+
+//CATEGORIES ROUTES--------------------------------------
+//Get all categories
+router.get("/categories", getAllCategories);
+
+//Get category by id
+router.get("/categories/:id", getCategoryById);
+
+//Create category
+router.post("/categories", createCategory);
+
+//Delete category
+router.delete("/categories/:id", deleteCategory);
 
 module.exports = router;

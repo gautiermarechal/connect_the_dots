@@ -5,7 +5,9 @@ import BooksReducer from "../reducers/BooksReducer";
 import SingleConnectionReducer from "./SingleConnectionReducer";
 import SingleBookReducer from "./SingleBookReducer";
 import PostConnectionReducer from "./PostConnectionReducer";
-import { reducer as formReducer } from "redux-form";
+import CategoriesReducer from "./CategoriesReducer";
+import SingleCategoryReducer from "./SingleCategoryReducer";
+import SingleCategoryConnectionsReducer from "./SingleCategoryConnectionsReducer";
 
 const reducer = combineReducers({
   currentUser: CurrentUserReducer,
@@ -14,7 +16,9 @@ const reducer = combineReducers({
   singleConnection: SingleConnectionReducer,
   singleBook: SingleBookReducer,
   postConnection: PostConnectionReducer,
-  form: formReducer,
+  categories: CategoriesReducer,
+  singleCategory: SingleCategoryReducer,
+  singleCategoryConnections: SingleCategoryConnectionsReducer,
 });
 
 export default reducer;

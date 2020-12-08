@@ -89,3 +89,21 @@
   "categories": []
 }
 ```
+
+### Categories
+
+| Method                | Endpoint          | HTTP   |
+| --------------------- | ----------------- | ------ |
+| Get all categories    | `/categories`     | GET    |
+| Get category by id    | `/categories/:id` | GET    |
+| Create category       | `/categories`     | POST   |
+| Delete category by id | `/categories/:id` | DELETE |
+
+#### Categories data structure
+
+```json
+{
+  "_id": "1be0093c-6f40-4f18-b67b-25e164d07583",
+  "name": "Psychology"
+}
+```

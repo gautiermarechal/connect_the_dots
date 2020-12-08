@@ -17,7 +17,9 @@ const NavigationBar = () => {
           <MainTitle>Connect the dots.</MainTitle>
         </Link>
         <SearchBar />
-        <NavItem>Categories</NavItem>
+        <Link to="/categories">
+          <NavItem>Categories</NavItem>
+        </Link>
         {currentUser.status === "received" ? (
           <>
             <Link to={`/account/${currentUser.id}`}>

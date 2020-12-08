@@ -23,9 +23,13 @@ import { useSelector } from "react-redux";
 import FreeConnection from "./components/FreeConnection";
 import Feed from "./components/Feed";
 import SingleConnection from "./components/SingleConnection";
+import Categories from "./components/Categories";
+import useFetchCategories from "./customHooks/UseFetchCategories";
+import SingleCategory from "./components/SingleCategory";
 
 function App() {
   useFetchCurrentUser();
+  useFetchCategories();
   const postConnectionState = useSelector((state) => state.postConnection);
   return (
     <>
@@ -71,6 +75,12 @@ function App() {
           </Route>
           <Route path="/connection/:id">
             <SingleConnection />
+          </Route>
+          <Route exact path="/categories">
+            <Categories />
+          </Route>
+          <Route path="/categories/:id">
+            <SingleCategory />
           </Route>
         </Switch>
         <Footer />

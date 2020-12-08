@@ -39,6 +39,35 @@ const getAllConnections = async (req, res) => {
   }
 };
 
+//Get connections by category
+const getConnectionByCategory = async (req, res) => {
+  try {
+    //DB config
+    const client = MongoClient(MONGO_URI, options);
+
+    await client.connect();
+
+    const db = client.db(DB);
+    console.log("DB connected");
+    //-------------------------------
+    //Get requested category name
+    const categoryId = req.params.id;
+    db.collection("categories").findOne(
+      { _id: categoryId },
+      async (err, result) => {
+        const resultConnections = await db
+          .collection("connections")
+          .find({ categories: result.name })
+          .toArray();
+
+        res.status(200).json({ status: 200, data: resultConnections });
+      }
+    );
+  } catch (error) {
+    res.status(500).json({ status: 500, error: error.message });
+  }
+};
+
 //Get connection by id
 const getConnectionById = async (req, res) => {
   try {
@@ -221,4 +250,5 @@ module.exports = {
   deleteConnection,
   getConnectionsUserFeed,
   uploadBannerImage,
+  getConnectionByCategory,
 };

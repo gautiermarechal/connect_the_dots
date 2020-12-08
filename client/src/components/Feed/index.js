@@ -6,12 +6,16 @@ import {
   receiveConnections,
   requestConnections,
 } from "../../redux/actions/ConnectionsActions";
+import { receiveSingleCategoryConnections } from "../../redux/actions/SingleCategoryConnectionsActions";
 import Connection from "../Connection/index";
 import PublishedModal from "../PublishedModal";
 
 const Feed = ({ type }) => {
   const currentUser = useSelector((state) => state.currentUser);
   const feedConnections = useSelector((state) => state.connections);
+  const singleCategoryConnections = useSelector(
+    (state) => state.singleCategoryConnections
+  );
   const dispatch = useDispatch();
   useEffect(() => {
     if (type === "Home") {
@@ -26,12 +30,20 @@ const Feed = ({ type }) => {
         })
         .catch(() => dispatch(errorConnections()));
     }
-  }, [currentUser]);
+    if (type === "SingleCategory") {
+      dispatch(requestConnections());
+      if (!singleCategoryConnections.connections) {
+        return;
+      }
+
+      dispatch(receiveConnections(singleCategoryConnections.connections));
+    }
+  }, [currentUser, singleCategoryConnections]);
 
   return (
     <>
       <Wrapper>
-        <Title>{type}</Title>
+        {type !== "SingleCategory" ? <Title>{type}</Title> : null}
         <Line />
         <MainContainer>
           {feedConnections.connections
