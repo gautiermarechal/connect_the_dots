@@ -60,9 +60,34 @@ export const addBannerPostConnection = (data) => ({
   data: data,
 });
 
-export const initialiseContentStructurePostConnection = (data) => ({
-  type: "INITIALIZE_CONTENT_STRUCTURE_POST_CONNECTION",
-  data: data,
+export const initialiseContentStructurePostConnection = (data) => {
+  return { type: "INITIALIZE_CONTENT_STRUCTURE_POST_CONNECTION", data: data };
+};
+
+export const asyncInitialiseContentStructurePostConnection = (data) => {
+  return (dispatch, getState) => {
+    dispatch(initialiseContentStructurePostConnection(data));
+    const state = getState();
+    localStorage.setItem(
+      "post-connection",
+      JSON.stringify(state.postConnection)
+    );
+  };
+};
+
+export const initialiseContentFreePostConnection = () => {
+  return (dispatch, getState) => {
+    dispatch(asyncInitialiseContentFreePostConnection());
+    const state = getState();
+    localStorage.setItem(
+      "post-connection",
+      JSON.stringify(state.postConnection)
+    );
+  };
+};
+
+export const asyncInitialiseContentFreePostConnection = () => ({
+  type: "INITIALIZE_CONTENT_FREE_POST_CONNECTION",
 });
 
 export const addConceptToBook = (data) => ({

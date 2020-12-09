@@ -17,10 +17,9 @@ const StructureConnection = () => {
   const postConnection = JSON.parse(localStorage.getItem("post-connection"));
   const currentUser = useSelector((state) => state.currentUser);
   const dispatch = useDispatch();
-  const [concepts, setConcepts] = useState([]);
 
   useEffect(() => {
-    if (currentUser.id === "" || postConnection.status === "idle") {
+    if (currentUser.id === "") {
       return;
     }
 
@@ -32,21 +31,9 @@ const StructureConnection = () => {
           name: currentUser.name,
           username: currentUser.username,
         },
-        content: postConnection.post_connection.books.map((book) => ({
-          book: book,
-          concepts: [{ _id: 0, title: "", description: "" }],
-        })),
       })
     );
-    // dispatch(
-    //   initialiseContentStructurePostConnection({
-    //     content: postConnection.post_connection.books.map((book) => ({
-    //       book: book,
-    //       concepts: [{ _id: 0, title: "", description: "" }],
-    //     })),
-    //   })
-    // );
-  }, [currentUser, postConnection.status]);
+  }, [currentUser]);
 
   return (
     <>

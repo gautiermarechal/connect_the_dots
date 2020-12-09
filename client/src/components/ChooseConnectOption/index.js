@@ -4,9 +4,14 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { COLORS } from "../../constants";
 import {
+  asyncInitialiseContentFreePostConnection,
+  asyncInitialiseContentStructurePostConnection,
+  initialiseContentFreePostConnection,
+  initialiseContentStructurePostConnection,
   setTypePostConnection,
   toggleStepPostConnection,
 } from "../../redux/actions/PostConnectionActions";
+import promiseDispatch from "redux-promise";
 
 const ChooseConnectOption = () => {
   const dispatch = useDispatch();
@@ -23,6 +28,16 @@ const ChooseConnectOption = () => {
               onClick={() => {
                 if (currentType === "free") {
                   dispatch(setTypePostConnection("structure"));
+                  // dispatch(
+                  //   initialiseContentStructurePostConnection({
+                  //     content: postConnection.post_connection.books.map(
+                  //       (book) => ({
+                  //         book: book,
+                  //         concepts: [{ _id: 0, title: "", description: "" }],
+                  //       })
+                  //     ),
+                  //   })
+                  // );
                 }
               }}
               filled={currentType === "structure" ? true : false}
@@ -34,6 +49,7 @@ const ChooseConnectOption = () => {
               onClick={() => {
                 if (currentType === "structure") {
                   dispatch(setTypePostConnection("free"));
+                  // dispatch(initialiseContentFreePostConnection());
                 }
               }}
               filled={currentType === "free" ? true : false}
@@ -43,12 +59,20 @@ const ChooseConnectOption = () => {
         </MainContainer>
         <ButtonNext
           onClick={() => {
+            if (currentType === "structure") {
+              dispatch(
+                asyncInitialiseContentStructurePostConnection({
+                  content: postConnection.post_connection.books.map((book) => ({
+                    book: book,
+                    concepts: [{ _id: 0, title: "", description: "" }],
+                  })),
+                })
+              );
+            } else {
+              dispatch(asyncInitialiseContentFreePostConnection());
+            }
+
             history.push(`/connect/${currentType}`);
-            dispatch(toggleStepPostConnection(1));
-            localStorage.setItem(
-              "post-connection",
-              JSON.stringify(postConnection)
-            );
           }}
         >
           Next
