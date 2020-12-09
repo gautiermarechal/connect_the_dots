@@ -137,3 +137,19 @@ export const addLinkToConcept = (data) => ({
   type: "ADD_LINK_TO_CONCEPT",
   data: data,
 });
+
+export const asyncAddFinalLink = (data) => {
+  return (dispatch, getState) => {
+    dispatch(addFinalLink(data));
+    const state = getState();
+    localStorage.setItem(
+      "post-connection",
+      JSON.stringify(state.postConnection)
+    );
+  };
+};
+
+export const addFinalLink = (data) => ({
+  type: "ADD_FINAL_LINK",
+  data: data,
+});

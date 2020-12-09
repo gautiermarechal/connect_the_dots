@@ -94,6 +94,7 @@ const PostConnectionReducer = (state = initialState, action) => {
         post_connection: {
           ...state.post_connection,
           content: action.data.content,
+          finalLinks: [],
         },
       };
     case "INITIALIZE_CONTENT_FREE_POST_CONNECTION":
@@ -169,8 +170,7 @@ const PostConnectionReducer = (state = initialState, action) => {
                             ...state.post_connection.content[indexBook]
                               .concepts[iConcept].links,
                             {
-                              book: action.data.book,
-                              conceptId: action.data.indexConcept,
+                              ...action.data.conceptObj,
                             },
                           ],
                         }
@@ -179,6 +179,15 @@ const PostConnectionReducer = (state = initialState, action) => {
                 }
               : obj
           ),
+        },
+      };
+    case "ADD_FINAL_LINK":
+      console.log(action.data);
+      return {
+        ...state,
+        post_connection: {
+          ...state.post_connection,
+          finalLinks: [...state.post_connection.finalLinks, action.data],
         },
       };
     default:

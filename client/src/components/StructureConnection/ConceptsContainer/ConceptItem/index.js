@@ -65,6 +65,22 @@ const ConceptItemComponent = ({ indexBook, indexConcept, postConnection }) => {
             );
           }}
         />
+        <DisplayLinksChosen>
+          <LinksChosenContainerTitle>Links</LinksChosenContainerTitle>
+          {postConnection.post_connection.content[indexBook].concepts[
+            indexConcept
+          ].links.map((linkChosen) => {
+            return (
+              <LinkChosen>
+                <LinksChosenBook>{linkChosen.book}</LinksChosenBook>
+                <LinksChosenTitle>
+                  <ConceptNumberList>{linkChosen._id + 1}</ConceptNumberList>
+                  {linkChosen.title}
+                </LinksChosenTitle>
+              </LinkChosen>
+            );
+          })}
+        </DisplayLinksChosen>
       </ConceptItem>
       <AddLinkButton
         onClick={() =>
@@ -97,8 +113,10 @@ const ConceptItemComponent = ({ indexBook, indexConcept, postConnection }) => {
                                   indexBook: indexBook,
                                   indexConcept: indexConcept,
                                   book: contentObj.book.id,
+                                  conceptObj: concept,
                                 })
                               );
+                              setOpenTooltip(false);
                             }}
                           >
                             <ConceptNumberList>
@@ -186,5 +204,16 @@ const LinkItem = styled.li`
     background-color: grey;
   }
 `;
+
+const DisplayLinksChosen = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const LinksChosenContainerTitle = styled.h4``;
+const LinksChosenTitle = styled.h5``;
+const LinksChosenBook = styled.h6``;
+
+const LinkChosen = styled.span``;
 
 export default ConceptItemComponent;
