@@ -104,7 +104,7 @@ const PostConnectionReducer = (state = initialState, action) => {
           content: "",
         },
       };
-    case "ADD_CONCEPT_TO_BOOK":
+    case "MODIFY_CONCEPT_TO_BOOK":
       return {
         ...state,
         post_connection: {
@@ -113,9 +113,46 @@ const PostConnectionReducer = (state = initialState, action) => {
             i === action.data.indexBook
               ? {
                   ...obj,
+                  concepts: obj.concepts.map((concept, iConcept) =>
+                    iConcept === action.data.indexConcept
+                      ? {
+                          ...concept,
+                          [action.data.fieldToChange]: action.data.value,
+                        }
+                      : concept
+                  ),
+                }
+              : // ? {
+                //     ...obj,
+
+                //     concepts: [
+                //       ...obj.concepts,
+                //       { _id: i, [action.data.fieldToChange]: action.data.value },
+                //     ],
+                //   }
+                obj
+          ),
+        },
+      };
+
+    case "ADD_CONCEPT_TO_BOOK":
+      return {
+        ...state,
+        post_connection: {
+          ...state.post_connection,
+          content: state.post_connection.content.map((obj, indexBook) =>
+            indexBook === action.data.indexBook
+              ? {
+                  ...obj,
                   concepts: [
-                    ...obj.concepts,
-                    { _id: i, [action.data.fieldToChange]: action.data.value },
+                    ...state.post_connection.content[indexBook].concepts,
+                    {
+                      _id:
+                        state.post_connection.content[indexBook].concepts
+                          .length,
+                      title: "",
+                      description: "",
+                    },
                   ],
                 }
               : obj

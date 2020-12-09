@@ -90,6 +90,33 @@ export const asyncInitialiseContentFreePostConnection = () => ({
   type: "INITIALIZE_CONTENT_FREE_POST_CONNECTION",
 });
 
+export const asyncModifyConceptToBook = (data) => {
+  return (dispatch, getState) => {
+    dispatch(modifyConceptToBook(data));
+    const state = getState();
+    localStorage.setItem(
+      "post-connection",
+      JSON.stringify(state.postConnection)
+    );
+  };
+};
+
+export const modifyConceptToBook = (data) => ({
+  type: "MODIFY_CONCEPT_TO_BOOK",
+  data: data,
+});
+
+export const asyncAddConceptToBook = (data) => {
+  return (dispatch, getState) => {
+    dispatch(addConceptToBook(data));
+    const state = getState();
+    localStorage.setItem(
+      "post-connection",
+      JSON.stringify(state.postConnection)
+    );
+  };
+};
+
 export const addConceptToBook = (data) => ({
   type: "ADD_CONCEPT_TO_BOOK",
   data: data,

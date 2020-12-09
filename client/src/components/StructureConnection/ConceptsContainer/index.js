@@ -1,37 +1,44 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { addConceptToBook } from "../../../redux/actions/PostConnectionActions";
+import {
+  addConceptToBook,
+  asyncAddConceptToBook,
+  modifyConceptToBook,
+} from "../../../redux/actions/PostConnectionActions";
+import { GrAddCircle } from "react-icons/gr";
+import ConceptItemComponent from "./ConceptItem";
 
 const ConceptsContainerComponent = ({ indexBook, postConnection }) => {
   const dispatch = useDispatch();
+
   return (
     <>
       <ConceptsContainer>
         {postConnection.post_connection.content
           ? postConnection.post_connection.content[indexBook].concepts.map(
-              (contentObj, index) => {
+              (contentObj, indexConcept) => {
                 return (
-                  <ConceptItem>
-                    <ConceptTitle>Title</ConceptTitle>
-                    <ConceptTitleInput
-                      onChange={(e) => {
-                        dispatch(
-                          addConceptToBook({
-                            fieldToChange: "title",
-                            indexBook: indexBook,
-                            value: e.target.value,
-                          })
-                        );
-                      }}
-                    />
-                    <ConceptDescription>Description</ConceptDescription>
-                    <ConceptDescriptionInput />
-                  </ConceptItem>
+                  <ConceptItemComponent
+                    indexBook={indexBook}
+                    indexConcept={indexConcept}
+                    postConnection={postConnection}
+                  />
                 );
               }
             )
           : null}
+        <AddConceptButton
+          onClick={(e) => {
+            dispatch(
+              asyncAddConceptToBook({
+                indexBook: indexBook,
+              })
+            );
+          }}
+        >
+          <AddIcon />
+        </AddConceptButton>
       </ConceptsContainer>
     </>
   );
@@ -42,15 +49,13 @@ const ConceptsContainer = styled.div`
   flex-direction: column;
 `;
 
-const ConceptItem = styled.div`
-  display: flex;
-  flex-direction: column;
+const AddConceptButton = styled.button`
+  margin-top: 20px;
+  border: none;
+  background-color: transparent;
+  width: 100px;
 `;
 
-const ConceptTitle = styled.h3``;
-const ConceptTitleInput = styled.input``;
-
-const ConceptDescription = styled.h4``;
-const ConceptDescriptionInput = styled.input``;
+const AddIcon = styled(GrAddCircle)``;
 
 export default ConceptsContainerComponent;

@@ -12,6 +12,7 @@ import {
   initialiseContentStructurePostConnection,
 } from "../../redux/actions/PostConnectionActions";
 import ConceptsContainerComponent from "./ConceptsContainer";
+import LinksContainerComponent from "./LinksContainer";
 
 const StructureConnection = () => {
   const postConnection = JSON.parse(localStorage.getItem("post-connection"));
@@ -91,6 +92,7 @@ const StructureConnection = () => {
             );
           })}
         </BookList>
+        <LinksContainerComponent postConnection={postConnection} />
       </MainContainer>
     </>
   );
