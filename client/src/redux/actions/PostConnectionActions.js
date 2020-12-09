@@ -121,3 +121,19 @@ export const addConceptToBook = (data) => ({
   type: "ADD_CONCEPT_TO_BOOK",
   data: data,
 });
+
+export const asyncAddLinkToConcept = (data) => {
+  return (dispatch, getState) => {
+    dispatch(addLinkToConcept(data));
+    const state = getState();
+    localStorage.setItem(
+      "post-connection",
+      JSON.stringify(state.postConnection)
+    );
+  };
+};
+
+export const addLinkToConcept = (data) => ({
+  type: "ADD_LINK_TO_CONCEPT",
+  data: data,
+});

@@ -122,15 +122,7 @@ const PostConnectionReducer = (state = initialState, action) => {
                       : concept
                   ),
                 }
-              : // ? {
-                //     ...obj,
-
-                //     concepts: [
-                //       ...obj.concepts,
-                //       { _id: i, [action.data.fieldToChange]: action.data.value },
-                //     ],
-                //   }
-                obj
+              : obj
           ),
         },
       };
@@ -152,8 +144,38 @@ const PostConnectionReducer = (state = initialState, action) => {
                           .length,
                       title: "",
                       description: "",
+                      links: [],
                     },
                   ],
+                }
+              : obj
+          ),
+        },
+      };
+    case "ADD_LINK_TO_CONCEPT":
+      return {
+        ...state,
+        post_connection: {
+          ...state.post_connection,
+          content: state.post_connection.content.map((obj, indexBook) =>
+            indexBook === action.data.indexBook
+              ? {
+                  ...obj,
+                  concepts: obj.concepts.map((concept, iConcept) =>
+                    iConcept === action.data.indexConcept
+                      ? {
+                          ...concept,
+                          links: [
+                            ...state.post_connection.content[indexBook]
+                              .concepts[iConcept].links,
+                            {
+                              book: action.data.book,
+                              conceptId: action.data.indexConcept,
+                            },
+                          ],
+                        }
+                      : concept
+                  ),
                 }
               : obj
           ),

@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import {
-  addConceptToBook,
-  asyncAddConceptToBook,
+  asyncAddLinkToConcept,
   asyncModifyConceptToBook,
-  modifyConceptToBook,
 } from "../../../../redux/actions/PostConnectionActions";
 import { GrAddCircle } from "react-icons/gr";
+import { COLORS } from "../../../../constants";
 
 const ConceptItemComponent = ({ indexBook, indexConcept, postConnection }) => {
   const dispatch = useDispatch();
@@ -27,9 +26,16 @@ const ConceptItemComponent = ({ indexBook, indexConcept, postConnection }) => {
   return (
     <ConceptItemContainer>
       <ConceptItem>
+        <NumberContainer>
+          <ConceptNumber>{indexConcept + 1}</ConceptNumber>
+        </NumberContainer>
         <ConceptTitle>Title</ConceptTitle>
-
         <ConceptTitleInput
+          value={
+            postConnection.post_connection.content[indexBook].concepts[
+              indexConcept
+            ].title
+          }
           onChange={(e) => {
             dispatch(
               asyncModifyConceptToBook({
@@ -43,6 +49,11 @@ const ConceptItemComponent = ({ indexBook, indexConcept, postConnection }) => {
         />
         <ConceptDescription>Description</ConceptDescription>
         <ConceptDescriptionInput
+          value={
+            postConnection.post_connection.content[indexBook].concepts[
+              indexConcept
+            ].description
+          }
           onChange={(e) => {
             dispatch(
               asyncModifyConceptToBook({
@@ -75,7 +86,28 @@ const ConceptItemComponent = ({ indexBook, indexConcept, postConnection }) => {
                   </LinkBook>
                   <LinkBookList>
                     {contentObj.concepts.map((concept) => {
-                      return <LinkItem>{concept.title}</LinkItem>;
+                      if (concept.title === "") {
+                        return null;
+                      } else {
+                        return (
+                          <LinkItem
+                            onClick={() => {
+                              dispatch(
+                                asyncAddLinkToConcept({
+                                  indexBook: indexBook,
+                                  indexConcept: indexConcept,
+                                  book: contentObj.book.id,
+                                })
+                              );
+                            }}
+                          >
+                            <ConceptNumberList>
+                              {concept._id + 1}
+                            </ConceptNumberList>
+                            {concept.title}
+                          </LinkItem>
+                        );
+                      }
                     })}
                   </LinkBookList>
                 </>
@@ -88,8 +120,32 @@ const ConceptItemComponent = ({ indexBook, indexConcept, postConnection }) => {
   );
 };
 
+const NumberContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+`;
+
+const ConceptNumber = styled.span`
+  width: 50%;
+  background-color: ${COLORS.green};
+  text-align: center;
+  color: white;
+  border-radius: 7px;
+`;
+
+const ConceptNumberList = styled.span`
+  width: 50%;
+  background-color: ${COLORS.green};
+  text-align: center;
+  color: white;
+  border-radius: 7px;
+  margin-right: 10px;
+`;
+
 const ConceptItemContainer = styled.div`
   display: flex;
+  margin-bottom: 20px;
 `;
 
 const ConceptItem = styled.div`
@@ -124,6 +180,11 @@ const LinkBookList = styled.ol``;
 const LinkItem = styled.li`
   margin-left: 10px;
   margin-bottom: 15px;
+  padding: 10px;
+  cursor: pointer;
+  &:hover {
+    background-color: grey;
+  }
 `;
 
 export default ConceptItemComponent;

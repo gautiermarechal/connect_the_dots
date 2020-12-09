@@ -64,7 +64,9 @@ const ChooseConnectOption = () => {
                 asyncInitialiseContentStructurePostConnection({
                   content: postConnection.post_connection.books.map((book) => ({
                     book: book,
-                    concepts: [{ _id: 0, title: "", description: "" }],
+                    concepts: [
+                      { _id: 0, title: "", description: "", links: [] },
+                    ],
                   })),
                 })
               );
