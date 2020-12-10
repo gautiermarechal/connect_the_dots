@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import {
   asyncAddLinkToConcept,
   asyncModifyConceptToBook,
+  asyncModifyLink,
 } from "../../../../redux/actions/PostConnectionActions";
 import { GrAddCircle } from "react-icons/gr";
 import { COLORS } from "../../../../constants";
@@ -11,6 +12,11 @@ import { COLORS } from "../../../../constants";
 const ConceptItemComponent = ({ indexBook, indexConcept, postConnection }) => {
   const dispatch = useDispatch();
   const [openTooltip, setOpenTooltip] = useState(false);
+  const bookId = useSelector(
+    (state) =>
+      state.postConnection.post_connection.content[indexBook] &&
+      state.postConnection.post_connection.content[indexBook].book.id
+  );
 
   const LinksTooltip = styled.div`
     position: absolute;
@@ -25,115 +31,143 @@ const ConceptItemComponent = ({ indexBook, indexConcept, postConnection }) => {
 
   return (
     <ConceptItemContainer>
-      <ConceptItem>
-        <NumberContainer>
-          <ConceptNumber>{indexConcept + 1}</ConceptNumber>
-        </NumberContainer>
-        <ConceptTitle>Title</ConceptTitle>
-        <ConceptTitleInput
-          value={
-            postConnection.post_connection.content[indexBook].concepts[
-              indexConcept
-            ].title
-          }
-          onChange={(e) => {
-            dispatch(
-              asyncModifyConceptToBook({
-                fieldToChange: "title",
-                indexBook: indexBook,
-                indexConcept: indexConcept,
-                value: e.target.value,
-              })
-            );
-          }}
-        />
-        <ConceptDescription>Description</ConceptDescription>
-        <ConceptDescriptionInput
-          value={
-            postConnection.post_connection.content[indexBook].concepts[
-              indexConcept
-            ].description
-          }
-          onChange={(e) => {
-            dispatch(
-              asyncModifyConceptToBook({
-                fieldToChange: "description",
-                indexBook: indexBook,
-                indexConcept: indexConcept,
-                value: e.target.value,
-              })
-            );
-          }}
-        />
-        <DisplayLinksChosen>
-          <LinksChosenContainerTitle>Links</LinksChosenContainerTitle>
-          {postConnection.post_connection.content[indexBook].concepts[
-            indexConcept
-          ].links.map((linkChosen) => {
-            return (
-              <LinkChosen>
-                <LinksChosenBook>{linkChosen.book}</LinksChosenBook>
-                <LinksChosenTitle>
-                  <ConceptNumberList>{linkChosen._id + 1}</ConceptNumberList>
-                  {linkChosen.title}
-                </LinksChosenTitle>
-              </LinkChosen>
-            );
-          })}
-        </DisplayLinksChosen>
-      </ConceptItem>
-      <AddLinkButton
-        onClick={() =>
-          openTooltip ? setOpenTooltip(false) : setOpenTooltip(true)
-        }
-      >
-        <AddIcon />
-      </AddLinkButton>
-      <LinksTooltip>
-        <LinksList>
-          {postConnection.post_connection.content.map((contentObj, index) => {
-            if (index === indexBook) {
-              return null;
-            } else {
-              return (
-                <>
-                  <LinkBook>
-                    <h3>{contentObj.book.volumeInfo.title}</h3>
-                  </LinkBook>
-                  <LinkBookList>
-                    {contentObj.concepts.map((concept) => {
-                      if (concept.title === "") {
-                        return null;
-                      } else {
-                        return (
-                          <LinkItem
-                            onClick={() => {
-                              dispatch(
-                                asyncAddLinkToConcept({
-                                  indexBook: indexBook,
-                                  indexConcept: indexConcept,
-                                  book: contentObj.book.id,
-                                  conceptObj: concept,
-                                })
-                              );
-                              setOpenTooltip(false);
-                            }}
-                          >
-                            <ConceptNumberList>
-                              {concept._id + 1}
-                            </ConceptNumberList>
-                            {concept.title}
-                          </LinkItem>
-                        );
-                      }
-                    })}
-                  </LinkBookList>
-                </>
-              );
+      {bookId ? (
+        <>
+          <ConceptItem>
+            <NumberContainer>
+              <ConceptNumber>{indexConcept + 1}</ConceptNumber>
+            </NumberContainer>
+            <ConceptTitle>Title</ConceptTitle>
+            <ConceptTitleInput
+              value={
+                postConnection.post_connection.content[indexBook].concepts[
+                  indexConcept
+                ].title
+              }
+              onChange={(e) => {
+                dispatch(
+                  asyncModifyConceptToBook({
+                    fieldToChange: "title",
+                    indexBook: indexBook,
+                    indexConcept: indexConcept,
+                    value: e.target.value,
+                  })
+                );
+                dispatch(
+                  asyncModifyLink({
+                    fieldToChange: "title",
+                    indexBook: indexBook,
+                    indexConcept: indexConcept,
+                    value: e.target.value,
+                    indexLink: indexConcept,
+                    bookId: bookId,
+                  })
+                );
+              }}
+            />
+            <ConceptDescription>Description</ConceptDescription>
+            <ConceptDescriptionInput
+              value={
+                postConnection.post_connection.content[indexBook].concepts[
+                  indexConcept
+                ].description
+              }
+              onChange={(e) => {
+                dispatch(
+                  asyncModifyConceptToBook({
+                    fieldToChange: "description",
+                    indexBook: indexBook,
+                    indexConcept: indexConcept,
+                    value: e.target.value,
+                  })
+                );
+                dispatch(
+                  asyncModifyLink({
+                    fieldToChange: "description",
+                    indexBook: indexBook,
+                    indexConcept: indexConcept,
+                    value: e.target.value,
+                    indexLink: indexConcept,
+                    bookId: bookId,
+                  })
+                );
+              }}
+            />
+            <DisplayLinksChosen>
+              <LinksChosenContainerTitle>Links</LinksChosenContainerTitle>
+              {postConnection.post_connection.content[indexBook].concepts[
+                indexConcept
+              ].links.map((linkChosen) => {
+                return (
+                  <LinkChosen>
+                    <LinksChosenBook>{linkChosen.book}</LinksChosenBook>
+                    <LinksChosenTitle>
+                      <ConceptNumberList>
+                        {linkChosen._id + 1}
+                      </ConceptNumberList>
+                      {linkChosen.title}
+                    </LinksChosenTitle>
+                  </LinkChosen>
+                );
+              })}
+            </DisplayLinksChosen>
+          </ConceptItem>
+          <AddLinkButton
+            onClick={() =>
+              openTooltip ? setOpenTooltip(false) : setOpenTooltip(true)
             }
-          })}
-        </LinksList>
-      </LinksTooltip>
+          >
+            <AddIcon />
+          </AddLinkButton>
+          <LinksTooltip>
+            <LinksList>
+              {postConnection.post_connection.content.map(
+                (contentObj, index) => {
+                  if (index === indexBook) {
+                    return null;
+                  } else {
+                    return (
+                      <>
+                        <LinkBook>
+                          <h3>{contentObj.book.volumeInfo.title}</h3>
+                        </LinkBook>
+                        <LinkBookList>
+                          {contentObj.concepts.map((concept) => {
+                            if (concept.title === "") {
+                              return null;
+                            } else {
+                              return (
+                                <LinkItem
+                                  onClick={() => {
+                                    dispatch(
+                                      asyncAddLinkToConcept({
+                                        indexBook: indexBook,
+                                        indexConcept: indexConcept,
+                                        book: contentObj.book.id,
+                                        conceptObj: concept,
+                                      })
+                                    );
+                                    setOpenTooltip(false);
+                                  }}
+                                >
+                                  <ConceptNumberList>
+                                    {concept._id + 1}
+                                  </ConceptNumberList>
+                                  {concept.title}
+                                </LinkItem>
+                              );
+                            }
+                          })}
+                        </LinkBookList>
+                      </>
+                    );
+                  }
+                }
+              )}
+            </LinksList>
+          </LinksTooltip>
+        </>
+      ) : null}
     </ConceptItemContainer>
   );
 };

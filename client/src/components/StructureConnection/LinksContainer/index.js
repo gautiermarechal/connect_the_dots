@@ -1,7 +1,10 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { asyncAddFinalLink } from "../../../redux/actions/PostConnectionActions";
+import {
+  asyncAddFinalLink,
+  asyncModifyConceptToBook,
+} from "../../../redux/actions/PostConnectionActions";
 import { v4 as uuidv4 } from "uuid";
 
 const LinksContainerComponent = ({ postConnection }) => {

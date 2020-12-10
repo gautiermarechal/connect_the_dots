@@ -110,8 +110,8 @@ const PostConnectionReducer = (state = initialState, action) => {
         ...state,
         post_connection: {
           ...state.post_connection,
-          content: state.post_connection.content.map((obj, i) =>
-            i === action.data.indexBook
+          content: state.post_connection.content.map((obj, i) => {
+            return i === action.data.indexBook
               ? {
                   ...obj,
                   concepts: obj.concepts.map((concept, iConcept) =>
@@ -123,8 +123,8 @@ const PostConnectionReducer = (state = initialState, action) => {
                       : concept
                   ),
                 }
-              : obj
-          ),
+              : obj;
+          }),
         },
       };
 
@@ -158,27 +158,67 @@ const PostConnectionReducer = (state = initialState, action) => {
         ...state,
         post_connection: {
           ...state.post_connection,
-          content: state.post_connection.content.map((obj, indexBook) =>
-            indexBook === action.data.indexBook
-              ? {
-                  ...obj,
-                  concepts: obj.concepts.map((concept, iConcept) =>
-                    iConcept === action.data.indexConcept
-                      ? {
-                          ...concept,
-                          links: [
-                            ...state.post_connection.content[indexBook]
-                              .concepts[iConcept].links,
-                            {
-                              ...action.data.conceptObj,
-                            },
-                          ],
-                        }
-                      : concept
-                  ),
-                }
-              : obj
-          ),
+          content: state.post_connection.content.map((obj, indexBook) => {
+            if (
+              state.post_connection.content[action.data.indexBook].concepts[
+                action.data.indexConcept
+              ].links.some((link) => {
+                return link._id === action.data.conceptObj._id;
+              })
+            ) {
+              return obj;
+            } else {
+              return indexBook === action.data.indexBook
+                ? {
+                    ...obj,
+                    concepts: obj.concepts.map((concept, iConcept) =>
+                      iConcept === action.data.indexConcept
+                        ? {
+                            ...concept,
+                            links: [
+                              ...state.post_connection.content[indexBook]
+                                .concepts[iConcept].links,
+                              {
+                                ...action.data.conceptObj,
+                                _bookId: action.data.book,
+                              },
+                            ],
+                          }
+                        : concept
+                    ),
+                  }
+                : obj;
+            }
+          }),
+        },
+      };
+    case "MODIFY_LINK":
+      return {
+        ...state,
+        post_connection: {
+          ...state.post_connection,
+          content: state.post_connection.content.map((obj, indexBook) => {
+            return {
+              ...obj,
+              concepts: obj.concepts.map((concept) => {
+                return {
+                  ...concept,
+                  links: concept.links.map((link) => {
+                    console.log(action.data.bookId);
+                    console.log(link);
+                    if (link._bookId === action.data.bookId) {
+                      return {
+                        ...link,
+                        [action.data.fieldToChange]: action.data.value,
+                      };
+                    } else {
+                      return link;
+                    }
+                  }),
+                };
+              }),
+            };
+          }),
         },
       };
     case "ADD_FINAL_LINK":

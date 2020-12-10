@@ -138,6 +138,22 @@ export const addLinkToConcept = (data) => ({
   data: data,
 });
 
+export const asyncModifyLink = (data) => {
+  return (dispatch, getState) => {
+    dispatch(modifyLink(data));
+    const state = getState();
+    localStorage.setItem(
+      "post-connection",
+      JSON.stringify(state.postConnection)
+    );
+  };
+};
+
+export const modifyLink = (data) => ({
+  type: "MODIFY_LINK",
+  data: data,
+});
+
 export const asyncAddFinalLink = (data) => {
   return (dispatch, getState) => {
     dispatch(addFinalLink(data));
