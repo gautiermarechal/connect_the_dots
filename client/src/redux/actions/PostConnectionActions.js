@@ -154,6 +154,22 @@ export const modifyLink = (data) => ({
   data: data,
 });
 
+export const asyncCreateFinalLink = (data) => {
+  return (dispatch, getState) => {
+    dispatch(createFinalLink(data));
+    const state = getState();
+    localStorage.setItem(
+      "post-connection",
+      JSON.stringify(state.postConnection)
+    );
+  };
+};
+
+export const createFinalLink = (data) => ({
+  type: "CREATE_FINAL_LINK",
+  data: data,
+});
+
 export const asyncAddFinalLink = (data) => {
   return (dispatch, getState) => {
     dispatch(addFinalLink(data));

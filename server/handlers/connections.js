@@ -242,6 +242,64 @@ const uploadBannerImage = (req, res) => {
   }
 };
 
+//Get connection by search term
+const getConnectionBySearchTerm = async (req, res) => {
+  try {
+    //DB config
+    const client = MongoClient(MONGO_URI, options);
+
+    await client.connect();
+
+    const db = client.db(DB);
+    console.log("DB connected");
+    //-------------------------------
+    const search = req.query.search;
+    db.collection("connections").createIndex({
+      title: "text",
+    });
+    const searchResult = await db
+      .collection("connections")
+      .find({ $text: { $search: search } })
+      .toArray();
+
+    const searchResultCategoriesTitle = await db
+      .collection("connections")
+      .find({ "books.volumeInfo.title": { $eq: "sapiens" } })
+      .toArray();
+
+    res.status(200).json({
+      status: 200,
+      data: searchResult.concat(searchResultCategoriesTitle),
+    });
+  } catch (error) {
+    res.status(500).json({ status: 500, error: error.message });
+  }
+};
+
+//Get most recent connections
+const getMostRecentConnections = async (req, res) => {
+  try {
+    //DB config
+    const client = MongoClient(MONGO_URI, options);
+
+    await client.connect();
+
+    const db = client.db(DB);
+    console.log("DB connected");
+    //-------------------------------
+    const result = await db
+      .collection("connections")
+      .find()
+      .sort({ created_at: 1 })
+      .limit(3)
+      .toArray();
+
+    res.status(200).json({ status: 200, data: result });
+  } catch (error) {
+    res.status(500).json({ status: 500, error: error.message });
+  }
+};
+
 module.exports = {
   getAllConnections,
   createConnection,
@@ -251,4 +309,6 @@ module.exports = {
   getConnectionsUserFeed,
   uploadBannerImage,
   getConnectionByCategory,
+  getConnectionBySearchTerm,
+  getMostRecentConnections,
 };

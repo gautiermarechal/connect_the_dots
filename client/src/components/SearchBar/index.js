@@ -19,6 +19,7 @@ const SearchBar = () => {
   const booksFound = useSelector((state) => state.books);
   const postConnection = useSelector((state) => state.postConnection);
   const searchBarRef = useRef(null);
+  const [foundConnections, setFoundConnections] = React.useState([]);
 
   const handleSearchBook = (query) => {
     dispatch(requestBooks());
@@ -34,6 +35,16 @@ const SearchBar = () => {
       .catch((err) => {
         dispatch(errorBooks());
       });
+  };
+
+  const handleSearchConnections = (query) => {
+    fetch(`http://localhost:4000/search/connections?search=${query}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((json) => setFoundConnections(json.data));
   };
 
   const handleClear = () => {
@@ -61,13 +72,16 @@ const SearchBar = () => {
       <MainContainer>
         <BarContainer
           placeholder="Search for a connection, book, category..."
-          onChange={(e) => handleSearchBook(e.target.value)}
+          onChange={(e) => {
+            handleSearchBook(e.target.value);
+            handleSearchConnections(e.target.value);
+          }}
           ref={searchBarRef}
         />
         <ResultContainer>
           <ListOfResults>
             {booksFound.books &&
-              booksFound.books.map((book) => {
+              booksFound.books.slice(0, 4).map((book) => {
                 const id = book.id;
                 const title = book.volumeInfo.title;
                 const subtitle = book.volumeInfo.subtitle;
@@ -103,7 +117,11 @@ const SearchBar = () => {
                     ) : (
                       <Link to={`/book/${id}`}>
                         <Book>
-                          <BookTitle>{title}</BookTitle>
+                          <ResultLabelContainer>
+                            <BookTitle>{title}</BookTitle>
+                            <ResultLabel type="book">Book</ResultLabel>
+                          </ResultLabelContainer>
+
                           <BookSubTitle>{subtitle}</BookSubTitle>
                           {authors && (
                             <AuthorsContainer>
@@ -119,6 +137,27 @@ const SearchBar = () => {
                   </>
                 );
               })}
+            {foundConnections.map((connection) =>
+              postConnection.status === "started" ? null : (
+                <>
+                  <Link to={`/connection/${connection._id}`}>
+                    <Connection>
+                      <ResultLabelContainer>
+                        <ConnectionTitle>{connection.title}</ConnectionTitle>
+                        <ResultLabel type="connection">Connection</ResultLabel>
+                      </ResultLabelContainer>
+                      <ConnectionBooks>
+                        {connection.books.map((book) => {
+                          <p>{book.volumeInfo.title}</p>;
+                        })}
+                      </ConnectionBooks>
+                      <Author>{connection.author.name}</Author>
+                    </Connection>
+                  </Link>
+                  <Line />
+                </>
+              )
+            )}
           </ListOfResults>
         </ResultContainer>
       </MainContainer>
@@ -178,6 +217,44 @@ const Line = styled.hr`
   height: 0;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+`;
+
+const Connection = styled.li`
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  background-color: ${COLORS.green}
+  &:hover {
+    background-color: ${COLORS.lightGreen};
+  }
+`;
+
+const ConnectionTitle = styled.h4`
+  display: flex;
+  flex-direction: column;
+`;
+
+const ConnectionBooks = styled.h6`
+display: flex;
+flex-directionL column;
+`;
+
+const ResultLabelContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+`;
+const ResultLabel = styled.span`
+  background-color: ${(props) =>
+    props.type === "book" ? COLORS.grey : COLORS.green};
+  color: white;
+  font-size: 10px;
+  padding: 3px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  max-height: 20px;
 `;
 
 export default SearchBar;

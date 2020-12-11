@@ -21,6 +21,8 @@ const {
   getConnectionsUserFeed,
   uploadBannerImage,
   getConnectionByCategory,
+  getConnectionBySearchTerm,
+  getMostRecentConnections,
 } = require("./handlers/connections");
 //Google Imports
 const { getBookBySearch, getBookById } = require("./handlers/google");
@@ -76,6 +78,9 @@ router.get("/connections/category/:id", getConnectionByCategory);
 //Get connection by id
 router.get("/connections/:id", getConnectionById);
 
+//Get connection by search term
+router.get("/search/connections", getConnectionBySearchTerm);
+
 //Create connection
 router.post("/connections", createConnection);
 
@@ -90,6 +95,9 @@ router.delete("/connections/:id", deleteConnection);
 
 //Get connections for user feed
 router.get("/connections/feed/:id", getConnectionsUserFeed);
+
+//Get most recent connections
+router.get("/recent/connections", getMostRecentConnections);
 //-------------------------------------------------------
 
 //GOOGLE API AUTH ROUTES---------------------------------

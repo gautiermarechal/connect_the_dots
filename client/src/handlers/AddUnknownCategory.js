@@ -5,6 +5,9 @@ const addUnknownCategory = (category) => {
     .then((res) => res.json())
     .then((json) => {
       const allCategories = json.data;
+      console.log(
+        allCategories.some((categoryObj) => categoryObj.name === category)
+      );
       if (!allCategories.some((categoryObj) => categoryObj.name === category)) {
         fetch("http://localhost:4000/categories", {
           method: "POST",

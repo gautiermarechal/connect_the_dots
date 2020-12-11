@@ -112,7 +112,82 @@ const SingleConnection = () => {
               src={`http://localhost:4000/${connection.bannerSrc}`}
             />
           </ThumbnailContainer>
-          <ContentContainer>{parser(connection.content)}</ContentContainer>
+          {typeof connection.content === "string" ? (
+            <ContentContainer>{parser(connection.content)}</ContentContainer>
+          ) : (
+            <ContentContainerStructure>
+              <BooksContentStructure>
+                {connection.books.map((book, index) => {
+                  return (
+                    <BookContainer>
+                      <BookImageStructure
+                        src={
+                          book.volumeInfo.imageLinks &&
+                          book.volumeInfo.imageLinks.thumbnail
+                        }
+                      />
+                      <BookInfoStructure>
+                        <BookTitle>{book.volumeInfo.title}</BookTitle>
+                        <Authors>
+                          {book.volumeInfo.authors.map((author) => {
+                            return <p>{author}</p>;
+                          })}
+                        </Authors>
+                      </BookInfoStructure>
+                      {connection.content[index].concepts.map((concept) => {
+                        return (
+                          <ConceptsContainer>
+                            <ConceptTitle>{concept.title}</ConceptTitle>
+                            <ConceptDescription>
+                              {concept.description}
+                            </ConceptDescription>
+                            <Line />
+                            <LinkSnippet>
+                              <span style={{ marginRight: "10px" }}>
+                                Linked to:
+                              </span>
+                              {concept.links.map((link) => {
+                                return <LinkConcept>{link.title}</LinkConcept>;
+                              })}
+                            </LinkSnippet>
+                          </ConceptsContainer>
+                        );
+                      })}
+                    </BookContainer>
+                  );
+                })}
+              </BooksContentStructure>
+              <Title>Links</Title>
+              <LinksStructureContainer>
+                {connection.finalLinks
+                  .filter(
+                    (value, index, array) =>
+                      array.findIndex((result) => result._id === value._id) ===
+                      index
+                  )
+                  .filter((link) => link.childrenConcepts.length !== 0)
+                  .map((finalLink) => {
+                    return (
+                      <LinkContainer>
+                        <LinkHeader>
+                          <ParentConcept>
+                            <LinkConcept>
+                              {finalLink.parentConcept.title}
+                            </LinkConcept>
+                          </ParentConcept>
+                          <ChildrenConcept>
+                            {finalLink.childrenConcepts.map((concept) => (
+                              <LinkConcept>{concept.title}</LinkConcept>
+                            ))}
+                          </ChildrenConcept>
+                        </LinkHeader>
+                        <LinkContent>{finalLink.content}</LinkContent>
+                      </LinkContainer>
+                    );
+                  })}
+              </LinksStructureContainer>
+            </ContentContainerStructure>
+          )}
         </MainContainer>
       ) : null}
     </>
@@ -132,7 +207,6 @@ const HeaderContainer = styled.div`
   margin-top: 30px;
   margin-bottom: 30px;
 `;
-
 const Title = styled.h1`
   font-size: 80px;
   font-weight: 50;
@@ -243,6 +317,127 @@ const ContentContainer = styled.div`
   line-height: 1.5;
   margin-top: 50px;
   margin-bottom: 50px;
+`;
+
+const BooksContentStructure = styled.div`
+  display: grid;
+  grid-template-columns: 50% 50%;
+  width: 90vw;
+`;
+
+const ContentContainerStructure = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const BookContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+  border: solid 1px;
+  border-radius: 7px;
+  border-color: rgba(232, 232, 232, 1);
+  background-color: snow;
+`;
+
+const BookInfoStructure = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+`;
+
+const BookImageStructure = styled.img`
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+  object-fit: cover;
+  opacity: 0.5;
+`;
+
+const ConceptsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  margin: 20px;
+  border: solid 1px;
+  border-radius: 7px;
+  border-color: rgba(232, 232, 232, 0.5);
+  background-color: white;
+`;
+
+const ConceptTitle = styled.h2``;
+
+const ConceptDescription = styled.p`
+  margin-top: 10px;
+  margin-bottom: 10px;
+`;
+
+const LinkSnippet = styled.div`
+  display: flex;
+  margin-top: 10px;
+  align-items: center;
+  overflow: scroll;
+`;
+
+const LinkTag = styled.div`
+  background-color: grey;
+  border-radius: 7px;
+  padding: 7px;
+  color: white;
+  max-width: 50%;
+`;
+
+const Line = styled.hr`
+  width: 100%;
+  border: 0;
+  height: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+`;
+
+const LinksStructureContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 60vw;
+`;
+
+const LinkContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 7px;
+  transition: 0.2s;
+  &:hover {
+    box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
+  }
+  border-color: rgba(232, 232, 232, 1);
+  background-color: Snow;
+`;
+
+const LinkHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+`;
+
+const ParentConcept = styled.div``;
+
+const ChildrenConcept = styled.div``;
+
+const LinkContent = styled.p`
+  padding: 20px;
+`;
+
+const LinkConcept = styled.div`
+  display: flex;
+  width: 300px;
+  background-color: #3aafa9;
+  color: white;
+  height: fit-content;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 7px;
+  border-color: rgba(232, 232, 232, 1);
 `;
 
 export default SingleConnection;

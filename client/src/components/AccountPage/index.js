@@ -2,9 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import { COLORS } from "../../constants";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const AccountPage = () => {
   const history = useHistory();
+  const currentUser = useSelector((state) => state.currentUser);
+
   return (
     <>
       <MainContainer>
@@ -12,23 +15,23 @@ const AccountPage = () => {
           <Title>User info</Title>
           <InfoContainer>
             <Label>Name:</Label>
-            <Info>John</Info>
+            <Info>{currentUser.name}</Info>
           </InfoContainer>
           <InfoContainer>
             <Label>Username:</Label>
-            <Info>John</Info>
+            <Info>@{currentUser.username}</Info>
           </InfoContainer>
           <InfoContainer>
             <Label>Email:</Label>
-            <Info>John</Info>
+            <Info>{currentUser.email}</Info>
           </InfoContainer>
           <InfoContainer>
             <Label>Connections Posted:</Label>
-            <Info>John</Info>
+            <Info>{currentUser.connections.length}</Info>
           </InfoContainer>
           <InfoContainer>
             <Label>Connections Bookmarked:</Label>
-            <Info>John</Info>
+            <Info>{currentUser.connections_bookmarked.length}</Info>
           </InfoContainer>
           <LogoutButton
             onClick={() => {
@@ -68,9 +71,11 @@ const UserInfo = styled.div`
 const InfoContainer = styled.div`
   display: flex;
   margin-top: 5px;
+  justify-content: space-between;
+  margin-bottom: 10px;
 `;
 
-const Label = styled.h5`
+const Label = styled.h3`
   font-weight: 800;
 `;
 

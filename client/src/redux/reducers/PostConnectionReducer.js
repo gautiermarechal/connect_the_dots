@@ -20,6 +20,7 @@ const initialState = {
     content: "",
     media: [],
     comments: [],
+    finalLinks: [],
   },
 };
 
@@ -192,6 +193,7 @@ const PostConnectionReducer = (state = initialState, action) => {
           }),
         },
       };
+
     case "MODIFY_LINK":
       return {
         ...state,
@@ -204,9 +206,10 @@ const PostConnectionReducer = (state = initialState, action) => {
                 return {
                   ...concept,
                   links: concept.links.map((link) => {
-                    console.log(action.data.bookId);
-                    console.log(link);
-                    if (link._bookId === action.data.bookId) {
+                    if (
+                      link._bookId === action.data.bookId &&
+                      link._id === action.data.indexLink
+                    ) {
                       return {
                         ...link,
                         [action.data.fieldToChange]: action.data.value,
@@ -221,13 +224,34 @@ const PostConnectionReducer = (state = initialState, action) => {
           }),
         },
       };
-    case "ADD_FINAL_LINK":
-      console.log(action.data);
+    case "CREATE_FINAL_LINK":
       return {
         ...state,
         post_connection: {
           ...state.post_connection,
-          finalLinks: [...state.post_connection.finalLinks, action.data],
+          finalLinks: [
+            ...state.post_connection.finalLinks,
+            { _id: action.data._id, parentConcept: {}, childrenConcepts: [] },
+          ],
+        },
+      };
+    case "ADD_FINAL_LINK":
+      return {
+        ...state,
+        post_connection: {
+          ...state.post_connection,
+          finalLinks: state.post_connection.finalLinks.map((finalLink) => {
+            if (finalLink._id === action.data._id) {
+              return {
+                ...finalLink,
+                parentConcept: action.data.parentConcept,
+                childrenConcepts: action.data.childrenConcepts,
+                content: action.data.content,
+              };
+            } else {
+              return { ...finalLink };
+            }
+          }),
         },
       };
     default:

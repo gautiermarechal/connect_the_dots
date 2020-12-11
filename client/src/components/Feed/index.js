@@ -49,12 +49,23 @@ const Feed = ({ type }) => {
 
       dispatch(receiveConnections(singleUser.connections));
     }
+
+    if (type === "ConnectionsBookmarked") {
+      dispatch(requestConnections());
+      if (!currentUser.connections_bookmarked) {
+        return;
+      }
+
+      dispatch(receiveConnections(currentUser.connections_bookmarked));
+    }
   }, [currentUser, singleCategoryConnections, singleUser]);
 
   return (
     <>
       <Wrapper>
-        {type !== "SingleCategory" && type !== "SingleUser" ? (
+        {type !== "SingleCategory" &&
+        type !== "SingleUser" &&
+        type !== "ConnectionsBookmarked" ? (
           <Title>{type}</Title>
         ) : null}
         <Line />
