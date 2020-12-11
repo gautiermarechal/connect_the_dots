@@ -83,6 +83,7 @@ const MainContainer = styled.div`
   width: 100%;
   height: 78px;
   padding: 20px;
+  background-color: white;
 `;
 
 const MainTitle = styled.h1`

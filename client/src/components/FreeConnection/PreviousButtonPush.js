@@ -1,19 +1,23 @@
 import React from "react";
 import styled from "styled-components";
 import { FiArrowLeft } from "react-icons/fi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toggleStepPostConnection } from "../../redux/actions/PostConnectionActions";
 import { useHistory } from "react-router-dom";
 
 const PreviousButton = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const postConnection = useSelector((state) => state.postConnection);
   return (
     <>
       <Button
         onClick={() => {
-          dispatch(toggleStepPostConnection(-1));
-          history.push("/connect");
+          if (postConnection.step === 1) {
+            dispatch(toggleStepPostConnection(-1));
+          } else {
+            history.push("/connect");
+          }
         }}
       >
         <PreviousIcon />

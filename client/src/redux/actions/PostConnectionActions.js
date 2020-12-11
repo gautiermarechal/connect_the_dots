@@ -20,6 +20,11 @@ export const addBookPostConnection = (data) => ({
   data: data,
 });
 
+export const deleteBookPostConnection = (data) => ({
+  type: "DELETE_BOOK_POST_CONNECTION",
+  data: data,
+});
+
 export const toggleStepPostConnection = (data) => ({
   type: "TOGGLE_STEP_POST_CONNECTION",
   data: data,

@@ -1,7 +1,11 @@
 import styled from "styled-components";
 import { COLORS } from "../../constants";
+import { GrClose } from "react-icons/gr";
+import { useDispatch } from "react-redux";
+import { deleteBookPostConnection } from "../../redux/actions/PostConnectionActions";
 
 const BooksChosenListComponent = ({ postConnection }) => {
+  const dispatch = useDispatch();
   return (
     <>
       <BooksChosenList>
@@ -14,6 +18,15 @@ const BooksChosenListComponent = ({ postConnection }) => {
                     <CoverImage src={book.volumeInfo.imageLinks.thumbnail} />
                   ) : null}
                   <BookItem>
+                    <BookHeader>
+                      <CloseButton
+                        onClick={() => {
+                          dispatch(deleteBookPostConnection({ book: book }));
+                        }}
+                      >
+                        <CloseIcon />
+                      </CloseButton>
+                    </BookHeader>
                     <BookTitle>{book.volumeInfo.title}</BookTitle>
                     <BookSubTitle>{book.volumeInfo.subtitle}</BookSubTitle>
                     <Authors>
@@ -42,7 +55,17 @@ const BooksChosenListComponent = ({ postConnection }) => {
                   <CoverImage src={book.volumeInfo.imageLinks.thumbnail} />
                 ) : null}
                 <BookItem>
+                  <BookHeader>
+                    <CloseButton
+                      onClick={() => {
+                        dispatch(deleteBookPostConnection({ book: book }));
+                      }}
+                    >
+                      <CloseIcon />
+                    </CloseButton>
+                  </BookHeader>
                   <BookTitle>{book.volumeInfo.title}</BookTitle>
+
                   <BookSubTitle>{book.volumeInfo.subtitle}</BookSubTitle>
                   <Authors>
                     {book.volumeInfo.authors
@@ -126,8 +149,6 @@ const CoverImage = styled.img`
   border-bottom-left-radius: 7px;
 `;
 
-const MultipleThreeLine = styled.hr``;
-
 const NormalLine = styled.hr`
   border: 0;
   height: 0;
@@ -141,6 +162,29 @@ const GridItem = styled.div`
   align-items: center;
   justify-content: center;
   margin: 20px;
+`;
+
+const BookHeader = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
+const CloseButton = styled.button`
+  border-style: none;
+  border-radius: 100%;
+  background-color: transparent;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  height: 25px;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+`;
+
+const CloseIcon = styled(GrClose)`
+  width: 15px;
+  height: 15px;
 `;
 
 export default BooksChosenListComponent;

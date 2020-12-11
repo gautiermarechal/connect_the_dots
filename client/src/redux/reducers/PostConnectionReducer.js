@@ -42,6 +42,16 @@ const PostConnectionReducer = (state = initialState, action) => {
           books: [...state.post_connection.books, action.data],
         },
       };
+    case "DELETE_BOOK_POST_CONNECTION":
+      return {
+        ...state,
+        post_connection: {
+          ...state.post_connection,
+          books: state.post_connection.books.filter(
+            (book) => book !== action.data.book
+          ),
+        },
+      };
     case "TOGGLE_STEP_POST_CONNECTION":
       return { ...state, step: state.step + action.data };
     case "SET_TYPE_POST_CONNECTION":

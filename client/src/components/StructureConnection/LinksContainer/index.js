@@ -9,8 +9,9 @@ const LinksContainerComponent = ({ postConnection }) => {
       <LinksContainer>
         <Title>Links</Title>
         {postConnection.post_connection.content.map((contentObj) => {
+          const bookTitle = contentObj.book.volumeInfo.title;
           return contentObj.concepts.map((concept) => {
-            return <Link concept={concept} />;
+            return <Link concept={concept} bookTitle={bookTitle} />;
           });
         })}
       </LinksContainer>

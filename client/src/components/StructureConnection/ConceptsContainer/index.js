@@ -38,7 +38,7 @@ const ConceptsContainerComponent = ({ indexBook, postConnection }) => {
             );
           }}
         >
-          <AddIcon />
+          Add Concept
         </AddConceptButton>
       </ConceptsContainer>
     </>
@@ -53,8 +53,19 @@ const ConceptsContainer = styled.div`
 const AddConceptButton = styled.button`
   margin-top: 20px;
   border: none;
-  background-color: transparent;
+  border-radius: 7px;
+  color: grey;
   width: 100px;
+  position: relative;
+  height: 40px;
+  cursor: pointer;
+  transition: 0.5s;
+  background-color: Ivory;
+
+  &:hover {
+    background-color: grey;
+    color: white;
+  }
 `;
 
 const AddIcon = styled(GrAddCircle)``;
