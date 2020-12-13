@@ -27,6 +27,8 @@ const useFetchCurrentUser = () => {
               connections: json.data.connections,
               connections_bookmarked: json.data.connections_bookmarked,
               authors_bookmarked: json.data.authors_bookmarked,
+              categories_bookmarked: json.data.categories_bookmarked,
+              books_bookmarked: json.data.books_bookmarked,
             })
           );
         })

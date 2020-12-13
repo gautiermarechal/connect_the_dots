@@ -6,13 +6,34 @@ import { useDispatch, useSelector } from "react-redux";
 import { COLORS } from "../../constants";
 import Feed from "../Feed";
 import { addBookPostConnection } from "../../redux/actions/PostConnectionActions";
+import { AiOutlineCheck } from "react-icons/ai";
+import updateUser from "../../handlers/UpdateUser";
 
 const BookPage = () => {
   const { id } = useParams();
   useFetchSingleBook(id);
   const singleBook = useSelector((state) => state.singleBook.single_book);
+  const currentUser = useSelector((state) => state.currentUser);
   const dispatch = useDispatch();
   const history = useHistory();
+  const [bookBookmarked, setBookBookmarked] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!singleBook) {
+      return;
+    }
+    if (currentUser.books_bookmarked) {
+      if (currentUser.books_bookmarked.length !== 0) {
+        if (
+          currentUser.books_bookmarked.some(
+            (book) => book.volumeInfo.id === singleBook.volumeInfo.id
+          )
+        ) {
+          setBookBookmarked(true);
+        }
+      }
+    }
+  }, [singleBook, currentUser]);
 
   return (
     <>
@@ -53,6 +74,20 @@ const BookPage = () => {
             >
               Connect
             </ActionButton>
+            {!bookBookmarked ? (
+              <ActionButton
+                onClick={() => {
+                  updateUser(currentUser.id, "books_bookmarked", singleBook);
+                  window.location.reload();
+                }}
+              >
+                Bookmark
+              </ActionButton>
+            ) : (
+              <ActionButton>
+                <AiOutlineCheck />
+              </ActionButton>
+            )}
           </ActionBar>
         </MainContainer>
       ) : null}

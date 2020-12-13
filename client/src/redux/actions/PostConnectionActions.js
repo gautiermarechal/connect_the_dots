@@ -55,10 +55,32 @@ export const addCategoryPostConnection = (data) => ({
   data: data,
 });
 
+export const asyncAddTitlePostConnection = (data) => {
+  return (dispatch, getState) => {
+    dispatch(addTitlePostConnection(data));
+    const state = getState();
+    localStorage.setItem(
+      "post-connection",
+      JSON.stringify(state.postConnection)
+    );
+  };
+};
+
 export const addTitlePostConnection = (data) => ({
   type: "ADD_TITLE_POST_CONNECTION",
   data: data,
 });
+
+export const asyncAddBannerPostConnection = (data) => {
+  return (dispatch, getState) => {
+    dispatch(addBannerPostConnection(data));
+    const state = getState();
+    localStorage.setItem(
+      "post-connection",
+      JSON.stringify(state.postConnection)
+    );
+  };
+};
 
 export const addBannerPostConnection = (data) => ({
   type: "ADD_BANNER_POST_CONNECTION",

@@ -137,6 +137,7 @@ const updateUser = async (req, res) => {
         Object.keys(fieldsToChange).includes("authors_bookmarked") ||
         Object.keys(fieldsToChange).includes("connections_bookmarked") ||
         Object.keys(fieldsToChange).includes("categories_bookmarked") ||
+        Object.keys(fieldsToChange).includes("books_bookmarked") ||
         Object.keys(fieldsToChange).includes("connections")
       ) {
         db.collection("users").updateOne(

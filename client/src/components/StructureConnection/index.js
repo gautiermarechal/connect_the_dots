@@ -6,10 +6,12 @@ import {
   addBannerPostConnection,
   addConceptToBook,
   addTitlePostConnection,
+  asyncAddTitlePostConnection,
   changeAllPostConnection,
   createPostConnection,
   getContentPostConnection,
   initialiseContentStructurePostConnection,
+  asyncAddBannerPostConnection,
 } from "../../redux/actions/PostConnectionActions";
 import ConceptsContainerComponent from "./ConceptsContainer";
 import LinksContainerComponent from "./LinksContainer";
@@ -21,6 +23,12 @@ const StructureConnection = () => {
   const currentUser = useSelector((state) => state.currentUser);
   const dispatch = useDispatch();
   const [previewSrc, setPreviewSrc] = useState("");
+
+  useEffect(() => {
+    if (postConnection.post_connection.bannerSrc !== "") {
+      setPreviewSrc(postConnection.post_connection.bannerSrc);
+    }
+  }, []);
 
   const animationWrapper = useSpring({
     transform: "translate3D(0,0,0)",
@@ -63,8 +71,9 @@ const StructureConnection = () => {
           <PreviousButtonPush />
         </PreviousContainer>
         <TitleInput
-          onChange={(e) => dispatch(addTitlePostConnection(e.target.value))}
+          onBlur={(e) => dispatch(asyncAddTitlePostConnection(e.target.value))}
           placeholder="Title"
+          defaultValue={postConnection.post_connection.title}
         />
         <FileInputContainer>
           <FileInputLabel htmlFor="file-input">
@@ -81,7 +90,7 @@ const StructureConnection = () => {
                 })
                   .then((res) => res.json())
                   .then((json) => {
-                    dispatch(addBannerPostConnection(json.data.path));
+                    dispatch(asyncAddBannerPostConnection(json.data.path));
                     setPreviewSrc(json.data.path);
                   });
               }}

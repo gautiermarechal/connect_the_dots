@@ -63,7 +63,8 @@ const Feed = ({ type }) => {
 
   return (
     <>
-      {feedConnections.status === "received" ? (
+      {feedConnections.status === "received" ||
+      feedConnections.status === "idle" ? (
         <Wrapper>
           {type !== "SingleCategory" &&
           type !== "SingleUser" &&
