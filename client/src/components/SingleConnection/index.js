@@ -9,6 +9,7 @@ import moment from "moment";
 import parser from "html-react-parser";
 import updateUser from "../../handlers/UpdateUser";
 import { COLORS } from "../../constants";
+import LoadingSpinner from "../LoadingSpinner";
 
 const SingleConnection = () => {
   const [authorBookmarked, setAuthorBookmarked] = useState(false);
@@ -23,12 +24,13 @@ const SingleConnection = () => {
     if (!connection) {
       return;
     }
-
-    currentUser.authors_bookmarked.forEach((author) => {
-      if (author._id === author._id) {
-        setAuthorBookmarked(true);
-      }
-    });
+    if (currentUser.authors_bookmarked) {
+      currentUser.authors_bookmarked.forEach((author) => {
+        if (author._id === author._id) {
+          setAuthorBookmarked(true);
+        }
+      });
+    }
 
     currentUser.connections_bookmarked.forEach((connectionParams) => {
       if (connectionParams._id === connection._id) {
@@ -75,6 +77,7 @@ const SingleConnection = () => {
                       "authors_bookmarked",
                       connection.author
                     );
+                    window.location.reload();
                   }
                 }}
               >
@@ -97,6 +100,7 @@ const SingleConnection = () => {
                       "connections_bookmarked",
                       connection
                     );
+                    window.location.reload();
                   }
                 }}
               >
@@ -190,7 +194,9 @@ const SingleConnection = () => {
             </ContentContainerStructure>
           )}
         </MainContainer>
-      ) : null}
+      ) : (
+        <LoadingSpinner />
+      )}
     </>
   );
 };
@@ -235,7 +241,6 @@ const BookInfo = styled.div`
   flex-direction: column;
   justify-content: center;
   padding: 20px;
-  overflow: scroll;
 `;
 
 const BookImage = styled.img`

@@ -5,6 +5,7 @@ import useFetchSingleCategory from "../../customHooks/UseFetchSingleCategory";
 import useFetchCategoryConnections from "../../customHooks/UseFetchCategoryConnections";
 import { useSelector } from "react-redux";
 import Feed from "../Feed";
+import LoadingSpinner from "../LoadingSpinner";
 
 const SingleCategory = () => {
   const id = useParams().id;
@@ -20,7 +21,9 @@ const SingleCategory = () => {
             <Line />
             <Feed type="SingleCategory" />
           </>
-        ) : null}
+        ) : (
+          <LoadingSpinner />
+        )}
       </MainContainer>
     </>
   );
@@ -31,7 +34,6 @@ const MainContainer = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 20px;
-  height: 70vh;
 `;
 
 const InternalContainer = styled.div`

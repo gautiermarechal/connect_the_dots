@@ -24,6 +24,15 @@ const FreeConnection = () => {
     from: { opacity: 0 },
   });
 
+  const animation = useSpring({
+    transform: "translate3D(0,0,0)",
+    opacity: 1,
+    from: {
+      transform: "translate3D(0,-50px,0)",
+      opacity: 0,
+    },
+  });
+
   useEffect(() => {
     if (currentUser.id === "") {
       return;
@@ -43,7 +52,7 @@ const FreeConnection = () => {
 
   return (
     <>
-      <MainContainer>
+      <MainContainer style={animation}>
         <PreviousContainer>
           <PreviousButtonPush />
         </PreviousContainer>
@@ -112,7 +121,7 @@ const FreeConnection = () => {
   );
 };
 
-const MainContainer = styled.div`
+const MainContainer = styled(animated.div)`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -138,7 +147,6 @@ const BookInfo = styled.div`
   display: flex;
   flex-direction: column;
   padding: 20px;
-  overflow: scroll;
 `;
 
 const BookImage = styled.img`

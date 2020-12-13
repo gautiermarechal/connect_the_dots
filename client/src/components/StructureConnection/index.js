@@ -22,6 +22,15 @@ const StructureConnection = () => {
   const dispatch = useDispatch();
   const [previewSrc, setPreviewSrc] = useState("");
 
+  const animationWrapper = useSpring({
+    transform: "translate3D(0,0,0)",
+    opacity: 1,
+    from: {
+      transform: "translate3D(0,-50px,0)",
+      opacity: 0,
+    },
+  });
+
   const animation1 = useSpring({
     config: { duration: 1000, velocity: 1000 },
     delay: 250,
@@ -49,7 +58,7 @@ const StructureConnection = () => {
 
   return (
     <>
-      <MainContainer>
+      <MainContainer style={animationWrapper}>
         <PreviousContainer>
           <PreviousButtonPush />
         </PreviousContainer>
@@ -129,7 +138,7 @@ const StructureConnection = () => {
   );
 };
 
-const MainContainer = styled.div`
+const MainContainer = styled(animated.div)`
   display: flex;
   flex-direction: column;
   align-items: center;

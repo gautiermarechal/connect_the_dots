@@ -159,7 +159,6 @@ const CategoryLabel = styled.button`
   width: 110px;
   margin: 2px;
   height: 50px;
-  overflow: scroll;
   cursor: pointer;
 `;
 

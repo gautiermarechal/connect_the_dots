@@ -175,6 +175,7 @@ const ConceptItemComponent = ({ indexBook, indexConcept, postConnection }) => {
                                         })
                                       );
                                       setOpenTooltip(false);
+                                      window.location.reload();
                                     }}
                                   >
                                     <ConceptNumberList>

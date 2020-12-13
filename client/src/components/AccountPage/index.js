@@ -86,7 +86,7 @@ const Info = styled.h5`
 `;
 
 const LogoutButton = styled.button`
-  background-color: ${COLORS.green};
+  background-color: ${COLORS.blue};
   border-style: none;
   border-radius: 3px;
   color: white;

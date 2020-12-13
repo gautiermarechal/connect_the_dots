@@ -149,7 +149,10 @@ const SearchBar = () => {
             {foundConnections.map((connection) =>
               postConnection.status === "started" ? null : (
                 <>
-                  <Link to={`/connection/${connection._id}`}>
+                  <Link
+                    to={`/connection/${connection._id}`}
+                    onClick={() => handleClear()}
+                  >
                     <Connection>
                       <ResultLabelContainer>
                         <ConnectionTitle>{connection.title}</ConnectionTitle>

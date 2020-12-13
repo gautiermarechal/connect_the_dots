@@ -11,6 +11,7 @@ import { COLORS } from "../../constants";
 import BooksChosenListComponent from "../BooksChosenList/index";
 import ChooseConnectOption from "../ChooseConnectOption";
 import PreviousButton from "../PostConnection/PreviousButton";
+import { useSpring, animated } from "react-spring";
 
 const PostConnection = () => {
   const dispatch = useDispatch();
@@ -20,14 +21,23 @@ const PostConnection = () => {
     dispatch(startPostConnection());
   }, []);
 
+  const animation = useSpring({
+    transform: "translate3D(0,0,0)",
+    opacity: 1,
+    from: {
+      transform: "translate3D(0,-50px,0)",
+      opacity: 0,
+    },
+  });
+
   //Sections Components
-  const ChooseBooksSection = styled.div`
+  const ChooseBooksSection = styled(animated.div)`
     display: ${stepState === 0 ? "flex" : "none"};
     flex-direction: column;
     align-items: center;
   `;
 
-  const ChooseOptionSection = styled.div`
+  const ChooseOptionSection = styled(animated.div)`
     display: ${stepState === 1 ? "flex" : "none"};
     flex-direction: column;
     align-items: center;
@@ -35,7 +45,7 @@ const PostConnection = () => {
 
   const PreviousButtonContainer = styled.div`
     display: ${stepState === 0 ? "none" : "flex"};
-    width: 100%;
+    width: 80vw; ;
   `;
 
   return (
@@ -44,7 +54,7 @@ const PostConnection = () => {
         <PreviousButtonContainer>
           <PreviousButton />
         </PreviousButtonContainer>
-        <ChooseBooksSection>
+        <ChooseBooksSection style={animation}>
           <Title>Choose 2 or more books:</Title>
           <SearchBar />
           <BooksChosenListComponent postConnection={postConnection} />
@@ -60,7 +70,7 @@ const PostConnection = () => {
             Next
           </ButtonNext>
         </ChooseBooksSection>
-        <ChooseOptionSection>
+        <ChooseOptionSection style={animation}>
           <Title>Choose to follow a structure, or be totally free:</Title>
           <ChooseConnectOption />
         </ChooseOptionSection>

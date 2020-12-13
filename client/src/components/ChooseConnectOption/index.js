@@ -18,11 +18,12 @@ const ChooseConnectOption = () => {
   const postConnection = useSelector((state) => state.postConnection);
 
   const animation = useSpring({
-    transform:
-      postConnection.step === 1
-        ? "translate3D(0,0,0)"
-        : "translate3D(0,-50px,0)",
-    opacity: postConnection.step === 1 ? 1 : 0,
+    transform: "translate3D(0,0,0)",
+    opacity: 1,
+    from: {
+      transform: "translate3D(0,-50px,0)",
+      opacity: 0,
+    },
   });
 
   return (
