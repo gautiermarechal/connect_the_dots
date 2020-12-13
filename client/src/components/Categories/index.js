@@ -41,6 +41,7 @@ const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 20px;
 `;
 
 const InternalContainer = styled.div`
@@ -70,13 +71,16 @@ const CategoryItem = styled.button`
   align-items: center;
   justify-content: center;
   height: 150px;
-  background-color: transparent;
+  background-color: white;
+  margin: 5px;
+  box-shadow: 0 1px 4px 0 rgba(21, 27, 38, 0.08);
+
   border: none;
   transition: 0.2s;
   border-radius: 7px;
 
   &:hover {
-    background-color: ${COLORS.green};
+    background-color: ${COLORS.blue};
     color: white;
     cursor: pointer;
   }

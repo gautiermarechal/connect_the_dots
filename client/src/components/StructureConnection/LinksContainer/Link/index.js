@@ -26,71 +26,74 @@ const Link = ({ concept, bookTitle }) => {
     }
   }, []);
 
-  const LinkContainer = styled.div`
-    display: ${displayLink ? "flex" : "none"};
-    flex-direction: column;
-    margin-bottom: 20px;
-    background-color: white;
-    padding: 20px;
-    border-radius: 7px;
-    box-shadow: 0 1px 4px 0 rgba(21, 27, 38, 0.08);
-    width: 70vw;
-    justify-content: center;
-  `;
-
   return (
-    <LinkContainer>
-      <LinkConceptsContainer>
-        <ParentConceptContainer>
-          <BookInfoContainer>
-            <BookTitle>{bookTitle}</BookTitle>
-          </BookInfoContainer>
-          <LinkInfoContainer>
-            <ConceptNumber>{concept._id + 1}</ConceptNumber>
-            {concept.title}
-          </LinkInfoContainer>
-        </ParentConceptContainer>
-        {concept.links.length !== 0 ? (
-          concept.links.map((link) => {
-            return (
-              <ChildrenConceptContainer>
-                <BookInfoContainer>
-                  <BookTitle>
-                    {postConnection.books.length !== 0 &&
-                      postConnection.books.filter(
-                        (book) => book.id === link._bookId
-                      )[0].volumeInfo.title}
-                  </BookTitle>
-                </BookInfoContainer>
-                <LinkInfoContainer>
-                  <ConceptNumber>{link._id + 1}</ConceptNumber>
-                  {link.title}
-                </LinkInfoContainer>
-              </ChildrenConceptContainer>
-            );
-          })
-        ) : (
-          <span>...</span>
-        )}
-      </LinkConceptsContainer>
-      <LinkInput
-        placeholder="Describe the link"
-        onChange={(e) => {
-          console.log(currentId);
-          dispatch(asyncCreateFinalLink({ _id: currentId }));
-          dispatch(
-            asyncAddFinalLink({
-              _id: currentId,
-              parentConcept: concept,
-              childrenConcepts: concept.links,
-              content: e.target.value,
-            })
-          );
-        }}
-      />
-    </LinkContainer>
+    <>
+      {displayLink ? (
+        <LinkContainer>
+          <LinkConceptsContainer>
+            <ParentConceptContainer>
+              <BookInfoContainer>
+                <BookTitle>{bookTitle}</BookTitle>
+              </BookInfoContainer>
+              <LinkInfoContainer>
+                <ConceptNumber>{concept._id + 1}</ConceptNumber>
+                {concept.title}
+              </LinkInfoContainer>
+            </ParentConceptContainer>
+            {concept.links.length !== 0 ? (
+              concept.links.map((link) => {
+                return (
+                  <ChildrenConceptContainer>
+                    <BookInfoContainer>
+                      <BookTitle>
+                        {postConnection.books.length !== 0 &&
+                          postConnection.books.filter(
+                            (book) => book.id === link._bookId
+                          )[0].volumeInfo.title}
+                      </BookTitle>
+                    </BookInfoContainer>
+                    <LinkInfoContainer>
+                      <ConceptNumber>{link._id + 1}</ConceptNumber>
+                      {link.title}
+                    </LinkInfoContainer>
+                  </ChildrenConceptContainer>
+                );
+              })
+            ) : (
+              <span>...</span>
+            )}
+          </LinkConceptsContainer>
+          <LinkInput
+            placeholder="Describe the link"
+            onChange={(e) => {
+              dispatch(asyncCreateFinalLink({ _id: currentId }));
+              dispatch(
+                asyncAddFinalLink({
+                  _id: currentId,
+                  parentConcept: concept,
+                  childrenConcepts: concept.links,
+                  content: e.target.value,
+                })
+              );
+            }}
+          />
+        </LinkContainer>
+      ) : null}
+    </>
   );
 };
+
+const LinkContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 7px;
+  box-shadow: 0 1px 4px 0 rgba(21, 27, 38, 0.08);
+  width: 70vw;
+  justify-content: center;
+`;
 const LinkConceptsContainer = styled.div`
   display: flex;
   align-items: center;

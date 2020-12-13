@@ -2,11 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { COLORS } from "../../constants";
 import { useHistory } from "react-router-dom";
-import {
-  isValidEmail,
-  isValidEmpty,
-  userMatches,
-} from "../../handlers/validators/LoginValidators";
+import { Formik } from "formik";
 
 const Login = () => {
   const history = useHistory();
@@ -21,123 +17,97 @@ const Login = () => {
   const [errors, setErrors] = useState([]);
   const [displayError, setDisplayError] = useState(false);
 
-  //Display errors or not when the errors array is empty or not
-  useEffect(() => {
-    if (errors.length > 0) {
-      setDisplayError(true);
-    } else {
-      setDisplayError(false);
-    }
-  }, [errors]);
-
-  const handleSubmit = () => {
-    //Check if user fields are empty
-    if (isValidEmpty(email, password)) {
-      setEmpty(false);
-      const index = errors.indexOf("Please fill in all required fields");
-      errors.splice(index, 1);
-    } else {
-      setEmpty(true);
-      if (!errors.includes("Please fill in all required fields")) {
-        setErrors([...errors, "Please fill in all required fields"]);
-      }
-    }
-    //Check user exist
-    if (emailIsValid && !empty) {
-      userMatches(email, password)
-        .then((result) => {
-          if (result) {
-            setUserFound(true);
-            setCanSubmit(true);
-            const index = errors.indexOf(
-              "Could not find an account matching with these credentials"
-            );
-            errors.splice(index, 1);
-            return true;
-          } else {
-            setUserFound(false);
-            if (
-              !errors.includes(
-                "Could not find an account matching with these credentials"
-              )
-            ) {
-              setErrors([
-                ...errors,
-                "Could not find an account matching with these credentials",
-              ]);
-            }
-            return false;
-          }
-        })
-        .then((valid) => {
-          console.log(valid);
-          //SUCCESS
-          if (valid) {
-            localStorage.setItem("user-email", email);
-            history.push("/user-feed");
-            window.location.reload();
-          }
-        });
-    }
-  };
-
-  const onChangeEmail = (valueInput) => {
-    //Check email
-    if (isValidEmail(valueInput)) {
-      setEmailIsValid(true);
-      const index = errors.indexOf("Email is not valid");
-      errors.splice(index, 1);
-    } else {
-      setEmailIsValid(false);
-      if (!errors.includes("Email is not valid")) {
-        setErrors([...errors, "Email is not valid"]);
-      }
-    }
-  };
-
-  const ErrorContainer = styled.div`
-    background-color: rgba(255, 26, 26, 0.2);
-    display: ${displayError ? "flex" : "none"};
-    flex-direction: column;
-    width: 100%;
-  `;
-
-  const ErrorList = styled.ul`
-    list-style-type: none;
-  `;
-
-  const Error = styled.li``;
   return (
     <>
       <MainContainer>
         <LoginContainer>
           <Title>Login</Title>
-          <Form>
-            <Label htmlFor="email-input" type="email">
-              Email
-            </Label>
-            <Input
-              id="email-input"
-              onChange={(e) => {
-                setEmail(e.target.value);
-                onChangeEmail(e.target.value);
-              }}
-            />
-            <Label htmlFor="password-input">Password</Label>
-            <Input
-              id="password-input"
-              type="password"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </Form>
-          <SubmitButton onClick={handleSubmit}>Submit</SubmitButton>
-          <ErrorContainer>
-            <ErrorList>
-              {errors.map((error) => (
-                <Error>{error}</Error>
-              ))}
-            </ErrorList>
-          </ErrorContainer>
+          <Formik
+            initialValues={{ email: "", password: "" }}
+            validate={(values) => {
+              const errors = {};
+
+              if (!values.email) {
+                errors.email = "Required";
+              } else if (
+                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+              ) {
+                errors.email = "Invalid email address";
+              }
+              if (!values.password) {
+                errors.password = "Required";
+              }
+
+              console.log(errors);
+
+              return fetch(`http://localhost:4000/users/email/${values.email}`)
+                .then((res) => res.json())
+                .then((json) => {
+                  if (json.status === 200) {
+                    if (values.password !== json.data.password) {
+                      errors.email = "Credentials not found";
+                    }
+                  } else {
+                    errors.email = "Credentials not found";
+                  }
+
+                  return errors;
+                });
+            }}
+            onSubmit={(values, { setSubmitting }) => {
+              setTimeout(() => {
+                setSubmitting(false);
+                localStorage.setItem("user-email", values.email);
+                history.push("/");
+                window.location.reload();
+              }, 400);
+            }}
+          >
+            {({
+              values,
+              errors,
+              touched,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              isSubmitting,
+              /* and other goodies */
+            }) => (
+              <Form onSubmit={handleSubmit}>
+                <Label htmlFor="email" type="email">
+                  Email *
+                </Label>
+                <Input
+                  type="email"
+                  name="email"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.email}
+                  placeholder="Enter your email address"
+                />
+                <ErrorContainer>
+                  <Error>{errors.email && touched.email && errors.email}</Error>
+                </ErrorContainer>
+                <Label htmlFor="password">Password *</Label>
+                <Input
+                  type="password"
+                  name="password"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.password}
+                  placeholder="Enter your password here"
+                />
+                <ErrorContainer>
+                  <Error>
+                    {errors.password && touched.password && errors.password}
+                  </Error>
+                </ErrorContainer>
+                <SubmitButton type="submit" disabled={isSubmitting}>
+                  Submit
+                </SubmitButton>
+              </Form>
+            )}
+          </Formik>
         </LoginContainer>
       </MainContainer>
     </>
@@ -197,6 +167,19 @@ const SubmitButton = styled.button`
   margin: 2px;
   height: 30px;
   cursor: pointer;
+`;
+
+const ErrorContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: 7px;
+`;
+
+const Error = styled.div`
+  color: red;
+  margin-top: -15px;
+  margin-bottom: 15px;
 `;
 
 export default Login;

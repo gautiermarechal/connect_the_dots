@@ -14,11 +14,21 @@ import {
 import ConceptsContainerComponent from "./ConceptsContainer";
 import LinksContainerComponent from "./LinksContainer";
 import { COLORS } from "../../constants";
+import { useSpring, animated } from "react-spring";
 
 const StructureConnection = () => {
   const postConnection = JSON.parse(localStorage.getItem("post-connection"));
   const currentUser = useSelector((state) => state.currentUser);
   const dispatch = useDispatch();
+  const [previewSrc, setPreviewSrc] = useState("");
+
+  const animation1 = useSpring({
+    config: { duration: 1000, velocity: 1000 },
+    delay: 250,
+
+    opacity: 1,
+    from: { opacity: 0 },
+  });
 
   useEffect(() => {
     if (currentUser.id === "") {
@@ -40,14 +50,16 @@ const StructureConnection = () => {
   return (
     <>
       <MainContainer>
-        <PreviousButtonPush />
+        <PreviousContainer>
+          <PreviousButtonPush />
+        </PreviousContainer>
         <TitleInput
           onChange={(e) => dispatch(addTitlePostConnection(e.target.value))}
           placeholder="Title"
         />
         <FileInputContainer>
           <FileInputLabel htmlFor="file-input">
-            Choose file
+            Choose an image
             <FileInput
               id="file-input"
               onChange={(e) => {
@@ -61,6 +73,7 @@ const StructureConnection = () => {
                   .then((res) => res.json())
                   .then((json) => {
                     dispatch(addBannerPostConnection(json.data.path));
+                    setPreviewSrc(json.data.path);
                   });
               }}
               type="file"
@@ -69,7 +82,12 @@ const StructureConnection = () => {
             />
           </FileInputLabel>
         </FileInputContainer>
-
+        {previewSrc && (
+          <ImagePreview
+            src={`http://localhost:4000/${previewSrc}`}
+            style={animation1}
+          />
+        )}
         <BookList>
           {postConnection.post_connection.books.map((book, index) => {
             return (
@@ -221,6 +239,17 @@ const CategoryButton = styled.button`
   margin: 2px;
   cursor: pointer;
   margin-top: 20px;
+`;
+
+const PreviousContainer = styled.div`
+  display: flex;
+  width: 80vw;
+  justify-content: flex-start;
+`;
+
+const ImagePreview = styled(animated.img)`
+  border-radius: 7px;
+  width: 80vw;
 `;
 
 export default StructureConnection;

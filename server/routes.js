@@ -23,9 +23,14 @@ const {
   getConnectionByCategory,
   getConnectionBySearchTerm,
   getMostRecentConnections,
+  getConnectionByCategoryName,
 } = require("./handlers/connections");
 //Google Imports
-const { getBookBySearch, getBookById } = require("./handlers/google");
+const {
+  getBookBySearch,
+  getBookById,
+  getBookByCategory,
+} = require("./handlers/google");
 //Categories Imports
 const {
   getAllCategories,
@@ -75,6 +80,9 @@ router.get("/connections", getAllConnections);
 //Get connections by category
 router.get("/connections/category/:id", getConnectionByCategory);
 
+//Get connections by category name
+router.get("/connections/category/name/:name", getConnectionByCategoryName);
+
 //Get connection by id
 router.get("/connections/:id", getConnectionById);
 
@@ -103,6 +111,9 @@ router.get("/recent/connections", getMostRecentConnections);
 //GOOGLE API AUTH ROUTES---------------------------------
 //Get book by search terms
 router.get("/books", getBookBySearch);
+
+//Get book by category
+router.get("/books/category", getBookByCategory);
 
 //CATEGORIES ROUTES--------------------------------------
 //Get all categories

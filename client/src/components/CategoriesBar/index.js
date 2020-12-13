@@ -3,13 +3,22 @@ import styled from "styled-components";
 import { CATEGORIES, COLORS } from "../../constants";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useSpring, animated } from "react-spring";
 
 const CategoriesBar = () => {
   const history = useHistory();
   const categoriesBarOpened = useSelector(
     (state) => state.categories.categories_bar_opened
   );
-  const MainContainer = styled.div`
+
+  const animation = useSpring({
+    transform: categoriesBarOpened
+      ? "translate3D(0,0,0)"
+      : "translate3D(0,-50px,0)",
+    opacity: categoriesBarOpened ? 1 : 0,
+  });
+
+  const MainContainer = styled(animated.div)`
     display: ${categoriesBarOpened ? "flex" : "none"};
     flex-direction: column;
     justify-content: space-around;
@@ -17,10 +26,11 @@ const CategoriesBar = () => {
     width: 100%;
     height: 120px;
     padding: 20px;
+    background-color: white;
   `;
   return (
     <>
-      <MainContainer>
+      <MainContainer style={animation}>
         <AllCategoriesButton onClick={() => history.push("/categories")}>
           All
         </AllCategoriesButton>
@@ -69,7 +79,7 @@ const SecondRow = styled.div`
 `;
 
 const CategoryButton = styled.button`
-  background-color: ${COLORS.green};
+  background-color: ${COLORS.blue};
   border-style: none;
   border-radius: 3px;
   color: white;
@@ -78,10 +88,15 @@ const CategoryButton = styled.button`
   margin: 2px;
   height: 30px;
   cursor: pointer;
+  transition: 0.2s;
+
+  &:hover {
+    background-color: #001f3f;
+  }
 `;
 
 const AllCategoriesButton = styled.button`
-  background-color: ${COLORS.grey};
+  background-color: #aaaaaa;
   border-style: none;
   border-radius: 3px;
   color: white;

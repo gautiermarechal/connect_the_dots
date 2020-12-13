@@ -68,6 +68,31 @@ const getConnectionByCategory = async (req, res) => {
   }
 };
 
+//Get connections by category name
+const getConnectionByCategoryName = async (req, res) => {
+  try {
+    //DB config
+    const client = MongoClient(MONGO_URI, options);
+
+    await client.connect();
+
+    const db = client.db(DB);
+    console.log("DB connected");
+    //-------------------------------
+    //Get requested category name
+    const categoryName = req.params.name;
+
+    const resultConnections = await db
+      .collection("connections")
+      .find({ categories: categoryName })
+      .toArray();
+
+    res.status(200).json({ status: 200, data: resultConnections });
+  } catch (error) {
+    res.status(500).json({ status: 500, error: error.message });
+  }
+};
+
 //Get connection by id
 const getConnectionById = async (req, res) => {
   try {
@@ -290,7 +315,7 @@ const getMostRecentConnections = async (req, res) => {
     const result = await db
       .collection("connections")
       .find()
-      .sort({ created_at: 1 })
+      .sort({ $natural: -1 })
       .limit(3)
       .toArray();
 
@@ -311,4 +336,5 @@ module.exports = {
   getConnectionByCategory,
   getConnectionBySearchTerm,
   getMostRecentConnections,
+  getConnectionByCategoryName,
 };

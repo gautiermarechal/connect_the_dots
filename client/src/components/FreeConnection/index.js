@@ -1,21 +1,28 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import {
   addBannerPostConnection,
   addTitlePostConnection,
-  changeAllPostConnection,
   createPostConnection,
-  getContentPostConnection,
 } from "../../redux/actions/PostConnectionActions";
 import PreviousButtonPush from "../FreeConnection/PreviousButtonPush";
-import RichTextEditor from "../RichTextEditor";
 import TextEditor from "../TextEditor";
+import { useSpring, animated } from "react-spring";
 
 const FreeConnection = () => {
   const postConnection = JSON.parse(localStorage.getItem("post-connection"));
   const currentUser = useSelector((state) => state.currentUser);
   const dispatch = useDispatch();
+  const [previewSrc, setPreviewSrc] = useState("");
+
+  const animation1 = useSpring({
+    config: { duration: 1000, velocity: 1000 },
+    delay: 250,
+
+    opacity: 1,
+    from: { opacity: 0 },
+  });
 
   useEffect(() => {
     if (currentUser.id === "") {
@@ -37,31 +44,44 @@ const FreeConnection = () => {
   return (
     <>
       <MainContainer>
-        <PreviousButtonPush />
-        <Title>Write your connection</Title>
-        <TitleLabel>Title: </TitleLabel>
+        <PreviousContainer>
+          <PreviousButtonPush />
+        </PreviousContainer>
         <TitleInput
           onChange={(e) => dispatch(addTitlePostConnection(e.target.value))}
+          placeholder="Title"
         />
-        <TitleLabel>Thumbnail Image</TitleLabel>
-        <TitleInput
-          onChange={(e) => {
-            const formData = new FormData();
-            formData.append("banner", e.target.files[0]);
-            console.log(e.target.files[0]);
-            fetch("http://localhost:4000/connections/upload", {
-              method: "POST",
-              body: formData,
-            })
-              .then((res) => res.json())
-              .then((json) => {
-                dispatch(addBannerPostConnection(json.data.path));
-              });
-          }}
-          type="file"
-          accept="image/*"
-          name="banner"
-        />
+        <FileInputContainer>
+          <FileInputLabel htmlFor="file-input">
+            Choose an image
+            <FileInput
+              id="file-input"
+              onChange={(e) => {
+                const formData = new FormData();
+                formData.append("banner", e.target.files[0]);
+                console.log(e.target.files[0]);
+                fetch("http://localhost:4000/connections/upload", {
+                  method: "POST",
+                  body: formData,
+                })
+                  .then((res) => res.json())
+                  .then((json) => {
+                    dispatch(addBannerPostConnection(json.data.path));
+                    setPreviewSrc(json.data.path);
+                  });
+              }}
+              type="file"
+              accept="image/*"
+              name="banner"
+            />
+          </FileInputLabel>
+        </FileInputContainer>
+        {previewSrc && (
+          <ImagePreview
+            src={`http://localhost:4000/${previewSrc}`}
+            style={animation1}
+          />
+        )}
         <BooksToConnectContainer>
           {postConnection.post_connection.books.map((book) => {
             return (
@@ -99,18 +119,19 @@ const MainContainer = styled.div`
 `;
 
 const BooksToConnectContainer = styled.div`
-  display: flex;
-  overflow: scroll;
+  display: grid;
+  grid-template-columns: 50% 50%;
   width: 80vw;
-  margin-bottom: 20px;
 `;
 
 const Book = styled.div`
   display: flex;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  box-shadow: 0 1px 4px 0 rgba(21, 27, 38, 0.08);
   border-radius: 7px;
   height: 140px;
+  width: 400px;
   margin: 20px;
+  background-color: white;
 `;
 
 const BookInfo = styled.div`
@@ -133,17 +154,64 @@ const Authors = styled.h5`
   margin-top: 5px;
 `;
 
-const Title = styled.h1`
-  margin-bottom: 20px;
-`;
-
 const TextEditorContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
-const TitleLabel = styled.h3``;
-const TitleInput = styled.input``;
+const TitleInput = styled.input`
+  border-radius: 7px;
+  border-style: none;
+  border-width: 1px;
+  height: 100px;
+  width: 70vw;
+  font-size: 50px;
+  outline: none;
+  padding: 20px;
+  background-color: inherit;
+  &::-webkit-input-placeholder {
+    padding-top: 5px;
+    font-size: 50px;
+  }
+`;
+
+const FileInput = styled.input`
+  &::-webkit-file-upload-button {
+    visibility: none;
+  }
+`;
+
+const FileInputLabel = styled.label`
+  padding: 20px;
+  font-size: 20px;
+  cursor: pointer;
+
+  [type="file"] {
+    border: 0;
+    height: 1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute !important;
+    white-space: nowrap;
+    width: 1px;
+  }
+`;
+
+const FileInputContainer = styled.div`
+  display: flex;
+  width: 70vw;
+`;
+
+const PreviousContainer = styled.div`
+  display: flex;
+  width: 80vw;
+  justify-content: flex-start;
+`;
+
+const ImagePreview = styled(animated.img)`
+  border-radius: 7px;
+  width: 80vw;
+`;
 
 export default FreeConnection;

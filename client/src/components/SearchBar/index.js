@@ -13,6 +13,7 @@ import {
   addBookPostConnection,
   addCategoryPostConnection,
 } from "../../redux/actions/PostConnectionActions";
+import { useSpring, animated } from "react-spring";
 
 const SearchBar = () => {
   const dispatch = useDispatch();
@@ -52,7 +53,7 @@ const SearchBar = () => {
     dispatch(clearBooks());
   };
 
-  const ResultContainer = styled.div`
+  const ResultContainer = styled(animated.div)`
     display: ${booksFound.books && booksFound.books.length !== 0
       ? "block"
       : "none"};
@@ -67,6 +68,14 @@ const SearchBar = () => {
     border-radius: 7px;
   `;
 
+  const animation = useSpring({
+    transform:
+      booksFound.books && booksFound.books.length !== 0
+        ? "translate3D(0,0,0)"
+        : "translate3D(0,-50px,0)",
+    opacity: booksFound.books && booksFound.books.length !== 0 ? 1 : 0,
+  });
+
   return (
     <>
       <MainContainer>
@@ -78,7 +87,7 @@ const SearchBar = () => {
           }}
           ref={searchBarRef}
         />
-        <ResultContainer>
+        <ResultContainer style={animation}>
           <ListOfResults>
             {booksFound.books &&
               booksFound.books.slice(0, 4).map((book) => {
@@ -115,7 +124,7 @@ const SearchBar = () => {
                         )}
                       </Book>
                     ) : (
-                      <Link to={`/book/${id}`}>
+                      <Link to={`/book/${id}`} onClick={() => handleClear()}>
                         <Book>
                           <ResultLabelContainer>
                             <BookTitle>{title}</BookTitle>

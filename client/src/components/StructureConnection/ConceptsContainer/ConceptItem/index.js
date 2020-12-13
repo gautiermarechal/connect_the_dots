@@ -3,8 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import {
   asyncAddLinkToConcept,
+  asyncDeleteLinkFromConcept,
   asyncModifyConceptToBook,
   asyncModifyLink,
+  asyncRemoveConceptFromBook,
 } from "../../../../redux/actions/PostConnectionActions";
 import { GrAddCircle } from "react-icons/gr";
 import { COLORS } from "../../../../constants";
@@ -110,13 +112,40 @@ const ConceptItemComponent = ({ indexBook, indexConcept, postConnection }) => {
                 );
               })}
             </DisplayLinksChosen>
-            <AddLinkButton
-              onClick={() =>
-                openTooltip ? setOpenTooltip(false) : setOpenTooltip(true)
-              }
-            >
-              Add Link
-            </AddLinkButton>
+            <ActionBar>
+              <AddLinkButton
+                onClick={() =>
+                  openTooltip ? setOpenTooltip(false) : setOpenTooltip(true)
+                }
+              >
+                Add Link
+              </AddLinkButton>
+              <RemoveConceptButton
+                onClick={() => {
+                  dispatch(
+                    asyncRemoveConceptFromBook({
+                      indexBook: indexBook,
+                      conceptId: indexConcept,
+                      titleConcept:
+                        postConnection.post_connection.content[indexBook]
+                          .concepts[indexConcept].title,
+                    })
+                  );
+
+                  dispatch(
+                    asyncDeleteLinkFromConcept({
+                      conceptId: indexConcept,
+                      titleConcept:
+                        postConnection.post_connection.content[indexBook]
+                          .concepts[indexConcept].title,
+                    })
+                  );
+                }}
+              >
+                Delete Concept
+              </RemoveConceptButton>
+            </ActionBar>
+
             <LinksTooltip>
               <LinksList>
                 {postConnection.post_connection.content.map(
@@ -251,8 +280,6 @@ const AddLinkButton = styled.button`
   }
 `;
 
-const AddIcon = styled(GrAddCircle)``;
-
 const LinksList = styled.ul``;
 
 const LinkBook = styled.li`
@@ -284,10 +311,32 @@ const DisplayLinksChosen = styled.div`
   flex-direction: column;
 `;
 
-const LinksChosenContainerTitle = styled.h4``;
 const LinksChosenTitle = styled.h5``;
 const LinksChosenBook = styled.h6``;
 
 const LinkChosen = styled.span``;
+
+const ActionBar = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const RemoveConceptButton = styled.button`
+  margin-top: 20px;
+  border: none;
+  background: rgba(234, 47, 46, 1);
+  border-radius: 7px;
+  color: white;
+  width: 100px;
+  position: relative;
+  height: 40px;
+  cursor: pointer;
+  transition: 0.5s;
+
+  &:hover {
+    background-color: rgba(234, 47, 46, 0.5);
+    color: white;
+  }
+`;
 
 export default ConceptItemComponent;

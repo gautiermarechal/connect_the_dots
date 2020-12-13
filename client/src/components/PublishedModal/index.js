@@ -29,7 +29,6 @@ const PublishedModal = () => {
             <IoIosClose />
           </CloseModalButton>
         </CloseButtonContainer>
-        <PublishedTitle>Connection Published!</PublishedTitle>
       </MainContainer>
     </>
   );

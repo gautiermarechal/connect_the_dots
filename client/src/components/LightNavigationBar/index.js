@@ -81,7 +81,7 @@ const RightSection = styled.div`
 `;
 
 const PublishButton = styled.div`
-  background-color: ${COLORS.green};
+  background-color: ${COLORS.blue};
   border-style: none;
   border-radius: 3px;
   color: white;

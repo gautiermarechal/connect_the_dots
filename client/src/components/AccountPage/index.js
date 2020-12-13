@@ -53,6 +53,7 @@ const MainContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 80vh;
 `;
 
 const Title = styled.h2``;
@@ -61,11 +62,12 @@ const UserInfo = styled.div`
   display: flex;
   flex-direction: column;
   width: 500px;
-  border-style: solid;
+  border-style: none;
   border-width: 1px;
-  border-color: rgb(211, 215, 215);
   border-radius: 7px;
   padding: 20px;
+  background-color: white;
+  box-shadow: 0 1px 4px 0 rgba(21, 27, 38, 0.08);
 `;
 
 const InfoContainer = styled.div`

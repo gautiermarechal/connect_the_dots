@@ -8,6 +8,7 @@ import { BsBookmark, BsFillBookmarkFill } from "react-icons/bs";
 import moment from "moment";
 import parser from "html-react-parser";
 import updateUser from "../../handlers/UpdateUser";
+import { COLORS } from "../../constants";
 
 const SingleConnection = () => {
   const [authorBookmarked, setAuthorBookmarked] = useState(false);
@@ -221,11 +222,12 @@ const BooksContainer = styled.div`
 
 const Book = styled.div`
   display: flex;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   border-radius: 7px;
   height: 140px;
   margin: 20px;
   max-width: 300px;
+  background-color: white;
+  box-shadow: 0 1px 4px 0 rgba(21, 27, 38, 0.08);
 `;
 
 const BookInfo = styled.div`
@@ -242,7 +244,9 @@ const BookImage = styled.img`
   height: 100%;
 `;
 
-const BookTitle = styled.h2``;
+const BookTitle = styled.h2`
+  font-size: 1em;
+`;
 
 const Authors = styled.h5`
   font-weight: 200;
@@ -334,10 +338,9 @@ const BookContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin: 20px;
-  border: solid 1px;
   border-radius: 7px;
-  border-color: rgba(232, 232, 232, 1);
-  background-color: snow;
+  box-shadow: 0 1px 4px 0 rgba(21, 27, 38, 0.08);
+  background-color: white;
 `;
 
 const BookInfoStructure = styled.div`
@@ -358,9 +361,8 @@ const ConceptsContainer = styled.div`
   flex-direction: column;
   padding: 20px;
   margin: 20px;
-  border: solid 1px;
   border-radius: 7px;
-  border-color: rgba(232, 232, 232, 0.5);
+  box-shadow: 0 1px 4px 0 rgba(21, 27, 38, 0.08);
   background-color: white;
 `;
 
@@ -407,11 +409,13 @@ const LinkContainer = styled.div`
   margin: 20px;
   border-radius: 7px;
   transition: 0.2s;
+  box-shadow: 0 1px 4px 0 rgba(21, 27, 38, 0.08);
+
   &:hover {
     box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
   }
   border-color: rgba(232, 232, 232, 1);
-  background-color: Snow;
+  background-color: white;
 `;
 
 const LinkHeader = styled.div`
@@ -431,7 +435,7 @@ const LinkContent = styled.p`
 const LinkConcept = styled.div`
   display: flex;
   width: 300px;
-  background-color: #3aafa9;
+  background-color: ${COLORS.blue};
   color: white;
   height: fit-content;
   padding: 20px;

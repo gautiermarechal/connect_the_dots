@@ -95,7 +95,7 @@ const NavItem = styled.h3`
 `;
 
 const ConnectButton = styled.div`
-  background-color: ${COLORS.green};
+  background-color: ${COLORS.blue};
   border-style: none;
   border-radius: 3px;
   color: white;

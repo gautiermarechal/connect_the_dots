@@ -6,7 +6,6 @@ import moment from "moment";
 import { useHistory } from "react-router-dom";
 
 const Connection = ({ data }) => {
-  console.log(data);
   const history = useHistory();
   return (
     <>
@@ -80,12 +79,17 @@ const MainContainer = styled.div`
   flex-direction: column;
   width: 300px;
   margin: 20px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 7px;
+  box-shadow: 0 1px 4px 0 rgba(21, 27, 38, 0.08);
 `;
 
 const Banner = styled.img`
   height: 100px;
   width: 100%;
   cursor: pointer;
+  border-radius: 7px;
 `;
 
 const Title = styled.h3`
@@ -125,7 +129,7 @@ const AuthorUserName = styled.h6`
 `;
 
 const Line = styled.hr`
-  width: 300px;
+  width: 100%;
   border: 0;
   height: 0;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
@@ -147,14 +151,15 @@ const CategoryLabelsContainer = styled.div`
 `;
 
 const CategoryLabel = styled.button`
-  background-color: ${COLORS.green};
+  background-color: ${COLORS.blue};
   border-style: none;
   border-radius: 3px;
   color: white;
   padding: 5px;
   width: 110px;
   margin: 2px;
-  height: 30px;
+  height: 50px;
+  overflow: scroll;
   cursor: pointer;
 `;
 

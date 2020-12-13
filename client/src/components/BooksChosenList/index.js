@@ -3,9 +3,23 @@ import { COLORS } from "../../constants";
 import { GrClose } from "react-icons/gr";
 import { useDispatch } from "react-redux";
 import { deleteBookPostConnection } from "../../redux/actions/PostConnectionActions";
+import Recommandation from "./Recommandation";
+import { useSpring, animated } from "react-spring";
 
 const BooksChosenListComponent = ({ postConnection }) => {
   const dispatch = useDispatch();
+
+  const animationBook = useSpring({
+    from: { opacity: 0 },
+    opacity: 1,
+    delay: 200,
+  });
+
+  const animationLine = useSpring({
+    width: 300,
+    delay: 500,
+    from: { width: 0 },
+  });
   return (
     <>
       <BooksChosenList>
@@ -13,7 +27,7 @@ const BooksChosenListComponent = ({ postConnection }) => {
           if (index % 2 !== 0) {
             return (
               <GridItem>
-                <Wrapper>
+                <Wrapper style={animationBook}>
                   {book.volumeInfo.imageLinks ? (
                     <CoverImage src={book.volumeInfo.imageLinks.thumbnail} />
                   ) : null}
@@ -50,7 +64,7 @@ const BooksChosenListComponent = ({ postConnection }) => {
           }
           return [
             <GridItem>
-              <Wrapper>
+              <Wrapper style={animationBook}>
                 {book.volumeInfo.imageLinks ? (
                   <CoverImage src={book.volumeInfo.imageLinks.thumbnail} />
                 ) : null}
@@ -83,10 +97,13 @@ const BooksChosenListComponent = ({ postConnection }) => {
               </Wrapper>
             </GridItem>,
             <GridItem>
-              <NormalLine />
+              <NormalLine style={animationLine} />
             </GridItem>,
           ];
         })}
+        {postConnection.post_connection.books.length === 1 && (
+          <Recommandation />
+        )}
       </BooksChosenList>
     </>
   );
@@ -97,7 +114,7 @@ const BooksChosenList = styled.ul`
   display: grid;
   grid-template-columns: 33.333333% 33.333333% 33.333333%;
   margin-top: 50px;
-  width: 100vw;
+  width: 90vw;
 `;
 
 const BookItem = styled.li`
@@ -124,7 +141,7 @@ const BookCategories = styled.div`
 `;
 
 const CategoryButton = styled.button`
-  background-color: ${COLORS.green};
+  background-color: ${COLORS.blue};
   border-style: none;
   border-radius: 3px;
   color: white;
@@ -135,12 +152,13 @@ const CategoryButton = styled.button`
   cursor: pointer;
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled(animated.div)`
   display: flex;
   align-items: center;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  box-shadow: 0 1px 4px 0 rgba(21, 27, 38, 0.08);
   border-radius: 7px;
   min-width: 400px;
+  background-color: white;
 `;
 
 const CoverImage = styled.img`
@@ -149,12 +167,12 @@ const CoverImage = styled.img`
   border-bottom-left-radius: 7px;
 `;
 
-const NormalLine = styled.hr`
+const NormalLine = styled(animated.hr)`
   border: 0;
   height: 0;
   width: 80%;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  border-top: 5px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 5px solid rgba(255, 255, 255, 0.3);
 `;
 
 const GridItem = styled.div`

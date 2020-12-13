@@ -76,7 +76,6 @@ const Feed = ({ type }) => {
               ))
             : null}
         </MainContainer>
-        <PublishedModal />
       </Wrapper>
     </>
   );

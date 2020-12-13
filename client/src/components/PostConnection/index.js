@@ -83,19 +83,23 @@ const Title = styled.h1`
 `;
 
 const ButtonNext = styled.div`
-  background-color: ${COLORS.green};
+  background-color: ${COLORS.blue};
   border-style: none;
-  border-radius: 3px;
+  border-radius: 7px;
   color: white;
   padding: 5px;
-  width: 110px;
+  width: 200px;
   margin: 2px;
-  height: 30px;
+  height: 50px;
   cursor: pointer;
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: 0.2s;
+  &:hover {
+    background-color: ${COLORS.darkBlue};
+  }
 `;
 
 export default PostConnection;

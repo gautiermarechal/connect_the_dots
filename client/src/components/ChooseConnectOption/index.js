@@ -6,12 +6,10 @@ import { COLORS } from "../../constants";
 import {
   asyncInitialiseContentFreePostConnection,
   asyncInitialiseContentStructurePostConnection,
-  initialiseContentFreePostConnection,
-  initialiseContentStructurePostConnection,
   setTypePostConnection,
   toggleStepPostConnection,
 } from "../../redux/actions/PostConnectionActions";
-import promiseDispatch from "redux-promise";
+import { useSpring, animated } from "react-spring";
 
 const ChooseConnectOption = () => {
   const dispatch = useDispatch();
@@ -19,9 +17,17 @@ const ChooseConnectOption = () => {
   const history = useHistory();
   const postConnection = useSelector((state) => state.postConnection);
 
+  const animation = useSpring({
+    transform:
+      postConnection.step === 1
+        ? "translate3D(0,0,0)"
+        : "translate3D(0,-50px,0)",
+    opacity: postConnection.step === 1 ? 1 : 0,
+  });
+
   return (
     <>
-      <Wrapper>
+      <Wrapper style={animation}>
         <MainContainer>
           <ChoiceContainer>
             <VisibleCheck
@@ -73,7 +79,7 @@ const ChooseConnectOption = () => {
   );
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled(animated.div)`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -94,8 +100,6 @@ const ChoiceContainer = styled.div`
   align-items: center;
 `;
 
-const ChoiceButton = styled.input``;
-
 const VisibleCheck = styled.button`
   width: 20px;
   height: 20px;
@@ -103,31 +107,31 @@ const VisibleCheck = styled.button`
   margin-bottom: 10px;
   border-style: solid;
   border-width: 1px;
-  background-color: ${(props) => (props.filled ? COLORS.green : "white")};
-  border-color: ${COLORS.green};
+  background-color: ${(props) => (props.filled ? COLORS.blue : "white")};
+  border-color: ${COLORS.blue};
+  cursor: pointer;
 `;
 
 const ChoiceLabel = styled.label``;
 
 const ButtonNext = styled.div`
-  background-color: ${COLORS.green};
+  background-color: ${COLORS.blue};
   border-style: none;
-  border-radius: 3px;
+  border-radius: 7px;
   color: white;
   padding: 5px;
-  width: 110px;
+  width: 200px;
   margin: 2px;
-  height: 30px;
+  height: 50px;
   cursor: pointer;
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-
-const Title = styled.h1`
-  font-weight: 100;
-  text-align: center;
+  transition: 0.2s;
+  &:hover {
+    background-color: ${COLORS.darkBlue};
+  }
 `;
 
 export default ChooseConnectOption;

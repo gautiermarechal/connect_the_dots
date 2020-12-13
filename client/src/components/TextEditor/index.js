@@ -23,6 +23,7 @@ const TextEditor = () => {
         height: "80vh",
         width: "80vw",
         marginBottom: "100px",
+        borderRadius: "7px",
       }}
     />
   );

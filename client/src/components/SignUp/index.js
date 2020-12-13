@@ -1,148 +1,138 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { COLORS } from "../../constants";
 import createUser from "../../handlers/CreateUser";
 import { v4 as uuidv4 } from "uuid";
 import { useHistory } from "react-router-dom";
-import {
-  isEmailValid,
-  isPasswordGoodLength,
-  isValidEmpty,
-} from "../../handlers/validators/SignUpValidators";
+import { Formik } from "formik";
 
 const SignUp = () => {
-  const [user, setUser] = useState({
-    name: "",
-    username: "",
-    email: "",
-    password: "",
-  });
-  const [displayError, setDisplayError] = useState(false);
-  const [canSubmit, setCanSubmit] = useState(false);
-  const [errors, setErrors] = useState([]);
   const history = useHistory();
-
-  useEffect(() => {}, [errors]);
-
-  const ErrorContainer = styled.div`
-    background-color: rgba(255, 26, 26, 0.2);
-    display: ${displayError ? "flex" : "none"};
-    flex-direction: column;
-    width: 100%;
-  `;
-
-  const ErrorList = styled.ul`
-    list-style-type: none;
-  `;
-
-  const Error = styled.li``;
-
-  const handleSubmit = () => {
-    //Check if any input is empty
-    if (!isValidEmpty(user)) {
-      if (!errors.includes("Please fill in all the required fields"))
-        setErrors([...errors, "Please fill in all the required fields"]);
-    } else {
-      const tempArr = errors;
-      tempArr.splice(
-        tempArr.indexOf("Please fill in all the required fields"),
-        1
-      );
-      setErrors(tempArr);
-    }
-
-    //Check password
-    if (!isPasswordGoodLength(user)) {
-      if (!errors.includes("Password is too short"))
-        setErrors([...errors, "Password is too short"]);
-    } else {
-      const tempArr = errors;
-      tempArr.splice(tempArr.indexOf("Password is too short"), 1);
-      setErrors(tempArr);
-    }
-
-    //Check email
-    if (!isEmailValid(user)) {
-      if (!errors.includes("Email is not valid"))
-        setErrors([...errors, "Email is not valid"]);
-    } else {
-      const tempArr = errors;
-      tempArr.splice(tempArr.indexOf("Email is not valid"), 1);
-      setErrors(tempArr);
-    }
-
-    //Display errors
-    if (!canSubmit) {
-      setDisplayError(true);
-    } else {
-      setDisplayError(false);
-    }
-
-    if (errors.length > 0) {
-      setCanSubmit(false);
-    } else {
-      setCanSubmit(true);
-    }
-
-    if (canSubmit) {
-      createUser({
-        _id: uuidv4(),
-        ...user,
-        connections: [],
-        connections_bookmarked: [],
-        books_bookmarked: [],
-        categories_bookmarked: [],
-        authors_bookmarked: [],
-      });
-      history.push("signup-success");
-    }
-  };
 
   return (
     <>
       <MainContainer>
         <SignUpContainer>
           <Title>Sign Up</Title>
-          <Form>
-            <Label htmlFor="name-input">Name *</Label>
-            <Input
-              id="name-input"
-              placeholder="You can be anonymous..."
-              onChange={(e) => setUser({ ...user, name: e.target.value })}
-              required={true}
-            />
-            <Label htmlFor="username-input">Username *</Label>
-            <Input
-              id="username-input"
-              placeholder="This has to be unique"
-              onChange={(e) => setUser({ ...user, username: e.target.value })}
-              required={true}
-            />
-            <Label htmlFor="email-input">Email *</Label>
-            <Input
-              id="email-input"
-              type="email"
-              onChange={(e) => {
-                setUser({ ...user, email: e.target.value });
-              }}
-              required={true}
-            />
-            <Label htmlFor="password-input">Password *</Label>
-            <Input
-              id="password-input"
-              type="password"
-              onChange={(e) => setUser({ ...user, password: e.target.value })}
-              required={true}
-            />
-          </Form>
-          <SubmitButton type="submit" onClick={handleSubmit}>
-            Submit
-          </SubmitButton>
-          <ErrorContainer>
-            {errors.map((error) => {
-              return <ErrorList>{error}</ErrorList>;
-            })}
-          </ErrorContainer>
+          <Formik
+            initialValues={{ name: "", username: "", email: "", password: "" }}
+            validate={(values) => {
+              const errors = {};
+              if (!values.name) {
+                errors.name = "Required";
+              }
+              if (!values.username) {
+                errors.username = "Required";
+              }
+
+              if (!values.email) {
+                errors.email = "Required";
+              } else if (
+                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+              ) {
+                errors.email = "Invalid email address";
+              }
+              if (!values.password) {
+                errors.password = "Required";
+              }
+              return fetch(`http://localhost:4000/users/email/${values.email}`)
+                .then((res) => res.json())
+                .then((json) => {
+                  if (json.status === 200) {
+                    errors.email = "This email is already taken";
+                  }
+
+                  return errors;
+                });
+            }}
+            onSubmit={(values, { setSubmitting }) => {
+              setTimeout(() => {
+                setSubmitting(false);
+                createUser({
+                  _id: uuidv4(),
+                  name: values.name,
+                  username: values.username,
+                  email: values.email,
+                  password: values.password,
+                  connections: [],
+                  connections_bookmarked: [],
+                  books_bookmarked: [],
+                  categories_bookmarked: [],
+                  authors_bookmarked: [],
+                });
+                history.push("/signup-success");
+              }, 400);
+            }}
+          >
+            {({
+              values,
+              errors,
+              touched,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              isSubmitting,
+              /* and other goodies */
+            }) => (
+              <Form onSubmit={handleSubmit}>
+                <Label htmlFor="name">Name *</Label>
+                <Input
+                  type="text"
+                  name="name"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.name}
+                  placeholder="You can be anonymous..."
+                />
+                <ErrorContainer>
+                  <Error> {errors.name && touched.name && errors.name}</Error>
+                </ErrorContainer>
+                <Label htmlFor="username">Username *</Label>
+                <Input
+                  type="text"
+                  name="username"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.username}
+                  placeholder="Enter your username"
+                />
+                <ErrorContainer>
+                  <Error>
+                    {errors.username && touched.username && errors.username}
+                  </Error>
+                </ErrorContainer>
+                <Label htmlFor="email">Email *</Label>
+                <Input
+                  type="text"
+                  name="email"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.email}
+                  placeholder="Enter your email"
+                />
+                <ErrorContainer>
+                  <Error>{errors.email && touched.email && errors.email}</Error>
+                </ErrorContainer>
+                <Label htmlFor="password">Password *</Label>
+                <Input
+                  type="password"
+                  name="password"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.password}
+                  placeholder="Enter your password"
+                />
+                <ErrorContainer>
+                  <Error>
+                    {errors.password && touched.password && errors.password}
+                  </Error>
+                </ErrorContainer>
+                <SubmitButton type="submit" disabled={isSubmitting}>
+                  Submit
+                </SubmitButton>
+              </Form>
+            )}
+          </Formik>
         </SignUpContainer>
       </MainContainer>
     </>
@@ -204,6 +194,19 @@ const SubmitButton = styled.button`
   margin: 2px;
   height: 30px;
   cursor: pointer;
+`;
+
+const ErrorContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: 7px;
+`;
+
+const Error = styled.div`
+  color: red;
+  margin-top: -15px;
+  margin-bottom: 15px;
 `;
 
 export default SignUp;

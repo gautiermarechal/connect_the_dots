@@ -54,13 +54,13 @@ const AddConceptButton = styled.button`
   margin-top: 20px;
   border: none;
   border-radius: 7px;
-  color: grey;
+  color: white;
   width: 100px;
   position: relative;
   height: 40px;
   cursor: pointer;
   transition: 0.5s;
-  background-color: Ivory;
+  background-color: #28a745;
 
   &:hover {
     background-color: grey;

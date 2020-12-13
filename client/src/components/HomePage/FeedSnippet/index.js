@@ -1,17 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Connection from "../../Connection";
 
 const FeedSnippet = ({ type }) => {
+  const [connections, setConnections] = useState([]);
+  useEffect(() => {
+    if (!connections) {
+      return;
+    }
+    if (type === "recent") {
+      fetch("http://localhost:4000/recent/connections")
+        .then((res) => res.json())
+        .then((json) => {
+          setConnections(json.data);
+        });
+    }
+  }, [connections]);
   return (
     <>
       <MainContainer>
         {type === "recent" && <Title>Recent Connections</Title>}
         {type === "popular" && <Title>Popular Connections</Title>}
         <FeedContainer>
-          <Connection />
-          <Connection />
-          <Connection />
+          {connections
+            ? connections.map((connection) => {
+                return <Connection data={connection} />;
+              })
+            : null}
         </FeedContainer>
       </MainContainer>
     </>

@@ -127,6 +127,37 @@ export const addConceptToBook = (data) => ({
   data: data,
 });
 
+export const asyncRemoveConceptFromBook = (data) => {
+  return (dispatch, getState) => {
+    dispatch(removeConceptFromBook(data));
+    const state = getState();
+    localStorage.setItem(
+      "post-connection",
+      JSON.stringify(state.postConnection)
+    );
+  };
+};
+
+export const removeConceptFromBook = (data) => ({
+  type: "DELETE_CONCEPT_FROM_BOOK",
+  data: data,
+});
+
+export const asyncDeleteLinkFromConcept = (data) => {
+  return (dispatch, getState) => {
+    dispatch(deleteLinkFromConcept(data));
+    const state = getState();
+    localStorage.setItem(
+      "post-connection",
+      JSON.stringify(state.postConnection)
+    );
+  };
+};
+export const deleteLinkFromConcept = (data) => ({
+  type: "DELETE_LINK_FROM_CONCEPT",
+  data: data,
+});
+
 export const asyncAddLinkToConcept = (data) => {
   return (dispatch, getState) => {
     dispatch(addLinkToConcept(data));

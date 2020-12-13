@@ -164,6 +164,71 @@ const PostConnectionReducer = (state = initialState, action) => {
           ),
         },
       };
+    case "DELETE_CONCEPT_FROM_BOOK":
+      let indexFound = -1;
+      state.post_connection.content.forEach((obj, indexBook) => {
+        if (indexBook === action.data.indexBook) {
+          obj.concepts.forEach((concept, index) => {
+            if (concept._id === action.data.conceptId) {
+              indexFound = index;
+            }
+          });
+        }
+      });
+
+      let result =
+        state.post_connection.content[action.data.indexBook].concepts;
+
+      result.splice(indexFound, 1);
+
+      result = result.map((concept, index) => {
+        return {
+          ...concept,
+          _id: index,
+          links: concept.links.map((link) => ({ ...link, _id: index })),
+        };
+      });
+
+      return {
+        ...state,
+        post_connection: {
+          ...state.post_connection,
+          content: state.post_connection.content.map((obj, indexBook) =>
+            indexBook === action.data.indexBook
+              ? {
+                  ...obj,
+                  concepts: result,
+                }
+              : obj
+          ),
+        },
+      };
+    case "DELETE_LINK_FROM_CONCEPT":
+      let resultLinks = state.post_connection.content.map((contentObj) => {
+        return {
+          ...contentObj,
+          concepts: contentObj.concepts.map((concept) => {
+            return {
+              ...concept,
+              links: concept.links.filter(
+                (link) =>
+                  link._id !== action.data.conceptId &&
+                  link.title !== action.data.conceptTitle
+              ),
+            };
+          }),
+        };
+      });
+
+      console.log(resultLinks);
+
+      return {
+        ...state,
+        post_connection: {
+          ...state.post_connection,
+          content: resultLinks,
+        },
+      };
     case "ADD_LINK_TO_CONCEPT":
       return {
         ...state,

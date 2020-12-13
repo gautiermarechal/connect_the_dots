@@ -2,8 +2,9 @@ const COLORS = {
   green: "#1BBC9D",
   grey: "#6D7471",
   lightGreen: "#F1F6F4",
-  blue: "#0075FF",
+  blue: "#0074D9",
   white: "#F6F8F9",
+  darkBlue: "#001f3f",
 };
 
 const CATEGORIES = [

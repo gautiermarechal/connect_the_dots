@@ -31,6 +31,7 @@ const MainContainer = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 20px;
+  height: 70vh;
 `;
 
 const InternalContainer = styled.div`
