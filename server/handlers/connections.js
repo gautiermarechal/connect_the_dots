@@ -231,15 +231,26 @@ const getConnectionsUserFeed = async (req, res) => {
             .toArray();
           resultArray.push(...resultConnections);
         });
-        //Get all connections from categories bookmarked
-        const categoriesBookmarked = user.categories_bookmarked;
-        categoriesBookmarked.forEach(async (category) => {
-          const resultConnections = await db
-            .collection("connections")
-            .find({ categories: category })
-            .toArray();
-          resultArray.push(...resultConnections);
+        if (user.categories_bookmarked.length !== 0) {
+          //Get all connections from categories bookmarked
+          const categoriesBookmarked = user.categories_bookmarked;
+          categoriesBookmarked.forEach(async (category) => {
+            const resultConnections = await db
+              .collection("connections")
+              .find({ categories: category })
+              .toArray();
+            resultArray.push(...resultConnections);
 
+            //Remove all duplicates
+            const uniqueConnections = Array.from(
+              new Set(resultArray.map((connection) => connection._id))
+            ).map((_id) => {
+              return resultArray.find((connection) => connection._id === _id);
+            });
+
+            res.status(200).json({ status: 200, data: uniqueConnections });
+          });
+        } else {
           //Remove all duplicates
           const uniqueConnections = Array.from(
             new Set(resultArray.map((connection) => connection._id))
@@ -248,7 +259,7 @@ const getConnectionsUserFeed = async (req, res) => {
           });
 
           res.status(200).json({ status: 200, data: uniqueConnections });
-        });
+        }
       } catch (error) {
         throw new Error(error);
       }

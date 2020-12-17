@@ -19,17 +19,17 @@ const BookPage = () => {
   const [bookBookmarked, setBookBookmarked] = React.useState(false);
 
   React.useEffect(() => {
-    if (!singleBook) {
+    if (!singleBook || !currentUser) {
       return;
     }
     if (currentUser.books_bookmarked) {
       if (currentUser.books_bookmarked.length !== 0) {
         if (
-          currentUser.books_bookmarked.some(
-            (book) => book.volumeInfo.id === singleBook.volumeInfo.id
-          )
+          currentUser.books_bookmarked.some((book) => book.id === singleBook.id)
         ) {
           setBookBookmarked(true);
+        } else {
+          setBookBookmarked(false);
         }
       }
     }
@@ -78,7 +78,9 @@ const BookPage = () => {
               <ActionButton
                 onClick={() => {
                   updateUser(currentUser.id, "books_bookmarked", singleBook);
-                  window.location.reload();
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 500);
                 }}
               >
                 Bookmark

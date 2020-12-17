@@ -44,8 +44,10 @@ const UserProfilePage = () => {
                     updateUser(
                       currentUser.id,
                       "authors_bookmarked",
-                      singleUser.single_user
+                      singleUser
                     );
+
+                    window.location.reload();
                   }
                 }}
               >

@@ -10,7 +10,6 @@ import { receiveSingleCategoryConnections } from "../../redux/actions/SingleCate
 import { receiveSingleUser } from "../../redux/actions/SingleUserActions";
 import Connection from "../Connection/index";
 import LoadingSpinner from "../LoadingSpinner";
-import PublishedModal from "../PublishedModal";
 
 const Feed = ({ type }) => {
   const currentUser = useSelector((state) => state.currentUser);
