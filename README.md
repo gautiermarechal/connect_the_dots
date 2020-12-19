@@ -42,15 +42,15 @@ This website is a tool that allows people to connect concepts of a book to any c
 
 ### View book information and boomark it
 
-![Alt Text](gifs/CTD-Authentification.gif)
+![Alt Text](gifs/CTD-SingleBook_.gif)
 
 ### Connection (Free option)
 
-![Alt Text](gifs/CTD-ConnectFree.gif)
+![Alt Text](gifs/CTD-ConnectFree_.gif)
 
 ### Connection (Structure option)
 
-![Alt Text](gifs/CTD-ConnectStructure.gif)
+![Alt Text](gifs/CTD-ConnectStructure_.gif)
 
 ### View and Bookmark Connection
 
@@ -58,4 +58,4 @@ This website is a tool that allows people to connect concepts of a book to any c
 
 ### Search for a connection
 
-![Alt Text](gifs/CTD-SearchConnection.gif)
+![Alt Text](gifs/CTD-SearchConnection_.gif)
