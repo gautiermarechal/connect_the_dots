@@ -63,7 +63,7 @@ function App() {
           <Route path="/connections-bookmarked/:id">
             <BookmarkedConnectionsPage />
           </Route>
-          <Route path="/book/:id">
+          <Route path="/book/single/:id">
             <BookPage />
           </Route>
           <Route exact path="/connect">
@@ -78,13 +78,13 @@ function App() {
           <Route path="/feed">
             <Feed type="Home" />
           </Route>
-          <Route path="/connection/:id">
+          <Route path="/connection/single/:id">
             <SingleConnection />
           </Route>
           <Route exact path="/categories">
             <Categories />
           </Route>
-          <Route path="/categories/:id">
+          <Route path="/categories/single/:id">
             <SingleCategory />
           </Route>
           <Route path="/user/:id">
