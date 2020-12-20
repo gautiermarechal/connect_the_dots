@@ -1,7 +1,7 @@
 //DB imports----------------------------------------
 const { resolve } = require("path");
 const path = require("path");
-require("dotenv").config({ path: resolve(__dirname, "../.env") });
+require("dotenv").config({ path: resolve(__dirname, "/.env") });
 const { MongoClient } = require("mongodb");
 const { isNull, correctUser, validUpdate, idFound } = require("../helpers");
 const { MONGO_URI, DB } = process.env;
