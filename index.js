@@ -19,6 +19,6 @@ app.get("/", (req, res) => {
 //ROUTES
 app.use(require("./routes"));
 
-app.listen(serverPort, () =>
+app.listen(process.env.PORT || serverPort, () =>
   console.log(`Server running on port ${serverPort}`)
 );
