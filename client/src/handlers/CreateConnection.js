@@ -1,5 +1,5 @@
 const createConnection = (data) => {
-  fetch("http://localhost:4000/connections", {
+  fetch("https://connectthedots-514.herokuapp.com/connections", {
     headers: {
       "Content-Type": "application/json",
     },

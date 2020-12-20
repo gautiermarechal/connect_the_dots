@@ -35,7 +35,9 @@ const SignUp = () => {
               if (!values.password) {
                 errors.password = "Required";
               }
-              return fetch(`http://localhost:4000/users/email/${values.email}`)
+              return fetch(
+                `https://connectthedots-514.herokuapp.com//users/email/${values.email}`
+              )
                 .then((res) => res.json())
                 .then((json) => {
                   if (json.status === 200) {

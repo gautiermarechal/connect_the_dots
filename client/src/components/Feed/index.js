@@ -25,7 +25,9 @@ const Feed = ({ type }) => {
         return;
       }
       dispatch(requestConnections());
-      fetch(`http://localhost:4000/connections/feed/${currentUser.id}`)
+      fetch(
+        `https://connectthedots-514.herokuapp.com/connections/feed/${currentUser.id}`
+      )
         .then((res) => res.json())
         .then((json) => {
           dispatch(receiveConnections(json.data));

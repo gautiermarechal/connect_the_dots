@@ -1,5 +1,5 @@
 const createUser = (user) => {
-  fetch("http://localhost:4000/users", {
+  fetch("https://connectthedots-514.herokuapp.com/users", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

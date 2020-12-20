@@ -10,7 +10,7 @@ const useFetchSingleBook = (query) => {
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(requestSingleBook());
-    fetch(`http://localhost:4000/books?query=${query}`, {
+    fetch(`https://connectthedots-514.herokuapp.com/books?query=${query}`, {
       headers: {
         "Content-Type": "application/json",
       },

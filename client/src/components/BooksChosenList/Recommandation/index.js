@@ -19,7 +19,7 @@ const Recommandation = () => {
     ) {
       //fetch book based on matching category, based on a category already connected to the category selected,
       fetch(
-        `http://localhost:4000/books/category?category=${postConnection.post_connection.books[0].volumeInfo.categories[0]}`
+        `https://connectthedots-514.herokuapp.com/books/category?category=${postConnection.post_connection.books[0].volumeInfo.categories[0]}`
       )
         .then((res) => res.json())
         .then((json) => {

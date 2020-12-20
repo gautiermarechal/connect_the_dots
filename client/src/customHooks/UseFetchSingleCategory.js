@@ -10,7 +10,7 @@ const useFetchSingleCategory = (id) => {
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(requestSingleCategory());
-    fetch(`http://localhost:4000/categories/${id}`)
+    fetch(`https://connectthedots-514.herokuapp.com/categories/${id}`)
       .then((res) => res.json())
       .then((json) => {
         dispatch(receiveSingleCategory(json.data));

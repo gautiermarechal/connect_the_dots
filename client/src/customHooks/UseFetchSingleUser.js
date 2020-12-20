@@ -10,7 +10,7 @@ const useFetchSingleUser = (id) => {
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(requestSingleUser());
-    fetch(`http://localhost:4000/users/${id}`)
+    fetch(`https://connectthedots-514.herokuapp.com/users/${id}`)
       .then((res) => res.json())
       .then((json) => {
         dispatch(receiveSingleUser(json.data));

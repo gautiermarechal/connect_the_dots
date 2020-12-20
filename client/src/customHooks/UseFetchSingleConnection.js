@@ -10,7 +10,7 @@ const useFetchSingleConnection = (id) => {
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(requestSingleConnection());
-    fetch(`http://localhost:4000/connections/${id}`, {
+    fetch(`https://connectthedots-514.herokuapp.com/connections/${id}`, {
       headers: {
         "Content-Type": "application/json",
       },

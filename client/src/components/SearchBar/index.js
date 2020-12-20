@@ -24,7 +24,7 @@ const SearchBar = () => {
 
   const handleSearchBook = (query) => {
     dispatch(requestBooks());
-    fetch(`http://localhost:4000/books?query=${query}`, {
+    fetch(`https://connectthedots-514.herokuapp.com//books?query=${query}`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -39,11 +39,14 @@ const SearchBar = () => {
   };
 
   const handleSearchConnections = (query) => {
-    fetch(`http://localhost:4000/search/connections?search=${query}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    fetch(
+      `https://connectthedots-514.herokuapp.com//search/connections?search=${query}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
       .then((res) => res.json())
       .then((json) => setFoundConnections(json.data));
   };

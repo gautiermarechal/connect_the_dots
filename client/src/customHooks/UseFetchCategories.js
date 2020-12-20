@@ -10,7 +10,7 @@ const useFetchCategories = () => {
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(requestCategories());
-    fetch("http://localhost:4000/categories")
+    fetch("https://connectthedots-514.herokuapp.com/categories")
       .then((res) => res.json())
       .then((json) => {
         dispatch(receiveCategories(json.data));

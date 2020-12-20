@@ -10,7 +10,7 @@ const useFetchCategoryConnections = (id) => {
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(requestSingleCategoryConnections());
-    fetch(`http://localhost:4000/connections/category/${id}`)
+    fetch(`https://connectthedots-514.herokuapp.com/connections/category/${id}`)
       .then((res) => res.json())
       .then((json) => {
         dispatch(receiveSingleCategoryConnections(json.data));

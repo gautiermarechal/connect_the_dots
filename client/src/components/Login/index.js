@@ -40,7 +40,9 @@ const Login = () => {
 
               console.log(errors);
 
-              return fetch(`http://localhost:4000/users/email/${values.email}`)
+              return fetch(
+                `https://connectthedots-514.herokuapp.com/users/email/${values.email}`
+              )
                 .then((res) => res.json())
                 .then((json) => {
                   if (json.status === 200) {

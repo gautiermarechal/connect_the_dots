@@ -1,5 +1,5 @@
 const addConnectionToCurrentUser = (id, connection) => {
-  fetch(`http://localhost:4000/users/${id}`, {
+  fetch(`https://connectthedots-514.herokuapp.com/users/${id}`, {
     headers: {
       "Content-Type": "application/json",
     },

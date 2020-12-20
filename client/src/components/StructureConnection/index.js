@@ -84,10 +84,13 @@ const StructureConnection = () => {
                 const formData = new FormData();
                 formData.append("banner", e.target.files[0]);
                 console.log(e.target.files[0]);
-                fetch("http://localhost:4000/connections/upload", {
-                  method: "POST",
-                  body: formData,
-                })
+                fetch(
+                  "https://connectthedots-514.herokuapp.com/connections/upload",
+                  {
+                    method: "POST",
+                    body: formData,
+                  }
+                )
                   .then((res) => res.json())
                   .then((json) => {
                     dispatch(asyncAddBannerPostConnection(json.data.path));
@@ -102,7 +105,7 @@ const StructureConnection = () => {
         </FileInputContainer>
         {previewSrc && (
           <ImagePreview
-            src={`http://localhost:4000/${previewSrc}`}
+            src={`https://connectthedots-514.herokuapp.com/${previewSrc}`}
             style={animation1}
           />
         )}

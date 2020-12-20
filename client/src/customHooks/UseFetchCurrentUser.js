@@ -12,7 +12,7 @@ const useFetchCurrentUser = () => {
     dispatch(requestCurrentUser());
     if (localStorage.getItem("user-email")) {
       fetch(
-        `http://localhost:4000/users/email/${localStorage.getItem(
+        `https://connectthedots-514.herokuapp.com/users/email/${localStorage.getItem(
           "user-email"
         )}`
       )

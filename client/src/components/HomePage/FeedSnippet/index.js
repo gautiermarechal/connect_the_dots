@@ -9,7 +9,7 @@ const FeedSnippet = ({ type }) => {
       return;
     }
     if (type === "recent") {
-      fetch("http://localhost:4000/recent/connections")
+      fetch("https://connectthedots-514.herokuapp.com/recent/connections")
         .then((res) => res.json())
         .then((json) => {
           setConnections(json.data);

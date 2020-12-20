@@ -12,7 +12,7 @@ const Connection = ({ data }) => {
       {data ? (
         <MainContainer>
           <Banner
-            src={`http://localhost:4000/${data.bannerSrc}`}
+            src={`https://connectthedots-514.herokuapp.com/${data.bannerSrc}`}
             onClick={() => {
               history.push(`/connection/${data._id}`);
             }}

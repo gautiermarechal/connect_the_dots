@@ -69,10 +69,13 @@ const FreeConnection = () => {
                 const formData = new FormData();
                 formData.append("banner", e.target.files[0]);
                 console.log(e.target.files[0]);
-                fetch("http://localhost:4000/connections/upload", {
-                  method: "POST",
-                  body: formData,
-                })
+                fetch(
+                  "https://connectthedots-514.herokuapp.com/connections/upload",
+                  {
+                    method: "POST",
+                    body: formData,
+                  }
+                )
                   .then((res) => res.json())
                   .then((json) => {
                     dispatch(addBannerPostConnection(json.data.path));
@@ -87,7 +90,7 @@ const FreeConnection = () => {
         </FileInputContainer>
         {previewSrc && (
           <ImagePreview
-            src={`http://localhost:4000/${previewSrc}`}
+            src={`https://connectthedots-514.herokuapp.com//${previewSrc}`}
             style={animation1}
           />
         )}

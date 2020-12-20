@@ -114,7 +114,7 @@ const SingleConnection = () => {
           </HeaderContainer>
           <ThumbnailContainer>
             <ConnectionThumbailImage
-              src={`http://localhost:4000/${connection.bannerSrc}`}
+              src={`https://connectthedots-514.herokuapp.com/${connection.bannerSrc}`}
             />
           </ThumbnailContainer>
           {typeof connection.content === "string" ? (
