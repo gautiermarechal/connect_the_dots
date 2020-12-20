@@ -30,7 +30,9 @@ const getAllUsers = async (req, res) => {
       res.status(200).json({ status: 200, data: result });
     }
   } catch (error) {
-    res.status(500).json({ status: 500, error: error.message, URI: MONGO_URI });
+    res
+      .status(500)
+      .json({ status: 500, error: error.message, URI: "uri" || MONGO_URI });
   }
 };
 
