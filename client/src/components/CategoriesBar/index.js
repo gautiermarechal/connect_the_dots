@@ -40,7 +40,7 @@ const CategoriesBar = () => {
               <CategoryButton
                 key={category._id}
                 onClick={() => {
-                  history.push(`/categories/${category._id}`);
+                  history.push(`/categories/single/${category._id}`);
                   window.location.reload();
                 }}
               >
@@ -55,7 +55,7 @@ const CategoriesBar = () => {
               <CategoryButton
                 key={category._id}
                 onClick={() => {
-                  history.push(`/categories/${category._id}`);
+                  history.push(`/categories/single/${category._id}`);
                   window.location.reload();
                 }}
               >

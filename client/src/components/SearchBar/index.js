@@ -127,7 +127,10 @@ const SearchBar = () => {
                         )}
                       </Book>
                     ) : (
-                      <Link to={`/book/${id}`} onClick={() => handleClear()}>
+                      <Link
+                        to={`/book/single/${id}`}
+                        onClick={() => handleClear()}
+                      >
                         <Book>
                           <ResultLabelContainer>
                             <BookTitle>{title}</BookTitle>
@@ -153,7 +156,7 @@ const SearchBar = () => {
               postConnection.status === "started" ? null : (
                 <>
                   <Link
-                    to={`/connection/${connection._id}`}
+                    to={`/connection/single/${connection._id}`}
                     onClick={() => handleClear()}
                   >
                     <Connection>

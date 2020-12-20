@@ -19,7 +19,9 @@ const Categories = () => {
                 return (
                   <CategoryItem
                     key={category._id}
-                    onClick={() => history.push(`/categories/${category._id}`)}
+                    onClick={() =>
+                      history.push(`/categories/single/${category._id}`)
+                    }
                   >
                     <CategoryTitle>{category.name}</CategoryTitle>
                   </CategoryItem>
