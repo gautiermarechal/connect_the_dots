@@ -10,13 +10,12 @@ app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 app.use(cors());
 app.use(bodyParser.json({ limit: "50mb" }));
-app.use("/", serveStatic(__dirname + "/client/build"));
+app.use("/", serveStatic(__dirname + "/client/dist"));
 
 app.get("/", (req, res) => {
-  // res
-  //   .status(200)
-  //   .json({ status: 200, message: ` Server is running on port ${serverPort}` });
-  res.sendFile(path.join(__dirname, "/client/build", "index.html"));
+  res
+    .status(200)
+    .json({ status: 200, message: ` Server is running on port ${serverPort}` });
 });
 
 //ROUTES
